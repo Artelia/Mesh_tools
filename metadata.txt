@@ -7,10 +7,11 @@ name=Telemac Tools
 qgisMinimumVersion=3.10
 description=Tools for Telemac(http://www.opentelemac.org/).
 version=0.1
-author=APn/Artelia
+author=Artelia
 email=a@a
 
-about=Tools for Telemac result using Mesh format
+about=Tools for Telemac result using Mesh format 
+      Developed by Aurélien Perrin(Artelia)
 
 tracker=https://github.com/Artelia/telemac_tools/issues
 repository=https://github.com/Artelia/telemac_tools

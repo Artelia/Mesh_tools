@@ -4,16 +4,16 @@
 
 [general]
 name=Telemac Tools
-qgisMinimumVersion=3.0
-description=Tools for Telemac
+qgisMinimumVersion=3.10
+description=Tools for Telemac(http://www.opentelemac.org/).
 version=0.1
 author=APn/Artelia
 email=a@a
 
-about=Provide a brief description of the plugin and its purpose.
+about=Tools for Telemac result using Mesh format
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/Artelia/telemac_tools/issues
+repository=https://github.com/Artelia/telemac_tools
 # End of mandatory metadata
 
 # Recommended items:
@@ -25,7 +25,7 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=http://homepage
+homepage=https://github.com/Artelia/telemac_tools/wiki
 category=Plugins
 icon=icon.png
 # experimental flag

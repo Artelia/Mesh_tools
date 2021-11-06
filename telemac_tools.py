@@ -29,6 +29,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolBar, QDockWidget, QWidget
 
 # Import the code for the DockWidget
 from .libs.culvert_manager import CulvertManager
+from .libs.mesh_quality import MeshQuality
 import os.path
 
 
@@ -177,8 +178,13 @@ class TelemacTools:
             parent=self.iface.mainWindow())
         self.add_action(
             icon_path,
-            text=self.tr(u'Telemac Tool 2'),
+            text=self.tr(u'Mesh Quality Analysis'),
             callback=lambda: self.run(2),
+            parent=self.iface.mainWindow())
+        self.add_action(
+            icon_path,
+            text=self.tr(u'Telemac Tool 2'),
+            callback=lambda: self.run(3),
             parent=self.iface.mainWindow())
 
     #--------------------------------------------------------------------------
@@ -239,12 +245,15 @@ class TelemacTools:
                 self.dockwidget.show()
 
         if self.dockwidget.widget():
-            print (self.dockwidget.widget().close())
+            print(self.dockwidget.widget().close())
 
         if tool == 1:
             self.dockwidget.setWindowTitle("Telemac - Culvert Manager")
             self.dockwidget.setWidget(CulvertManager())
         elif tool == 2:
+            self.dockwidget.setWindowTitle("Telemac - Mesh Quality Analysis")
+            self.dockwidget.setWidget(MeshQuality())
+        elif tool == 3:
             self.dockwidget.setWindowTitle("Telemac - Tool {}".format(tool))
             self.dockwidget.setWidget(QWidget())
         else:

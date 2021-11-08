@@ -192,7 +192,7 @@ class TelemacTools:
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
 
-        #print "** CLOSING TelemacTools"
+        self.dockwidget.widget().close()
 
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)

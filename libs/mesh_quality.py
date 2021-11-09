@@ -26,7 +26,6 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui
 
 
 class MeshQuality(QWidget, FORM_CLASS):
-
     def __init__(self, parent=None):
         super(MeshQuality, self).__init__(parent)
         self.setupUi(self)
@@ -109,7 +108,7 @@ class MeshQuality(QWidget, FORM_CLASS):
                     self.addVertexMarker(triangle.centroid(), "bad_angle_2")
                 elif any(math.degrees(a) < self.qdsb_bad_angle_3.value() for a in triangle.angles()):
                     self.addVertexMarker(triangle.centroid(), "bad_angle_3")
-            
+
             if self.chk_min_size.isChecked():
                 if any(l < self.qdsb_min_element_length.value() for l in triangle.lengths()):
                     self.addVertexMarker(triangle.centroid(), "bad_length")

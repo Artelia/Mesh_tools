@@ -21,15 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt, pyqtSignal
+import os.path
+
+from qgis.core import Qgis
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator, pyqtSignal
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QToolBar, QDockWidget, QWidget
-# Initialize Qt resources from file resources.py
-#from .resources import *
+from qgis.PyQt.QtWidgets import QAction, QDockWidget, QToolBar, QWidget
 
 # Import the code for the DockWidget
 from .libs.culvert_manager import CulvertManager
-import os.path
+from .libs.mesh_quality import MeshQuality
+
+# Initialize Qt resources from file resources.py
+# from .resources import *
 
 
 class TelemacTools:
@@ -48,14 +52,11 @@ class TelemacTools:
 
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
-        self.path_icon = os.path.join(os.path.dirname(__file__), 'icons/')
+        self.path_icon = os.path.join(os.path.dirname(__file__), "icons/")
 
         # initialize locale
-        locale = QSettings().value('locale/userLocale')[0:2]
-        locale_path = os.path.join(
-            self.plugin_dir,
-            'i18n',
-            'TelemacTools_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale")[0:2]
+        locale_path = os.path.join(self.plugin_dir, "i18n", "TelemacTools_{}.qm".format(locale))
 
         if os.path.exists(locale_path):
             self.translator = QTranslator()
@@ -64,13 +65,13 @@ class TelemacTools:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&Telemac Tools')
+        self.menu = self.tr("&Telemac Tools")
         # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = QToolBar()
-        #self.toolbar = self.iface.addToolBar(u'TelemacTools')
-        #self.toolbar.setObjectName(u'TelemacTools')
+        # self.toolbar = self.iface.addToolBar(u'TelemacTools')
+        # self.toolbar.setObjectName(u'TelemacTools')
 
-        #print "** INITIALIZING TelemacTools"
+        # print "** INITIALIZING TelemacTools"
 
         self.pluginIsActive = False
         self.dockwidget = None
@@ -88,8 +89,7 @@ class TelemacTools:
         :rtype: QString
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('TelemacTools', message)
-
+        return QCoreApplication.translate("TelemacTools", message)
 
     def add_action(
         self,
@@ -101,7 +101,8 @@ class TelemacTools:
         add_to_toolbar=False,
         status_tip=None,
         whats_this=None,
-        parent=None):
+        parent=None,
+    ):
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
@@ -156,37 +157,37 @@ class TelemacTools:
             self.toolbar.addAction(action)
 
         if add_to_menu:
-            self.iface.addPluginToMenu(
-                self.menu,
-                action)
+            self.iface.addPluginToMenu(self.menu, action)
 
         self.actions.append(action)
 
         return action
 
-
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        #self.postAct.triggered.connect(lambda: self.run("post"))
-        icon_path = os.path.join(self.plugin_dir, 'icon.png')
-        #icon_path = ':/plugins/telemac_tools/icon.png'
+        # self.postAct.triggered.connect(lambda: self.run("post"))
+        icon_path = os.path.join(self.plugin_dir, "icon.png")
+        # icon_path = ':/plugins/telemac_tools/icon.png'
         self.add_action(
-            icon_path,
-            text=self.tr(u'Culvert Manager'),
-            callback=lambda: self.run(1),
-            parent=self.iface.mainWindow())
+            icon_path, text=self.tr("Culvert Manager"), callback=lambda: self.run(1), parent=self.iface.mainWindow()
+        )
+        if Qgis.versionInt() >= 32200:
+            self.add_action(
+                icon_path,
+                text=self.tr("Mesh Quality Analysis"),
+                callback=lambda: self.run(2),
+                parent=self.iface.mainWindow(),
+            )
         self.add_action(
-            icon_path,
-            text=self.tr(u'Telemac Tool 2'),
-            callback=lambda: self.run(2),
-            parent=self.iface.mainWindow())
+            icon_path, text=self.tr("Telemac Tool 2"), callback=lambda: self.run(3), parent=self.iface.mainWindow()
+        )
 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
 
-        #print "** CLOSING TelemacTools"
+        self.dockwidget.widget().close()
 
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
@@ -199,21 +200,18 @@ class TelemacTools:
 
         self.pluginIsActive = False
 
-
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
 
-        #print "** UNLOAD TelemacTools"
+        # print "** UNLOAD TelemacTools"
 
         for action in self.actions:
-            self.iface.removePluginMenu(
-                self.tr(u'&Telemac Tools'),
-                action)
+            self.iface.removePluginMenu(self.tr("&Telemac Tools"), action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar
         del self.toolbar
 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
     def run(self, tool):
         """Run method that loads and starts the plugin"""
@@ -221,7 +219,7 @@ class TelemacTools:
         if not self.pluginIsActive:
             self.pluginIsActive = True
 
-            #print "** STARTING MenuMar"
+            # print "** STARTING MenuMar"
 
             # dockwidget may not exist if:
             #    first run of plugin
@@ -239,12 +237,15 @@ class TelemacTools:
                 self.dockwidget.show()
 
         if self.dockwidget.widget():
-            print (self.dockwidget.widget().close())
+            print(self.dockwidget.widget().close())
 
         if tool == 1:
             self.dockwidget.setWindowTitle("Telemac - Culvert Manager")
             self.dockwidget.setWidget(CulvertManager())
         elif tool == 2:
+            self.dockwidget.setWindowTitle("Telemac - Mesh Quality Analysis")
+            self.dockwidget.setWidget(MeshQuality())
+        elif tool == 3:
             self.dockwidget.setWindowTitle("Telemac - Tool {}".format(tool))
             self.dockwidget.setWidget(QWidget())
         else:

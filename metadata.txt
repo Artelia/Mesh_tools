@@ -10,8 +10,9 @@ version=0.2
 author=Artelia
 email=a@a
 
-about=Tools for Telemac result using Mesh format 
-      Developed by Aurélien Perrin(Artelia)
+about=Tools for Telemac result using Mesh format :
+      - Culvert Manager developed by Aurélien Perrin(Artelia)
+      - Mesh Quality Analysis developed by Nicolas Godet (ISL)
 
 tracker=https://github.com/Artelia/telemac_tools/issues
 repository=https://github.com/Artelia/telemac_tools

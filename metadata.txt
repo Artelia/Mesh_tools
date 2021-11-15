@@ -6,7 +6,7 @@
 name=Telemac Tools
 qgisMinimumVersion=3.10
 description=Tools for Telemac(http://www.opentelemac.org/).
-version=0.1
+version=0.2
 author=Artelia
 email=a@a
 
@@ -21,7 +21,10 @@ repository=https://github.com/Artelia/telemac_tools
 
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
-# changelog=
+changelog=
+   0.2   : add Mesh quality analysis (Qgis >= 3.22.0)
+
+
 
 # Tags are comma separated with spaces allowed
 tags=python

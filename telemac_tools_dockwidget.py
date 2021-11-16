@@ -27,8 +27,7 @@ import os
 from qgis.PyQt import QtGui, QtWidgets, uic
 from qgis.PyQt.QtCore import pyqtSignal
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'telemac_tools_dockwidget_base.ui'))
+FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "telemac_tools_dockwidget_base.ui"))
 
 
 class TelemacToolsDockWidget(QtWidgets.QDockWidget, FORM_CLASS):

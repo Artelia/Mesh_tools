@@ -1,25 +1,48 @@
 # -*- coding: utf-8 -*-
 
-from qgis.core import QgsProject, QgsMapLayerType, QgsGeometry, QgsVectorLayer, QgsField, QgsFields, QgsPointXY, QgsFeature, \
-    QgsVectorFileWriter, QgsWkbTypes, QgsCoordinateTransform, QgsSpatialIndex, QgsCoordinateReferenceSystem, QgsMeshDatasetIndex, QgsMesh, \
-    QgsVectorDataProvider, QgsPolygon, QgsLineString
-from qgis.gui import QgsMapToolEmitPoint
-from qgis.utils import iface
-
-from qgis.PyQt import uic
-from qgis.PyQt.QtGui import QIcon, QFont, QColor, QStandardItemModel, QStandardItem
-from qgis.PyQt.QtCore import pyqtSignal, QVariant, QObject, QThread
-from qgis.PyQt.QtWidgets import QWidget, QMessageBox, QDoubleSpinBox, QComboBox, QCheckBox, QLineEdit
-
-from .create_culvert_shp import dlg_create_culvert_shapefile
-
 import os
 import time
 from datetime import datetime
-import numpy as np
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), '..', 'ui', 'culvert_manager.ui'))
+import numpy as np
+from qgis.core import (
+    QgsCoordinateReferenceSystem,
+    QgsCoordinateTransform,
+    QgsFeature,
+    QgsField,
+    QgsFields,
+    QgsGeometry,
+    QgsLineString,
+    QgsMapLayerType,
+    QgsMesh,
+    QgsMeshDatasetIndex,
+    QgsPointXY,
+    QgsPolygon,
+    QgsProject,
+    QgsSpatialIndex,
+    QgsVectorDataProvider,
+    QgsVectorFileWriter,
+    QgsVectorLayer,
+    QgsWkbTypes,
+)
+from qgis.gui import QgsMapToolEmitPoint
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QObject, QThread, QVariant, pyqtSignal
+from qgis.PyQt.QtGui import QColor, QFont, QIcon, QStandardItem, QStandardItemModel
+from qgis.PyQt.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QLineEdit,
+    QMessageBox,
+    QWidget,
+)
+from qgis.utils import iface
+
+from .create_culvert_shp import dlg_create_culvert_shapefile
+
+FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
+
 
 class CulvertManager(QWidget, FORM_CLASS):
     closingTool = pyqtSignal()
@@ -28,8 +51,8 @@ class CulvertManager(QWidget, FORM_CLASS):
         super(CulvertManager, self).__init__(parent)
         self.setupUi(self)
         self.prt = parent
-        self.path_icon = os.path.join(os.path.dirname(__file__), '..', 'icons/')
-        self.file_culv_style = os.path.join(os.path.dirname(__file__), '..', 'styles/culvert.qml')
+        self.path_icon = os.path.join(os.path.dirname(__file__), "..", "icons/")
+        self.file_culv_style = os.path.join(os.path.dirname(__file__), "..", "styles/culvert.qml")
         self.ctrl_signal_blocked = False
 
         self.frm_culv_tools.hide()
@@ -46,36 +69,38 @@ class CulvertManager(QWidget, FORM_CLASS):
         self.cur_mesh_dataset = None
         self.cur_mesh_time = None
 
-        self.culv_flds = [['NAME', QVariant.String, self.txt_name],
-                          ['N1', QVariant.Int, None],
-                          ['N2', QVariant.Int, None],
-                          ['d1', QVariant.Double, self.sb_d1],
-                          ['d2', QVariant.Double, self.sb_d2],
-                          ['CE1', QVariant.Double, self.sb_ce1],
-                          ['CE2', QVariant.Double, self.sb_ce2],
-                          ['CS1', QVariant.Double, self.sb_cs1],
-                          ['CS2', QVariant.Double, self.sb_cs2],
-                          ['LARG', QVariant.Double, self.sb_larg],
-                          ['HAUT', QVariant.Double, self.sb_haut1],
-                          ['CLAP', QVariant.String, self.cb_clapet],
-                          ['L12', QVariant.Double, self.sb_l12],
-                          ['z1', QVariant.Double, self.sb_z1],
-                          ['z2', QVariant.Double, self.sb_z2],
-                          ['a1', QVariant.Double, self.sb_a1],
-                          ['a2', QVariant.Double, self.sb_a2],
-                          ['CV', QVariant.Double, self.sb_cv],
-                          ['C56', QVariant.Double, self.sb_c56],
-                          ['CV5', QVariant.Double, self.sb_cv5],
-                          ['C5', QVariant.Double, self.sb_c5],
-                          ['CT', QVariant.Double, self.sb_ct],
-                          ['HAUT2', QVariant.Double, self.sb_haut2],
-                          ['FRIC', QVariant.Double, self.sb_fric],
-                          ['LENGTH', QVariant.Double, self.sb_length],
-                          ['CIRC', QVariant.Int, self.cb_circ],
-                          ['AL', QVariant.Int, self.cb_auto_l],
-                          ['AZ', QVariant.Int, self.cb_auto_z],
-                          ['AA', QVariant.Int, self.cb_auto_a],
-                          ['Remarques', QVariant.String, None]]
+        self.culv_flds = [
+            ["NAME", QVariant.String, self.txt_name],
+            ["N1", QVariant.Int, None],
+            ["N2", QVariant.Int, None],
+            ["d1", QVariant.Double, self.sb_d1],
+            ["d2", QVariant.Double, self.sb_d2],
+            ["CE1", QVariant.Double, self.sb_ce1],
+            ["CE2", QVariant.Double, self.sb_ce2],
+            ["CS1", QVariant.Double, self.sb_cs1],
+            ["CS2", QVariant.Double, self.sb_cs2],
+            ["LARG", QVariant.Double, self.sb_larg],
+            ["HAUT", QVariant.Double, self.sb_haut1],
+            ["CLAP", QVariant.String, self.cb_clapet],
+            ["L12", QVariant.Double, self.sb_l12],
+            ["z1", QVariant.Double, self.sb_z1],
+            ["z2", QVariant.Double, self.sb_z2],
+            ["a1", QVariant.Double, self.sb_a1],
+            ["a2", QVariant.Double, self.sb_a2],
+            ["CV", QVariant.Double, self.sb_cv],
+            ["C56", QVariant.Double, self.sb_c56],
+            ["CV5", QVariant.Double, self.sb_cv5],
+            ["C5", QVariant.Double, self.sb_c5],
+            ["CT", QVariant.Double, self.sb_ct],
+            ["HAUT2", QVariant.Double, self.sb_haut2],
+            ["FRIC", QVariant.Double, self.sb_fric],
+            ["LENGTH", QVariant.Double, self.sb_length],
+            ["CIRC", QVariant.Int, self.cb_circ],
+            ["AL", QVariant.Int, self.cb_auto_l],
+            ["AZ", QVariant.Int, self.cb_auto_z],
+            ["AA", QVariant.Int, self.cb_auto_a],
+            ["Remarques", QVariant.String, None],
+        ]
 
         self.is_opening = True
 
@@ -89,8 +114,8 @@ class CulvertManager(QWidget, FORM_CLASS):
         self.cb_dataset_mesh.setModel(self.mdl_mesh_dataset)
         self.cb_time_mesh.setModel(self.mdl_mesh_time)
 
-        #self.clickTool = QgsMapToolEmitPoint(iface.mapCanvas())
-        #self.clickTool.canvasClicked.connect(self.postSelectCulvert)
+        # self.clickTool = QgsMapToolEmitPoint(iface.mapCanvas())
+        # self.clickTool.canvasClicked.connect(self.postSelectCulvert)
 
         QgsProject.instance().layersAdded.connect(self.addLayers)
         QgsProject.instance().layersRemoved.connect(self.removeLayers)
@@ -104,7 +129,7 @@ class CulvertManager(QWidget, FORM_CLASS):
         self.btn_res_val.clicked.connect(self.clear_info)
         self.btn_verif.clicked.connect(self.verif_culvert)
         self.btn_create_file.clicked.connect(self.create_file)
-        #self.btn_sel_culv.clicked.connect(self.select_culv)
+        # self.btn_sel_culv.clicked.connect(self.select_culv)
 
         for fld in self.culv_flds:
             ctrl = fld[2]
@@ -155,7 +180,6 @@ class CulvertManager(QWidget, FORM_CLASS):
             itm.setData(lay.id(), 32)
             self.mdl_lay_mesh.appendRow(itm)
             self.mdl_lay_mesh.sort(0)
-
 
     ######################################################################################
     #                                                                                    #
@@ -216,9 +240,15 @@ class CulvertManager(QWidget, FORM_CLASS):
             self.write_log("Current mesh timestep changed : {}".format(self.cb_time_mesh.currentText()))
             self.vertices = self.create_vertices_spatial_index()
             if self.lay_culv is not None and self.is_opening is False:
-                if QMessageBox.question(self, u"Automatic Z Update", u"Mesh parameters have been changed.\n"
-                                                                     u"Update culvert features with Automatic Z checked ?",
-                                        QMessageBox.Cancel | QMessageBox.Ok) == QMessageBox.Ok:
+                if (
+                    QMessageBox.question(
+                        self,
+                        "Automatic Z Update",
+                        "Mesh parameters have been changed.\n" "Update culvert features with Automatic Z checked ?",
+                        QMessageBox.Cancel | QMessageBox.Ok,
+                    )
+                    == QMessageBox.Ok
+                ):
                     self.update_all_auto_z()
 
     def create_vertices_spatial_index(self):
@@ -304,7 +334,7 @@ class CulvertManager(QWidget, FORM_CLASS):
         tmp_lay.updateFields()
         QgsVectorFileWriter.writeAsVectorFormat(tmp_lay, path, None, destCRS=srs, driverName="ESRI Shapefile")
 
-        shp_lay = QgsVectorLayer(path, os.path.basename(path).rsplit('.', 1)[0], "ogr")
+        shp_lay = QgsVectorLayer(path, os.path.basename(path).rsplit(".", 1)[0], "ogr")
         shp_lay.loadNamedStyle(self.file_culv_style)
         shp_lay.saveDefaultStyle()
         QgsProject.instance().addMapLayer(shp_lay)
@@ -318,9 +348,16 @@ class CulvertManager(QWidget, FORM_CLASS):
             self.lay_culv.editingStarted.connect(self.cur_culv_changed)
             self.lay_culv.editingStopped.connect(self.cur_culv_changed)
             if self.lay_mesh is not None and self.is_opening is False:
-                if QMessageBox.question(self, u"Automatic Z Update", u"Culvert culvert layer has been changed.\n"
-                                                                     u"Update culvert features with Automatic Z checked ?",
-                                        QMessageBox.Cancel | QMessageBox.Ok) == QMessageBox.Ok:
+                if (
+                    QMessageBox.question(
+                        self,
+                        "Automatic Z Update",
+                        "Culvert culvert layer has been changed.\n"
+                        "Update culvert features with Automatic Z checked ?",
+                        QMessageBox.Cancel | QMessageBox.Ok,
+                    )
+                    == QMessageBox.Ok
+                ):
                     self.update_all_auto_z()
         else:
             self.lay_culv = None
@@ -360,7 +397,7 @@ class CulvertManager(QWidget, FORM_CLASS):
             ctrl = fld[2]
             if ctrl:
                 if isinstance(ctrl, QDoubleSpinBox):
-                    ctrl.setValue(0.)
+                    ctrl.setValue(0.0)
                 elif isinstance(ctrl, QComboBox):
                     ctrl.setCurrentIndex(0)
                 elif isinstance(ctrl, QCheckBox):
@@ -380,7 +417,7 @@ class CulvertManager(QWidget, FORM_CLASS):
     def display_info(self, ctrl, val):
         if isinstance(ctrl, QDoubleSpinBox):
             if val == None:
-                ctrl.setValue(0.)
+                ctrl.setValue(0.0)
             else:
                 ctrl.setValue(val)
         elif isinstance(ctrl, QComboBox):
@@ -498,8 +535,12 @@ class CulvertManager(QWidget, FORM_CLASS):
             if ft["AZ"] == 2:
                 (z1, z2), (n1, n2), err = self.recup_z_from_mesh(ft)
                 if not err:
-                    attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2,
-                                      ft.fieldNameIndex("z1"): z1, ft.fieldNameIndex("z2"): z2}
+                    attrs[ft.id()] = {
+                        ft.fieldNameIndex("N1"): n1,
+                        ft.fieldNameIndex("N2"): n2,
+                        ft.fieldNameIndex("z1"): z1,
+                        ft.fieldNameIndex("z2"): z2,
+                    }
                 else:
                     self.write_log("Error on Z calculation : {}".format(err), 2)
                     return
@@ -522,12 +563,14 @@ class CulvertManager(QWidget, FORM_CLASS):
                     x_pt = xform.transform(pt)
                     if self.pt_within_mesh(x_pt):
                         idx = self.vertices.nearestNeighbor(x_pt, 1)[0]
-                        dset_val = self.lay_mesh.dataProvider().datasetValues(QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1)
+                        dset_val = self.lay_mesh.dataProvider().datasetValues(
+                            QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1
+                        )
                         n[p * -1] = idx + 1
                         z[p * -1] = round(dset_val.value(0).scalar(), 2)
                     else:
                         n[p * -1] = None
-                        z[p * -1] = 0.
+                        z[p * -1] = 0.0
             else:
                 err = "CRS defined for mesh layer is not valid"
         else:
@@ -551,7 +594,6 @@ class CulvertManager(QWidget, FORM_CLASS):
     #                                                                                    #
     ######################################################################################
 
-
     def verif_culvert(self):
         if self.lay_culv:
             ids = self.verif_culvert_validity()
@@ -572,19 +614,19 @@ class CulvertManager(QWidget, FORM_CLASS):
         selectedids = []
         for ft in self.lay_culv.getFeatures():
             if ft["AZ"] and ((ft["N1"] == None) or (ft["N2"] == None)):
-                selectedids.append([ft['NAME'], 'Culvert is not entirely within mesh extent.'])
+                selectedids.append([ft["NAME"], "Culvert is not entirely within mesh extent."])
             for fld in self.culv_flds:
                 if fld[2]:
                     if fld[1] == QVariant.String:
                         if (ft[fld[0]] == None) or not isinstance(ft[fld[0]], str):
-                            selectedids.append([ft['NAME'], '{} value is not correct.'.format(fld[0])])
+                            selectedids.append([ft["NAME"], "{} value is not correct.".format(fld[0])])
                     elif fld[1] == QVariant.Double:
                         if (ft[fld[0]] == None) or not isinstance(ft[fld[0]], float):
-                            selectedids.append([ft['NAME'], '{} value is not correct.'.format(fld[0])])
+                            selectedids.append([ft["NAME"], "{} value is not correct.".format(fld[0])])
                     elif fld[1] == QVariant.Int:
                         if (ft[fld[0]] == None) or not isinstance(ft[fld[0]], int):
-                            selectedids.append([ft['NAME'], '{} value is not correct.'.format(fld[0])])
-        return(selectedids)
+                            selectedids.append([ft["NAME"], "{} value is not correct.".format(fld[0])])
+        return selectedids
 
     def write_log(self, txt, mode=1):
         self.log.setTextColor(QColor("black"))
@@ -600,17 +642,15 @@ class CulvertManager(QWidget, FORM_CLASS):
         self.log.insertPlainText(txt)
         self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())
 
-
-
     def test(self):
         if self.lay_mesh:
             mesh_prov = self.lay_mesh.dataProvider()
-            #print(self.lay_mesh.crs().authid())
+            # print(self.lay_mesh.crs().authid())
             for i in range(mesh_prov.datasetGroupCount()):
-                #print(i, mesh_prov.datasetGroupMetadata(i).name())
+                # print(i, mesh_prov.datasetGroupMetadata(i).name())
                 for j in range(mesh_prov.datasetCount(i)):
                     pass
-                    #print("Time {} : ".format(j), mesh_prov.datasetMetadata(QgsMeshDatasetIndex(i, j)).time())
+                    # print("Time {} : ".format(j), mesh_prov.datasetMetadata(QgsMeshDatasetIndex(i, j)).time())
 
             # spindex = QgsSpatialIndex(
             #     self.pretelemac.leveeline.diguelinelayer.getFeatures()
@@ -622,7 +662,7 @@ class CulvertManager(QWidget, FORM_CLASS):
             count = mesh.vertexCount()
             print(count)
 
-            #dp = QgsVectorDataProvider()
+            # dp = QgsVectorDataProvider()
             t0 = time.time()
             lst_ft = list()
             spindex = QgsSpatialIndex(mesh.vertex)
@@ -631,14 +671,13 @@ class CulvertManager(QWidget, FORM_CLASS):
                 ft.setId(i)
                 bb = QgsGeometry(mesh.vertex(i)).boundingBox()
                 spindex.addFeature(i, bb)
-                #ft.setId(i + 1)
-                #lst_ft.append(ft)
-
+                # ft.setId(i + 1)
+                # lst_ft.append(ft)
 
             print("Test : {} s".format(round(time.time() - t0, 2)))
 
             t0 = time.time()
-            #spindex = QgsSpatialIndex()
+            # spindex = QgsSpatialIndex()
 
             # offset = 0
             # batch_size = 10
@@ -654,19 +693,19 @@ class CulvertManager(QWidget, FORM_CLASS):
             #     offset += iterations
 
             # lst_ft = list()
-            #self.vertices.clear()
-            #for i in range(mesh.vertexCount()):
+            # self.vertices.clear()
+            # for i in range(mesh.vertexCount()):
             #    ft = QgsFeature()
-             #   ft.setGeometry(QgsGeometry(mesh.vertex(i)))
+            #   ft.setGeometry(QgsGeometry(mesh.vertex(i)))
             #    ft.setId(i + 1)
-             #   self.vertices.append(ft)
+            #   self.vertices.append(ft)
             #     lst_ft.append(ft)
             #    spindex.addFeature(ft)
             # spindex.addFeatures(lst_ft)
 
             for i in range(mesh.vertexCount()):
                 self.vertices.append(QgsPointXY(mesh.vertex(i)))
-            print ("Creation de l'index : {} s".format(round(time.time() - t0, 2)))
+            print("Creation de l'index : {} s".format(round(time.time() - t0, 2)))
 
             t0 = time.time()
             point = QgsPointXY(751000.0, 160000.0)
@@ -680,20 +719,16 @@ class CulvertManager(QWidget, FORM_CLASS):
                     idx = v + 1
             print("Point le + proche -> {} : {} s".format(idx, round(time.time() - t0, 2)))
 
-            #point = QgsPointXY(751000.0, 160000.0)
-            #t0 = time.time()
-            #pknearestline = spindex.nearestNeighbor(point, 1)
-            #print(pknearestline)
-            #print("Recherche du + proche : {} s".format(round(time.time() - t0, 2)))
-            #a = self.lay_mesh.datasetValue(QgsMeshDatasetIndex(0, 0), QgsPointXY(751000.0, 160000.0))
-            #print(a.scalar())
-
-
-
+            # point = QgsPointXY(751000.0, 160000.0)
+            # t0 = time.time()
+            # pknearestline = spindex.nearestNeighbor(point, 1)
+            # print(pknearestline)
+            # print("Recherche du + proche : {} s".format(round(time.time() - t0, 2)))
+            # a = self.lay_mesh.datasetValue(QgsMeshDatasetIndex(0, 0), QgsPointXY(751000.0, 160000.0))
+            # print(a.scalar())
 
     def select_culv(self):
         iface.mapCanvas().setMapTool(self.clickTool)
-
 
     # def postSelectCulvert(self, point):
     #     canvas_srs = iface.mapCanvas().mapSettings().destinationCrs()
@@ -714,7 +749,6 @@ class CulvertManager(QWidget, FORM_CLASS):
     #         self.lay_culv.select(sel_id)
     #
     #     iface.actionZoomIn().trigger()
-
 
     def postSelectCulvert(self, pt):
 
@@ -738,19 +772,29 @@ class CulvertManager(QWidget, FORM_CLASS):
 
         idx = self.vertices.nearestNeighbor(x_pt, 1)[0]
         dset_val = self.lay_mesh.dataProvider().datasetValues(
-            QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1)
+            QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1
+        )
 
         print("Nearest vertex : ", idx)
         print("x vertex : ", dset_val.value(0).x())
         print("y vertex : ", dset_val.value(0).y())
         print("scalar vertex : ", dset_val.value(0).scalar())
 
-        print("x clicked : ", self.lay_mesh.datasetValue(QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), pt).x())
-        print("y clicked : ", self.lay_mesh.datasetValue(QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), pt).y())
-        print("scalar clicked : ", self.lay_mesh.datasetValue(QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), pt).scalar())
+        print(
+            "x clicked : ",
+            self.lay_mesh.datasetValue(QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), pt).x(),
+        )
+        print(
+            "y clicked : ",
+            self.lay_mesh.datasetValue(QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), pt).y(),
+        )
+        print(
+            "scalar clicked : ",
+            self.lay_mesh.datasetValue(QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), pt).scalar(),
+        )
 
-        print ("--------------------------------------------------------------")
-        print ("--------------------------------------------------------------")
+        print("--------------------------------------------------------------")
+        print("--------------------------------------------------------------")
 
 
 def correctAngle(angle):
@@ -759,6 +803,7 @@ def correctAngle(angle):
     elif angle > 360.0:
         angle = angle - 360
     return angle
+
 
 def calculangle(ft):
     pts = ft.geometry().asMultiPolyline()
@@ -773,6 +818,7 @@ def calculangle(ft):
     angle2 = correctAngle(np.angle(deltax + deltay * 1j, deg=True))
 
     return angle1, angle2
+
 
 def to_integer(n):
     if not n:

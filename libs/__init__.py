@@ -33,4 +33,5 @@ def classFactory(iface):  # pylint: disable=invalid-name
     """
     #
     from .telemac_tools import TelemacTools
+
     return TelemacTools(iface)

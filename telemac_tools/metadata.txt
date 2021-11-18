@@ -4,9 +4,9 @@
 
 [general]
 name=Telemac Tools
-qgisMinimumVersion=3.10
+qgisMinimumVersion=3.16
 description=Tools for Telemac(http://www.opentelemac.org/).
-version=0.2
+version=0.3
 author=Artelia
 email=a@a
 
@@ -23,6 +23,7 @@ repository=https://github.com/Artelia/telemac_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+   0.3   : Restructuration of github floders 
    0.2   : add Mesh quality analysis (Qgis >= 3.22.0)
 
 

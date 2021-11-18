@@ -26,7 +26,7 @@
 #Add iso code for any locales you want to support here (space separated)
 # default is no locales
 # LOCALES = af
-LOCALES =
+LOCALES = fr
 
 # If locales are enabled, set the name of the lrelease binary on your system. If
 # you have trouble compiling the translations, you may have to specify the full path to
@@ -37,8 +37,7 @@ LOCALES =
 
 # translation
 SOURCES = \
-	__init__.py \
-	telemac_tools.py telemac_tools_dockwidget.py
+	telemac_tools \
 
 PLUGINNAME = telemac_tools
 

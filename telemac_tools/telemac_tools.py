@@ -199,6 +199,8 @@ class TelemacTools:
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
+        if self.dockwidget:
+            self.dockwidget.close()
 
         for action in self.actions:
             self.iface.removePluginMenu(self.tr("&Telemac Tools"), action)

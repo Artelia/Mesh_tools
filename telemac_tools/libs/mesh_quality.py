@@ -40,12 +40,12 @@ class MeshQuality(QWidget, FORM_CLASS):
         self.native_mesh_faces_count = None
         self.xform = None
 
-        self.mesh_lay_changed()
-
         self.bad_faces_center = []
 
         self.mMapLayerComboBox.setFilters(QgsMapLayerProxyModel.MeshLayer)
         self.mMapLayerComboBox.layerChanged.connect(self.mesh_lay_changed)
+
+        self.mesh_lay_changed()
 
         self.btn_analyse_mesh.clicked.connect(self.analyse_mesh)
         self.btn_reset_marker.clicked.connect(self.resetVertexMarker)

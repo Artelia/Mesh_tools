@@ -163,9 +163,8 @@ class TelemacTools:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        # self.postAct.triggered.connect(lambda: self.run("post"))
         icon_path = os.path.join(self.plugin_dir, "icon.png")
-        # icon_path = ':/plugins/telemac_tools/icon.png'
+
         self.add_action(
             icon_path, text=self.tr("Culvert Manager"), callback=lambda: self.run(1), parent=self.iface.mainWindow()
         )
@@ -176,9 +175,6 @@ class TelemacTools:
                 callback=lambda: self.run(2),
                 parent=self.iface.mainWindow(),
             )
-        self.add_action(
-            icon_path, text=self.tr("Telemac Tool 2"), callback=lambda: self.run(3), parent=self.iface.mainWindow()
-        )
 
     # --------------------------------------------------------------------------
 
@@ -216,8 +212,6 @@ class TelemacTools:
 
         if not self.pluginIsActive:
             self.pluginIsActive = True
-
-            # print "** STARTING MenuMar"
 
             # dockwidget may not exist if:
             #    first run of plugin

@@ -62,7 +62,7 @@
           <item row="1" column="1">
            <widget class="QgsDoubleSpinBox" name="qdsb_bad_angle_2">
             <property name="suffix">
-             <string>°</string>
+             <string notr="true">°</string>
             </property>
             <property name="value">
              <double>30.000000000000000</double>
@@ -79,7 +79,7 @@
           <item row="0" column="1">
            <widget class="QgsDoubleSpinBox" name="qdsb_bad_angle_1">
             <property name="suffix">
-             <string>°</string>
+             <string notr="true">°</string>
             </property>
             <property name="value">
              <double>20.000000000000000</double>
@@ -89,7 +89,7 @@
           <item row="2" column="1">
            <widget class="QgsDoubleSpinBox" name="qdsb_bad_angle_3">
             <property name="suffix">
-             <string>°</string>
+             <string notr="true">°</string>
             </property>
             <property name="value">
              <double>40.000000000000000</double>

@@ -71,8 +71,6 @@ class TelemacTools:
         # self.toolbar = self.iface.addToolBar(u'TelemacTools')
         # self.toolbar.setObjectName(u'TelemacTools')
 
-        # print "** INITIALIZING TelemacTools"
-
         self.pluginIsActive = False
         self.dockwidget = None
 

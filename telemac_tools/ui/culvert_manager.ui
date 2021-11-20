@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>528</width>
-    <height>704</height>
+    <width>538</width>
+    <height>711</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -297,7 +297,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               <number>0</number>
              </property>
              <item row="8" column="3">
-              <widget class="QDoubleSpinBox" name="sb_c56">
+              <widget class="QgsDoubleSpinBox" name="sb_c56">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -312,11 +312,14 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="singleStep">
                 <double>0.100000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item row="1" column="7">
-              <widget class="QDoubleSpinBox" name="sb_cs2">
+              <widget class="QgsDoubleSpinBox" name="sb_cs2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -331,6 +334,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="singleStep">
                 <double>0.100000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -345,7 +351,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="1" column="5">
-              <widget class="QDoubleSpinBox" name="sb_cs1">
+              <widget class="QgsDoubleSpinBox" name="sb_cs1">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -360,6 +366,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="singleStep">
                 <double>0.100000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -384,7 +393,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QDoubleSpinBox" name="sb_ce1">
+              <widget class="QgsDoubleSpinBox" name="sb_ce1">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -399,6 +408,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="singleStep">
                 <double>0.100000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -413,7 +425,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="8" column="5">
-              <widget class="QDoubleSpinBox" name="sb_cv5">
+              <widget class="QgsDoubleSpinBox" name="sb_cv5">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -428,6 +440,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="singleStep">
                 <double>0.100000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -442,7 +457,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="8" column="1">
-              <widget class="QDoubleSpinBox" name="sb_cv">
+              <widget class="QgsDoubleSpinBox" name="sb_cv">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -458,10 +473,13 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                <property name="singleStep">
                 <double>0.100000000000000</double>
                </property>
+               <property name="showClearButton">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item row="6" column="3">
-              <widget class="QDoubleSpinBox" name="sb_haut1">
+              <widget class="QgsDoubleSpinBox" name="sb_haut1">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -473,6 +491,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -487,7 +508,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="8" column="7">
-              <widget class="QDoubleSpinBox" name="sb_c5">
+              <widget class="QgsDoubleSpinBox" name="sb_c5">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -502,11 +523,14 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="singleStep">
                 <double>0.100000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item row="9" column="1">
-              <widget class="QDoubleSpinBox" name="sb_ct">
+              <widget class="QgsDoubleSpinBox" name="sb_ct">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -521,6 +545,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="singleStep">
                 <double>0.100000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -555,7 +582,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="5" column="1">
-              <widget class="QDoubleSpinBox" name="sb_l12">
+              <widget class="QgsDoubleSpinBox" name="sb_l12">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -571,10 +598,13 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                <property name="singleStep">
                 <double>0.100000000000000</double>
                </property>
+               <property name="showClearButton">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item row="7" column="3">
-              <widget class="QDoubleSpinBox" name="sb_z2">
+              <widget class="QgsDoubleSpinBox" name="sb_z2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -586,6 +616,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>99999.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -600,7 +633,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="1" column="3">
-              <widget class="QDoubleSpinBox" name="sb_ce2">
+              <widget class="QgsDoubleSpinBox" name="sb_ce2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -616,10 +649,13 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                <property name="singleStep">
                 <double>0.100000000000000</double>
                </property>
+               <property name="showClearButton">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item row="6" column="5">
-              <widget class="QDoubleSpinBox" name="sb_haut2">
+              <widget class="QgsDoubleSpinBox" name="sb_haut2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -631,11 +667,14 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item row="6" column="1">
-              <widget class="QDoubleSpinBox" name="sb_larg">
+              <widget class="QgsDoubleSpinBox" name="sb_larg">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -647,6 +686,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -661,7 +703,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="7" column="1">
-              <widget class="QDoubleSpinBox" name="sb_z1">
+              <widget class="QgsDoubleSpinBox" name="sb_z1">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -673,6 +715,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>99999.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -717,7 +762,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="10" column="3">
-              <widget class="QDoubleSpinBox" name="sb_d2">
+              <widget class="QgsDoubleSpinBox" name="sb_d2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -729,6 +774,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>90.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -753,7 +801,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="10" column="1">
-              <widget class="QDoubleSpinBox" name="sb_d1">
+              <widget class="QgsDoubleSpinBox" name="sb_d1">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -765,6 +813,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>90.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -822,7 +873,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="11" column="1">
-              <widget class="QDoubleSpinBox" name="sb_a1">
+              <widget class="QgsDoubleSpinBox" name="sb_a1">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -834,6 +885,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>360.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -848,7 +902,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="11" column="3">
-              <widget class="QDoubleSpinBox" name="sb_a2">
+              <widget class="QgsDoubleSpinBox" name="sb_a2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -860,6 +914,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>360.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -900,7 +957,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="9" column="3">
-              <widget class="QDoubleSpinBox" name="sb_fric">
+              <widget class="QgsDoubleSpinBox" name="sb_fric">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -912,6 +969,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -939,7 +999,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
               </widget>
              </item>
              <item row="9" column="5">
-              <widget class="QDoubleSpinBox" name="sb_length">
+              <widget class="QgsDoubleSpinBox" name="sb_length">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -951,6 +1011,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
                <property name="maximum">
                 <double>999999.000000000000000</double>
+               </property>
+               <property name="showClearButton">
+                <bool>false</bool>
                </property>
               </widget>
              </item>

@@ -23,27 +23,40 @@
 """
 
 import os
+from datetime import datetime
 
-from qgis.PyQt import QtGui, QtWidgets, uic
-from qgis.PyQt.QtCore import pyqtSignal
+from qgis.PyQt.QtCore import QCoreApplication, pyqtSignal
+from qgis.PyQt.QtGui import QColor, QFont
+from qgis.PyQt.QtWidgets import QDockWidget
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "telemac_tools_dockwidget_base.ui"))
 
-
-class TelemacToolsDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
-
+class TelemacToolDockWidget(QDockWidget):
     closingPlugin = pyqtSignal()
 
     def __init__(self, parent=None):
-        """Constructor."""
-        super(TelemacToolsDockWidget, self).__init__(parent)
-        # Set up the user interface from Designer.
-        # After setupUI you can access any designer object by doing
-        # self.<objectname>, and you can use autoconnect slots - see
-        # http://doc.qt.io/qt-5/designer-using-a-ui-file.html
-        # #widgets-and-dialogs-with-auto-connect
-        self.setupUi(self)
+        super(TelemacToolDockWidget, self).__init__(parent)
 
     def closeEvent(self, event):
+        self.clean()
         self.closingPlugin.emit()
         event.accept()
+
+    def clean(self):
+        pass
+
+    def tr(self, message):
+        return QCoreApplication.translate(self.__class__.__name__, message)
+
+    def write_log(self, txt, mode=1):
+        self.log.setTextColor(QColor("black"))
+        self.log.setFontWeight(QFont.Bold)
+        self.log.append(f"{datetime.now().strftime('%H:%M:%S')} - ")
+        if mode == 0:
+            self.log.setTextColor(QColor("green"))
+        elif mode == 1:
+            self.log.setTextColor(QColor("black"))
+        elif mode == 2:
+            self.log.setTextColor(QColor("red"))
+        self.log.setFontWeight(QFont.Normal)
+        self.log.insertPlainText(txt)
+        self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())

@@ -2,7 +2,6 @@
 
 import math
 import os
-from datetime import datetime
 
 from qgis.core import (
     QgsCoordinateTransform,
@@ -22,10 +21,12 @@ from qgis.PyQt.QtGui import QColor, QFont, QIcon, QStandardItem, QStandardItemMo
 from qgis.PyQt.QtWidgets import QWidget
 from qgis.utils import iface
 
+from ..telemac_tools_dockwidget import TelemacToolDockWidget
+
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_quality.ui"))
 
 
-class MeshQuality(QWidget, FORM_CLASS):
+class MeshQuality(TelemacToolDockWidget, FORM_CLASS):
     def __init__(self, parent=None):
         super(MeshQuality, self).__init__(parent)
         self.setupUi(self)
@@ -50,9 +51,8 @@ class MeshQuality(QWidget, FORM_CLASS):
         self.btn_analyse_mesh.clicked.connect(self.analyse_mesh)
         self.btn_reset_marker.clicked.connect(self.resetVertexMarker)
 
-    def closeEvent(self, event):
+    def clean(self):
         self.resetVertexMarker()
-        event.accept()
 
     ######################################################################################
     #                                                                                    #
@@ -177,17 +177,3 @@ class MeshQuality(QWidget, FORM_CLASS):
                 self.canvas.scene().removeItem(marker)
         self.bad_faces_center = []
         self.btn_reset_marker.setEnabled(False)
-
-    def write_log(self, txt, mode=1):
-        self.log.setTextColor(QColor("black"))
-        self.log.setFontWeight(QFont.Bold)
-        self.log.append(f"{datetime.now().strftime('%H:%M:%S')} - ")
-        if mode == 0:
-            self.log.setTextColor(QColor("green"))
-        elif mode == 1:
-            self.log.setTextColor(QColor("black"))
-        elif mode == 2:
-            self.log.setTextColor(QColor("red"))
-        self.log.setFontWeight(QFont.Normal)
-        self.log.insertPlainText(txt)
-        self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())

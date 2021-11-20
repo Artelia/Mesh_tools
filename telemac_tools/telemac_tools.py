@@ -26,11 +26,13 @@ import os.path
 from qgis.core import Qgis
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator, pyqtSignal
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QDockWidget, QToolBar, QWidget
+from qgis.PyQt.QtWidgets import QAction, QToolBar, QWidget
 
-# Import the code for the DockWidget
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
+
+# Import the code for the DockWidget
+from .telemac_tools_dockwidget import TelemacToolDockWidget
 
 # Initialize Qt resources from file resources.py
 # from .resources import *
@@ -166,7 +168,10 @@ class TelemacTools:
         icon_path = os.path.join(self.plugin_dir, "icon.png")
 
         self.add_action(
-            icon_path, text=self.tr("Culvert Manager"), callback=lambda: self.run(1), parent=self.iface.mainWindow()
+            icon_path,
+            text=self.tr("Culvert Manager"),
+            callback=lambda: self.run(1),
+            parent=self.iface.mainWindow(),
         )
         if Qgis.versionInt() >= 32200:
             self.add_action(
@@ -180,8 +185,6 @@ class TelemacTools:
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
-
-        self.dockwidget.widget().close()
 
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
@@ -197,8 +200,6 @@ class TelemacTools:
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
 
-        # print "** UNLOAD TelemacTools"
-
         for action in self.actions:
             self.iface.removePluginMenu(self.tr("&Telemac Tools"), action)
             self.iface.removeToolBarIcon(action)
@@ -213,46 +214,19 @@ class TelemacTools:
         if not self.pluginIsActive:
             self.pluginIsActive = True
 
-            # dockwidget may not exist if:
-            #    first run of plugin
-            #    removed on close (see self.onClosePlugin method)
-            if self.dockwidget == None:
-                # Create the dockwidget (after translation) and keep reference
-                self.dockwidget = TelemacToolDockWidget()
-
-                # connect to provide cleanup on closing of dockwidget
-                self.dockwidget.closingPlugin.connect(self.onClosePlugin)
-
-                # show the dockwidget
-                # TODO: fix to allow choice of dock location
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
-                self.dockwidget.show()
-
-        if self.dockwidget.widget():
-            print(self.dockwidget.widget().close())
+        if self.dockwidget:
+            print(self.dockwidget.close())
 
         if tool == 1:
-            self.dockwidget.setWindowTitle("Telemac - Culvert Manager")
-            self.dockwidget.setWidget(CulvertManager())
+            self.dockwidget = CulvertManager()
+            self.dockwidget.setWindowTitle(self.tr("Telemac - Culvert Manager"))
         elif tool == 2:
-            self.dockwidget.setWindowTitle("Telemac - Mesh Quality Analysis")
-            self.dockwidget.setWidget(MeshQuality())
-        elif tool == 3:
-            self.dockwidget.setWindowTitle("Telemac - Tool {}".format(tool))
-            self.dockwidget.setWidget(QWidget())
+            self.dockwidget = MeshQuality()
+            self.dockwidget.setWindowTitle(self.tr("Telemac - Mesh Quality Analysis"))
         else:
-            self.dockwidget.setWindowTitle("Telemac - Erreur")
-            self.dockwidget.setWidget(QWidget())
+            self.dockwidget = TelemacToolDockWidget()
+            self.dockwidget.setWindowTitle(self.tr("Telemac - Error"))
 
-        self.dockwidget.widget().show()
-
-
-class TelemacToolDockWidget(QDockWidget):
-    closingPlugin = pyqtSignal()
-
-    def __init__(self, parent=None):
-        super(TelemacToolDockWidget, self).__init__(parent)
-
-    def closeEvent(self, event):
-        self.closingPlugin.emit()
-        event.accept()
+        self.dockwidget.closingPlugin.connect(self.onClosePlugin)
+        self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
+        self.dockwidget.show()

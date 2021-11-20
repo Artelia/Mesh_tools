@@ -2,7 +2,6 @@
 
 import os
 import time
-from datetime import datetime
 
 import numpy as np
 from qgis.core import (
@@ -40,12 +39,13 @@ from qgis.PyQt.QtWidgets import (
 )
 from qgis.utils import iface
 
+from ..telemac_tools_dockwidget import TelemacToolDockWidget
 from .create_culvert_shp import dlg_create_culvert_shapefile
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
 
 
-class CulvertManager(QWidget, FORM_CLASS):
+class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     closingTool = pyqtSignal()
 
     def __init__(self, parent=None):
@@ -706,20 +706,6 @@ class CulvertManager(QWidget, FORM_CLASS):
                                 selectedids.append([ft_name, "{} value is not correct.".format(fld[0])])
 
         return selectedids
-
-    def write_log(self, txt, mode=1):
-        self.log.setTextColor(QColor("black"))
-        self.log.setFontWeight(QFont.Bold)
-        self.log.append("{} - ".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
-        if mode == 0:
-            self.log.setTextColor(QColor("green"))
-        elif mode == 1:
-            self.log.setTextColor(QColor("black"))
-        elif mode == 2:
-            self.log.setTextColor(QColor("red"))
-        self.log.setFontWeight(QFont.Normal)
-        self.log.insertPlainText(txt)
-        self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())
 
 
 def correctAngle(angle):

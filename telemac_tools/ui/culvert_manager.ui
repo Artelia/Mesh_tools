@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>538</width>
-    <height>711</height>
+    <height>730</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -486,6 +486,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="suffix">
+                <string notr="true"> m</string>
+               </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
                </property>
@@ -662,6 +665,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="suffix">
+                <string notr="true"> m</string>
+               </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
                </property>
@@ -680,6 +686,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="suffix">
+                <string notr="true"> m</string>
                </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
@@ -769,6 +778,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="suffix">
+                <string notr="true">°</string>
+               </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
                </property>
@@ -807,6 +819,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="suffix">
+                <string notr="true">°</string>
                </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
@@ -880,6 +895,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="suffix">
+                <string notr="true">°</string>
+               </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
                </property>
@@ -909,6 +927,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="suffix">
+                <string notr="true">°</string>
+               </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
                </property>
@@ -916,32 +937,6 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                 <double>360.000000000000000</double>
                </property>
                <property name="showClearButton">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="5">
-              <widget class="QCheckBox" name="cb_auto_z">
-               <property name="toolTip">
-                <string>Automatically set Z1 and Z2 from mesh.</string>
-               </property>
-               <property name="text">
-                <string>Automatic Z</string>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="11" column="5">
-              <widget class="QCheckBox" name="cb_auto_a">
-               <property name="toolTip">
-                <string>Automatically compute A1 and A2.</string>
-               </property>
-               <property name="text">
-                <string>Automatic A</string>
-               </property>
-               <property name="checked">
                 <bool>false</bool>
                </property>
               </widget>
@@ -975,19 +970,6 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
               </widget>
              </item>
-             <item row="9" column="7">
-              <widget class="QCheckBox" name="cb_auto_l">
-               <property name="toolTip">
-                <string>Automatically compute the length of the culvert.</string>
-               </property>
-               <property name="text">
-                <string>Automatic L</string>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
              <item row="9" column="4">
               <widget class="QLabel" name="label_41">
                <property name="toolTip">
@@ -1005,6 +987,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="suffix">
+                <string notr="true"> m</string>
                </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
@@ -1031,6 +1016,45 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                </property>
               </widget>
              </item>
+             <item row="7" column="5" colspan="2">
+              <widget class="QCheckBox" name="cb_auto_z">
+               <property name="toolTip">
+                <string>Automatically set Z1 and Z2 from mesh.</string>
+               </property>
+               <property name="text">
+                <string>Automatic Z</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="5" colspan="2">
+              <widget class="QCheckBox" name="cb_auto_a">
+               <property name="toolTip">
+                <string>Automatically compute A1 and A2.</string>
+               </property>
+               <property name="text">
+                <string>Automatic A</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="6" colspan="2">
+              <widget class="QCheckBox" name="cb_auto_l">
+               <property name="toolTip">
+                <string>Automatically compute the length of the culvert.</string>
+               </property>
+               <property name="text">
+                <string>Automatic L</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -1038,6 +1062,19 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
            <widget class="QPushButton" name="btn_res_val">
             <property name="text">
              <string>Reset values</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_8">
+            <property name="font">
+             <font>
+              <italic>true</italic>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="text">
+             <string>Parameters with * are only used with keyword OPTION FOR CULVERTS = 2</string>
             </property>
            </widget>
           </item>

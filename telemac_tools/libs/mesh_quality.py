@@ -64,7 +64,7 @@ class MeshQuality(TelemacToolDockWidget, FORM_CLASS):
         self.lay_mesh = self.mMapLayerComboBox.currentLayer()
 
         if self.lay_mesh:
-            self.write_log(f"Current mesh changed : {self.lay_mesh.name()}")
+            self.write_log(self.tr("Current mesh changed : {}").format(self.lay_mesh.name()))
             self.xform = QgsCoordinateTransform(
                 self.lay_mesh.crs(),
                 self.canvas.mapSettings().destinationCrs(),
@@ -83,7 +83,7 @@ class MeshQuality(TelemacToolDockWidget, FORM_CLASS):
 
     def analyse_mesh(self):
         if not self.lay_mesh:
-            self.write_log("No mesh selected", 2)
+            self.write_log(self.tr("No mesh selected"), 2)
 
         wasInEditMode = False
         if self.lay_mesh.isEditable():

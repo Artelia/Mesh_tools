@@ -5,29 +5,25 @@ import time
 
 import numpy as np
 from qgis.core import (
-    QgsCoordinateReferenceSystem,
     QgsCoordinateTransform,
     QgsFeature,
     QgsField,
     QgsFields,
     QgsGeometry,
     QgsLineString,
+    QgsMapLayerProxyModel,
     QgsMapLayerType,
     QgsMesh,
     QgsMeshDatasetIndex,
-    QgsPointXY,
     QgsPolygon,
     QgsProject,
     QgsSpatialIndex,
-    QgsVectorDataProvider,
     QgsVectorFileWriter,
     QgsVectorLayer,
-    QgsWkbTypes,
 )
-from qgis.gui import QgsMapToolEmitPoint
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QObject, QThread, QVariant, pyqtSignal
-from qgis.PyQt.QtGui import QColor, QFont, QIcon, QStandardItem, QStandardItemModel
+from qgis.PyQt.QtCore import QVariant, pyqtSignal
+from qgis.PyQt.QtGui import QColor, QFont, QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -52,6 +48,9 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         super(CulvertManager, self).__init__(parent)
         self.setupUi(self)
         self.prt = parent
+        self.iface = iface
+        self.canvas = self.iface.mapCanvas()
+        self.project = QgsProject.instance()
         self.path_icon = os.path.join(os.path.dirname(__file__), "..", "icons/")
         self.file_culv_style = os.path.join(os.path.dirname(__file__), "..", "styles/culvert.qml")
         self.ctrl_signal_blocked = False
@@ -59,7 +58,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         self.frm_culv_tools.hide()
 
         self.lay_mesh = None
-        self.lay_mesh_id = None
         self.lay_culv = None
 
         self.native_mesh = None
@@ -74,8 +72,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             ["NAME", QVariant.String, self.txt_name, 28],
             ["N1", QVariant.Int, None, 0],
             ["N2", QVariant.Int, None, 1],
-            ["d1", QVariant.Double, self.sb_d1, 21],
-            ["d2", QVariant.Double, self.sb_d2, 22],
             ["CE1", QVariant.Double, self.sb_ce1, 2],
             ["CE2", QVariant.Double, self.sb_ce2, 3],
             ["CS1", QVariant.Double, self.sb_cs1, 4],
@@ -86,8 +82,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             ["L12", QVariant.Double, self.sb_l12, 9],
             ["z1", QVariant.Double, self.sb_z1, 10],
             ["z2", QVariant.Double, self.sb_z2, 11],
-            ["a1", QVariant.Double, self.sb_a1, 23],
-            ["a2", QVariant.Double, self.sb_a2, 24],
             ["CV", QVariant.Double, self.sb_cv, 12],
             ["C56", QVariant.Double, self.sb_c56, 13],
             ["CV5", QVariant.Double, self.sb_cv5, 14],
@@ -97,32 +91,36 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             ["FRIC", QVariant.Double, self.sb_fric, 18],
             ["LENGTH", QVariant.Double, self.sb_length, 19],
             ["CIRC", QVariant.Int, self.cb_circ, 20],
+            ["d1", QVariant.Double, self.sb_d1, 21],
+            ["d2", QVariant.Double, self.sb_d2, 22],
+            ["a1", QVariant.Double, self.sb_a1, 23],
+            ["a2", QVariant.Double, self.sb_a2, 24],
+            ["AA", QVariant.Int, self.cb_auto_a, 25],
             ["AL", QVariant.Int, self.cb_auto_l, 26],
             ["AZ", QVariant.Int, self.cb_auto_z, 27],
-            ["AA", QVariant.Int, self.cb_auto_a, 25],
             ["Remarques", QVariant.String, None, 29],
         ]
 
         self.is_opening = True
 
         self.mdl_lay_culv = QStandardItemModel()
-        self.mdl_lay_mesh = QStandardItemModel()
+
         self.mdl_mesh_dataset = QStandardItemModel()
         self.mdl_mesh_time = QStandardItemModel()
 
         self.cb_lay_culv.setModel(self.mdl_lay_culv)
-        self.cb_lay_mesh.setModel(self.mdl_lay_mesh)
         self.cb_dataset_mesh.setModel(self.mdl_mesh_dataset)
         self.cb_time_mesh.setModel(self.mdl_mesh_time)
 
         # self.clickTool = QgsMapToolEmitPoint(iface.mapCanvas())
         # self.clickTool.canvasClicked.connect(self.postSelectCulvert)
 
-        QgsProject.instance().layersAdded.connect(self.addLayers)
-        QgsProject.instance().layersRemoved.connect(self.removeLayers)
+        self.project.layersAdded.connect(self.addLayers)
+        self.project.layersRemoved.connect(self.removeLayers)
 
+        self.cb_lay_mesh.setFilters(QgsMapLayerProxyModel.MeshLayer)
+        self.cb_lay_mesh.layerChanged.connect(self.mesh_lay_changed)
         self.cb_lay_culv.currentIndexChanged.connect(self.culv_lay_changed)
-        self.cb_lay_mesh.currentIndexChanged.connect(self.mesh_lay_changed)
         self.cb_dataset_mesh.currentIndexChanged.connect(self.mesh_dataset_changed)
         self.cb_time_mesh.currentIndexChanged.connect(self.mesh_time_changed)
         self.btn_new_culv_file.clicked.connect(self.new_file)
@@ -143,8 +141,10 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 elif isinstance(ctrl, QLineEdit):
                     ctrl.textChanged.connect(self.ctrl_edited)
 
-        for lay in QgsProject.instance().mapLayers().values():
+        for lay in self.project.mapLayers().values():
             self.analyse_layer(lay)
+
+        self.mesh_lay_changed()
 
         if self.mdl_lay_culv.rowCount() == 0:
             self.culv_lay_changed()
@@ -174,12 +174,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 itm.setData(lay.id(), 32)
                 self.mdl_lay_culv.appendRow(itm)
                 self.mdl_lay_culv.sort(0)
-        if lay.type() == QgsMapLayerType.MeshLayer:
-            itm = QStandardItem()
-            itm.setData(lay.name(), 0)
-            itm.setData(lay.id(), 32)
-            self.mdl_lay_mesh.appendRow(itm)
-            self.mdl_lay_mesh.sort(0)
 
     ######################################################################################
     #                                                                                    #
@@ -188,18 +182,14 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     ######################################################################################
 
     def mesh_lay_changed(self):
-        lay_id = self.cb_lay_mesh.currentData(32)
-        if self.lay_mesh_id == lay_id:
-            return
+        self.lay_mesh = self.cb_lay_mesh.currentLayer()
 
-        if lay_id:
-            self.lay_mesh = QgsProject.instance().mapLayer(lay_id)
-            self.lay_mesh_id = lay_id
+        if self.lay_mesh:
+            self.lay_mesh = self.cb_lay_mesh.currentLayer()
             self.cb_dataset_mesh.setEnabled(True)
             self.cb_time_mesh.setEnabled(True)
         else:
             self.lay_mesh = None
-            self.lay_mesh_id = None
             self.native_mesh = None
             self.vertices = None
             self.faces = None
@@ -210,7 +200,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     def cur_mesh_changed(self):
         self.mdl_mesh_dataset.clear()
         if self.lay_mesh is not None:
-            self.write_log("Current mesh changed : {}".format(self.lay_mesh.name()))
+            self.write_log(self.tr("Current mesh changed : {}").format(self.lay_mesh.name()))
             self.native_mesh = QgsMesh()
             self.lay_mesh.dataProvider().populateMesh(self.native_mesh)
             self.faces = self.create_faces_spatial_index()
@@ -226,7 +216,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         self.mdl_mesh_time.clear()
         self.cur_mesh_dataset = self.cb_dataset_mesh.currentData(32)
         if self.cur_mesh_dataset is not None:
-            self.write_log("Current mesh dataset changed : {}".format(self.cb_dataset_mesh.currentText()))
+            self.write_log(self.tr("Current mesh dataset changed : {}").format(self.cb_dataset_mesh.currentText()))
             mesh_prov = self.lay_mesh.dataProvider()
             for i in range(mesh_prov.datasetCount(self.cur_mesh_dataset)):
                 itm = QStandardItem()
@@ -237,15 +227,17 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     def mesh_time_changed(self):
         self.cur_mesh_time = self.cb_time_mesh.currentData(32)
         if self.cur_mesh_time is not None:
-            self.write_log("Current mesh timestep changed : {}".format(self.cb_time_mesh.currentText()))
+            self.write_log(self.tr("Current mesh timestep changed : {}").format(self.cb_time_mesh.currentText()))
             self.vertices = self.create_vertices_spatial_index()
-            if self.lay_culv is not None and self.is_opening is False:
+            if self.lay_culv is not None and not self.is_opening:
                 self.update_all_n()
                 if (
                     QMessageBox.question(
                         self,
-                        "Automatic Z Update",
-                        "Mesh parameters have been changed.\n" "Update culvert features with Automatic Z checked ?",
+                        self.tr("Automatic Z Update"),
+                        self.tr(
+                            "Mesh parameters have been changed.\nUpdate culvert features with Automatic Z checked ?"
+                        ),
                         QMessageBox.Cancel | QMessageBox.Ok,
                     )
                     == QMessageBox.Ok
@@ -254,7 +246,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
     def create_vertices_spatial_index(self):
         if self.lay_mesh:
-            self.write_log("Creation of vertices spatial index ...")
+            self.write_log(self.tr("Creation of vertices spatial index…"))
             t0 = time.time()
             spindex = QgsSpatialIndex()
 
@@ -272,14 +264,14 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 spindex.addFeatures(lst_ft)
                 offset += iterations
 
-            self.write_log("Vertices spatial index created in {} sec".format(round(time.time() - t0, 1)))
+            self.write_log(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))
             return spindex
         else:
             return None
 
     def create_faces_spatial_index(self):
         if self.lay_mesh:
-            self.write_log("Creation of faces spatial index ...")
+            self.write_log(self.tr("Creation of faces spatial index…"))
             t0 = time.time()
             spindex = QgsSpatialIndex()
 
@@ -298,7 +290,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 spindex.addFeatures(lst_ft)
                 offset += iterations
 
-            self.write_log("Faces spatial index created in {} sec".format(round(time.time() - t0, 1)))
+            self.write_log(self.tr("Faces spatial index created in {} sec.").format(round(time.time() - t0, 1)))
             return spindex
         else:
             return None
@@ -329,7 +321,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         for fld in self.culv_flds:
             layerFields.append(QgsField(fld[0], fld[1]))
 
-        tmp_lay = QgsVectorLayer("MultiLineString?crs=" + str(srs.authid()), "", "memory")
+        tmp_lay = QgsVectorLayer(f"MultiLineString?crs={srs.authid()}", "", "memory")
         pr = tmp_lay.dataProvider()
         pr.addAttributes(layerFields)
         tmp_lay.updateFields()
@@ -338,14 +330,14 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         shp_lay = QgsVectorLayer(path, os.path.basename(path).rsplit(".", 1)[0], "ogr")
         shp_lay.loadNamedStyle(self.file_culv_style)
         shp_lay.saveDefaultStyle()
-        QgsProject.instance().addMapLayer(shp_lay)
+        self.project.addMapLayer(shp_lay)
         self.cb_lay_culv.setCurrentIndex(self.cb_lay_culv.findData(shp_lay.id(), 32))
 
     def culv_lay_changed(self):
         lay_id = self.cb_lay_culv.currentData(32)
         self.cur_culv_id = None
         if lay_id:
-            self.lay_culv = QgsProject.instance().mapLayer(lay_id)
+            self.lay_culv = self.project.mapLayer(lay_id)
             self.lay_culv.selectionChanged.connect(self.cur_culv_changed)
             self.lay_culv.editingStarted.connect(self.cur_culv_changed)
             self.lay_culv.editingStopped.connect(self.cur_culv_changed)
@@ -354,9 +346,10 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 if (
                     QMessageBox.question(
                         self,
-                        "Automatic Z Update",
-                        "Culvert culvert layer has been changed.\n"
-                        "Update culvert features with Automatic Z checked ?",
+                        self.tr("Automatic Z Update"),
+                        self.tr(
+                            "Culvert culvert layer has been changed.\nUpdate culvert features with Automatic Z checked ?"
+                        ),
                         QMessageBox.Cancel | QMessageBox.Ok,
                     )
                     == QMessageBox.Ok
@@ -380,17 +373,17 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         if self.lay_culv:
             if self.cur_culv_id is None:
                 if self.lay_culv.selectedFeatureCount() == 0:
-                    self.gb_cur_culv.setTitle("No culvert selected")
+                    self.gb_cur_culv.setTitle(self.tr("No culvert selected"))
                 else:
-                    self.gb_cur_culv.setTitle("More than one culvert selected")
+                    self.gb_cur_culv.setTitle(self.tr("More than one culvert selected"))
                 self.clear_info()
                 self.gb_cur_culv.setEnabled(False)
             else:
-                self.gb_cur_culv.setTitle("Selected culvert informations")
+                self.gb_cur_culv.setTitle(self.tr("Selected culvert informations"))
                 self.fill_info()
                 self.gb_cur_culv.setEnabled(not self.lay_culv.isEditable())
         else:
-            self.gb_cur_culv.setTitle("No culvert layer selected")
+            self.gb_cur_culv.setTitle(self.tr("No culvert layer selected"))
             self.clear_info()
             self.gb_cur_culv.setEnabled(False)
 
@@ -419,13 +412,13 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
     def display_info(self, ctrl, val):
         if isinstance(ctrl, QDoubleSpinBox):
-            if val == None:
+            if val is None:
                 ctrl.setValue(0.0)
             else:
                 ctrl.setValue(val)
         elif isinstance(ctrl, QComboBox):
             idx = to_integer(val)
-            if idx == None:
+            if idx is None:
                 ctrl.setCurrentIndex(0)
             else:
                 ctrl.setCurrentIndex(idx)
@@ -472,7 +465,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 if self.cb_auto_z.isChecked():
                     (z1, z2), (n1, n2), err = self.recup_z_from_mesh(ft)
                     if err:
-                        self.write_log("Error on Z calculation : {}".format(err), 2)
+                        self.write_log(self.tr("Error on Z calculation : {}").format(err), 2)
                     else:
                         self.sb_z1.setValue(z1)
                         self.sb_z2.setValue(z2)
@@ -524,13 +517,13 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             if not err:
                 attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
             else:
-                self.write_log("Error on N calculation : {}".format(err), 2)
+                self.write_log(self.tr("Error on N calculation : {}").format(err), 2)
                 return
 
         self.lay_culv.dataProvider().changeAttributeValues(attrs)
         self.lay_culv.commitChanges()
         if log:
-            self.write_log("N values updated", 0)
+            self.write_log(self.tr("N values updated"), 0)
 
     def update_all_auto_z(self):
         attrs = dict()
@@ -545,12 +538,12 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                         ft.fieldNameIndex("z2"): z2,
                     }
                 else:
-                    self.write_log("Error on Z calculation : {}".format(err), 2)
+                    self.write_log(self.tr("Error on Z calculation : {}").format(err), 2)
                     return
 
         self.lay_culv.dataProvider().changeAttributeValues(attrs)
         self.lay_culv.commitChanges()
-        self.write_log("Z values updated", 0)
+        self.write_log(self.tr("Z values updated"), 0)
         self.display_culv_info()
 
     def recup_n_from_mesh(self, ft):
@@ -559,7 +552,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             mesh_crs = self.lay_mesh.crs()
             if mesh_crs.isValid():
                 shp_crs = self.lay_culv.sourceCrs()
-                xform = QgsCoordinateTransform(shp_crs, mesh_crs, QgsProject.instance())
+                xform = QgsCoordinateTransform(shp_crs, mesh_crs, self.project)
                 pts = ft.geometry().asMultiPolyline()
                 for p in [0, -1]:
                     pt = pts[p][p]
@@ -570,9 +563,9 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                     else:
                         n[p * -1] = None
             else:
-                err = "CRS defined for mesh layer is not valid"
+                err = self.tr("CRS defined for mesh layer is not valid")
         else:
-            err = "No mesh layer selected"
+            err = self.tr("No mesh layer selected")
 
         return n, err
 
@@ -582,7 +575,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             mesh_crs = self.lay_mesh.crs()
             if mesh_crs.isValid():
                 shp_crs = self.lay_culv.sourceCrs()
-                xform = QgsCoordinateTransform(shp_crs, mesh_crs, QgsProject.instance())
+                xform = QgsCoordinateTransform(shp_crs, mesh_crs, self.project)
                 pts = ft.geometry().asMultiPolyline()
                 for p in [0, -1]:
                     pt = pts[p][p]
@@ -598,21 +591,19 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                         n[p * -1] = None
                         z[p * -1] = 0.0
             else:
-                err = "CRS defined for mesh layer is not valid"
+                err = self.tr("CRS defined for mesh layer is not valid")
         else:
-            err = "No mesh layer selected"
+            err = self.tr("No mesh layer selected")
 
         return z, n, err
 
     def pt_within_mesh(self, pt):
-        within = False
         idxs = self.faces.intersects(QgsGeometry.fromPointXY(pt).boundingBox())
         for idx in idxs:
             f = QgsGeometry(self.face_to_poly(idx))
             if f.contains(pt):
-                within = True
-                break
-        return within
+                return True
+        return False
 
     ######################################################################################
     #                                                                                    #
@@ -621,89 +612,81 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     ######################################################################################
 
     def verif_culvert(self):
-        if self.lay_culv:
-            self.update_all_n(log=False)
-            ids = self.verif_culvert_validity()
-            if not ids:
-                self.write_log("All culverts are valid", 0)
-            else:
-                for id in ids:
-                    self.write_log("{} : {}".format(*id), 2)
+        if not self.lay_culv:
+            return
+
+        self.update_all_n(log=False)
+        ids = self.verif_culvert_validity()
+        if not ids:
+            self.write_log(self.tr("All culverts are valid"), 0)
+        else:
+            for id in ids:
+                self.write_log("{} : {}".format(*id), 2)
 
     def create_file(self):
-        if self.lay_culv:
-            ids = self.verif_culvert_validity()
-            if ids:
-                self.write_log("File creation is not possible, some culverts are not valid", 2)
-                return
-            else:
-                try:
-                    culv_file_name, _ = QFileDialog.getSaveFileName(self, "Shapefile", "", "Text File (*.txt)")
-                    if culv_file_name != "":
-                        elem_width = 12
-                        nb_culv = 0
+        if not self.lay_culv:
+            return
 
-                        culv_file = open(culv_file_name, "w")
-                        for ft in self.lay_culv.getFeatures():
-                            nb_culv += 1
+        ids = self.verif_culvert_validity()
+        if ids:
+            self.write_log(self.tr("File creation is not possible, some culverts are not valid"), 2)
+            return
 
-                        culv_file.write("Relaxation" + str("\t") + "Culvert count" + str("\n"))
-                        culv_file.write("0.1" + str("\t") + str(nb_culv) + str("\n"))
+        culv_file_name, _ = QFileDialog.getSaveFileName(self, self.tr("Culvert file"), "", self.tr("Text File (*.txt)"))
 
-                        self.culv_flds_srtd = sorted(self.culv_flds, key=lambda x: x[3])
+        if culv_file_name == "":
+            return
 
-                        txt = ""
-                        for fld in self.culv_flds_srtd:
-                            if fld[3] is not None:
-                                txt += convertToText(fld[0], elem_width)
-                        culv_file.write(txt + str("\n"))
+        nb_culv = self.lay_culv.featureCount()
+        relax = round(self.sb_relax.value(), 2)
 
-                        for ft in self.lay_culv.getFeatures():
-                            txt = ""
-                            for fld in self.culv_flds_srtd:
-                                if fld[3] is not None:
-                                    if fld[0] in ["CIRC", "AA", "AL", "AZ"]:
-                                        if ft[fld[0]] == 0:
-                                            txt += convertToText("0", elem_width)
-                                        else:
-                                            txt += convertToText("1", elem_width)
-                                    else:
-                                        if ft[fld[0]] or ft[fld[0]] == 0.0:
-                                            txt += convertToText(ft[fld[0]], elem_width)
-                                        else:
-                                            txt += convertToText("0", elem_width)
-                            culv_file.write(txt + str("\n"))
+        with open(culv_file_name, "w") as culv_file:
 
-                        culv_file.close()
-                        self.write_log("Culvert File Created", 0)
+            culv_file.write("Relaxation" + str("\t") + self.tr("Culvert count") + str("\n"))
+            culv_file.write(str(relax) + str("\t") + str(nb_culv) + str("\n"))
 
-                except Exception as e:
-                    self.write_log("Error on File Creation", 2)
-                    pass
+            culv_flds_srtd = sorted(self.culv_flds, key=lambda x: x[3])
+
+            txt = ""
+            for fld in culv_flds_srtd[:-1]:
+                txt += f"{fld[0]}\t"
+            txt += f"{culv_flds_srtd[-1][0]}\n"
+            culv_file.write(txt)
+
+            for ft in self.lay_culv.getFeatures():
+                txt = ""
+                for fld in culv_flds_srtd[:-1]:
+                    txt += f"{ft[fld[0]]}\t"
+                txt += f"{ft[culv_flds_srtd[-1][0]]}\n"
+                culv_file.write(txt)
+
+            self.write_log(self.tr("Culvert File Created"), 0)
+            return
+
+        self.write_log(self.tr("Error during culvert file creation"), 2)
 
     def verif_culvert_validity(self):
         selectedids = []
         for ft in self.lay_culv.getFeatures():
             if ft["NAME"] in [None, ""]:
-                ft_name = "Nameless culvert"
+                ft_name = self.tr("Nameless culvert")
             else:
                 ft_name = ft["NAME"]
 
-            if (ft["N1"] == None) or (ft["N2"] == None):
-                selectedids.append([ft_name, "Culvert extremity is without mesh extent."])
+            if (ft["N1"] is None) or (ft["N2"] is None):
+                selectedids.append([ft_name, self.tr("Culvert extremity is without mesh extent.")])
 
             for fld in self.culv_flds:
-                if fld[0] not in ["NAME", "Remarques"]:
-                    if fld[2]:
-                        if fld[1] == QVariant.String:
-                            if (ft[fld[0]] == None) or not isinstance(ft[fld[0]], str):
-                                selectedids.append([ft_name, "{} value is not correct.".format(fld[0])])
-                        elif fld[1] == QVariant.Double:
-                            if (ft[fld[0]] == None) or not isinstance(ft[fld[0]], float):
-                                selectedids.append([ft_name, "{} value is not correct.".format(fld[0])])
-                        elif fld[1] == QVariant.Int:
-                            if (ft[fld[0]] == None) or not isinstance(ft[fld[0]], int):
-                                selectedids.append([ft_name, "{} value is not correct.".format(fld[0])])
+                if fld[0] not in ["NAME", "Remarques"] and fld[2]:
+                    if fld[1] == QVariant.String:
+                        if (ft[fld[0]] is None) or not isinstance(ft[fld[0]], str):
+                            selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
+                    elif fld[1] == QVariant.Double:
+                        if (ft[fld[0]] is None) or not isinstance(ft[fld[0]], float):
+                            selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
+                    elif fld[1] == QVariant.Int:
+                        if (ft[fld[0]] is None) or not isinstance(ft[fld[0]], int):
+                            selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
 
         return selectedids
 
@@ -741,15 +724,3 @@ def to_integer(n):
         return None
     else:
         return int(n)
-
-
-def convertToText(var, length):
-    if isinstance(var, float):
-        floatmodif = format(var, ".3f")
-        long = len(str(floatmodif))
-        return (length - long) * " " + str(floatmodif)
-    elif isinstance(var, str):
-        return (length - len(var)) * " " + var
-    elif isinstance(var, int):
-        long = len(str(var))
-        return (length - long) * " " + str(var)

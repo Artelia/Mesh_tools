@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lbl_fic">
        <property name="text">
-        <string>Shapefile</string>
+        <string notr="true">Shapefile</string>
        </property>
       </widget>
      </item>

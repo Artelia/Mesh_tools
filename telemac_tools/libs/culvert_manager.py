@@ -36,7 +36,8 @@ from qgis.PyQt.QtWidgets import (
 from qgis.utils import iface
 
 from ..telemac_tools_dockwidget import TelemacToolDockWidget
-from .create_culvert_shp import dlg_create_culvert_shapefile
+from .create_culvert_shp_dlg import dlg_create_culvert_shapefile
+from .import_culvert_file_dlg import dlg_import_culvert_file
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
 
@@ -80,8 +81,8 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             ["HAUT", QVariant.Double, self.sb_haut1, 7],
             ["CLAP", QVariant.String, self.cb_clapet, 8],
             ["L12", QVariant.Double, self.sb_l12, 9],
-            ["z1", QVariant.Double, self.sb_z1, 10],
-            ["z2", QVariant.Double, self.sb_z2, 11],
+            ["Z1", QVariant.Double, self.sb_z1, 10],
+            ["Z2", QVariant.Double, self.sb_z2, 11],
             ["CV", QVariant.Double, self.sb_cv, 12],
             ["C56", QVariant.Double, self.sb_c56, 13],
             ["CV5", QVariant.Double, self.sb_cv5, 14],
@@ -123,7 +124,9 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         self.cb_lay_culv.currentIndexChanged.connect(self.culv_lay_changed)
         self.cb_dataset_mesh.currentIndexChanged.connect(self.mesh_dataset_changed)
         self.cb_time_mesh.currentIndexChanged.connect(self.mesh_time_changed)
+
         self.btn_new_culv_file.clicked.connect(self.new_file)
+        self.btn_import_culv_file.clicked.connect(self.import_culvert)
         self.btn_res_val.clicked.connect(self.reset_val)
         self.btn_verif.clicked.connect(self.verif_culvert)
         self.btn_create_file.clicked.connect(self.create_file)
@@ -315,17 +318,20 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         dlg = dlg_create_culvert_shapefile(srs_mesh, self)
         dlg.setWindowModality(2)
         if dlg.exec_():
-            path, srs = dlg.cur_shp, dlg.cur_crs
+            path, crs = dlg.cur_shp, dlg.cur_crs
+        if path:
+            self.create_new_shp(path, crs)
 
+    def create_new_shp(self, path, crs):
         layerFields = QgsFields()
         for fld in self.culv_flds:
             layerFields.append(QgsField(fld[0], fld[1]))
 
-        tmp_lay = QgsVectorLayer(f"MultiLineString?crs={srs.authid()}", "", "memory")
+        tmp_lay = QgsVectorLayer(f"MultiLineString?crs={crs.authid()}", "", "memory")
         pr = tmp_lay.dataProvider()
         pr.addAttributes(layerFields)
         tmp_lay.updateFields()
-        QgsVectorFileWriter.writeAsVectorFormat(tmp_lay, path, None, destCRS=srs, driverName="ESRI Shapefile")
+        QgsVectorFileWriter.writeAsVectorFormat(tmp_lay, path, None, destCRS=crs, driverName="ESRI Shapefile")
 
         shp_lay = QgsVectorLayer(path, os.path.basename(path).rsplit(".", 1)[0], "ogr")
         shp_lay.loadNamedStyle(self.file_culv_style)
@@ -689,6 +695,64 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                             selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
 
         return selectedids
+
+    ######################################################################################
+    #                                                                                    #
+    #                                       IMPORT                                       #
+    #                                                                                    #
+    ######################################################################################
+
+    def import_culvert(self):
+        culv_flds = [x[0] for x in self.culv_flds]
+        dlg = dlg_import_culvert_file(culv_flds, self)
+        dlg.setWindowModality(2)
+        if dlg.exec_():
+            return
+
+    def importCulverts(self, txt_path):
+        def get_values(string):
+            values = string.strip().split("\t")
+            if isinstance(values, str):
+                values.split(" ")
+            return values
+
+        def asDict(headers, values):
+            dico = {}
+            for i, h in enumerate(headers):
+                dico[h] = float(values[i])
+            return dico
+
+        def XYfromNodeID(id):
+            # id noeud = id-1 de la couche vecteur
+            return self.pretelemac.meshfile.pointlayer.getGeometry(id - 1).asPoint()
+
+        fets = []
+        if self.pretelemac.version == "V6":
+            pass
+        elif self.pretelemac.version == "V7":
+            pass
+        elif self.pretelemac.version == "V8":
+            with open(path, "r") as txt_file:
+                # OSEF de la première ligne
+                txt_file.readline()
+                # On récup la valeur de relaxation et le nombre d'ouvrage
+                relax, nb_OH = get_values(txt_file.readline())
+                headers = get_values(txt_file.readline())
+                # TODO: ajouter check des headers avec self.tablechamps
+
+                for i in range(int(nb_OH)):
+                    values = asDict(headers, get_values(txt_file.readline()))
+
+                    fet = QgsFeature()
+                    line = QgsGeometry.fromPolylineXY([XYfromNodeID(values["N1"]), XYfromNodeID(values["N2"])])
+
+                    fet.setGeometry(line)
+                    fet.setAttributes(["OH{}".format(i + 1)] + list(values.values()))
+
+                    fets.append(fet)
+        if fets:
+            self.culvertVectorLayer.dataProvider().addFeatures(fets)
+        self.culvertVectorLayer.commitChanges()
 
 
 def correctAngle(angle):

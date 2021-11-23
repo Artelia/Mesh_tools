@@ -15,6 +15,7 @@ from qgis.core import (
     QgsMapLayerType,
     QgsMesh,
     QgsMeshDatasetIndex,
+    QgsPointXY,
     QgsPolygon,
     QgsProject,
     QgsSpatialIndex,
@@ -579,6 +580,25 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
         return n, err
 
+    def recup_XY_from_n(self, n, shp_crs):
+        err, point = None, None
+        if self.lay_mesh:
+            mesh_crs = self.lay_mesh.crs()
+            if mesh_crs.isValid():
+                xform = QgsCoordinateTransform(mesh_crs, shp_crs, self.project)
+                pt = self.native_mesh.vertex(n - 1)
+                if not pt.isEmpty():
+                    point = xform.transform(QgsPointXY(pt))
+                else:
+                    err = self.tr("{} node is not in mesh layer").format(n)
+
+            else:
+                err = self.tr("CRS defined for mesh layer is not valid")
+        else:
+            err = self.tr("No mesh layer selected")
+
+        return point, err
+
     def recup_z_from_mesh(self, ft):
         err, n, z = None, [None, None], [None, None]
         if self.lay_mesh:
@@ -707,13 +727,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     ######################################################################################
 
     def import_culvert(self):
-        culv_flds = [x[0] for x in self.culv_flds]
-        dlg = dlg_import_culvert_file(culv_flds, self)
-        dlg.setWindowModality(2)
-        if dlg.exec_():
-            return
-
-    def importCulverts(self, txt_path):
         def get_values(string):
             values = string.strip().split("\t")
             if isinstance(values, str):
@@ -726,37 +739,68 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 dico[h] = float(values[i])
             return dico
 
-        def XYfromNodeID(id):
-            # id noeud = id-1 de la couche vecteur
-            return self.pretelemac.meshfile.pointlayer.getGeometry(id - 1).asPoint()
+        culv_flds = [x[0] for x in self.culv_flds]
+        dlg = dlg_import_culvert_file(culv_flds, self)
+        dlg.setWindowModality(2)
+        if dlg.exec_():
+            items, version = dlg.items, dlg.cb_tel_ver.currentText()
+            txt_path, layer_path = dlg.text_file.filePath(), dlg.layer_file.filePath()
+        else:
+            return
+
+        if self.lay_mesh and self.lay_mesh.crs() is not None:
+            crs = self.lay_mesh.crs()
+        else:
+            crs = self.project.crs()
+
+        layerFields = QgsFields()
+        for fld in self.culv_flds:
+            layerFields.append(QgsField(fld[0], fld[1]))
+
+        tmp_lay = QgsVectorLayer(f"MultiLineString?crs={crs.authid()}", "", "memory")
+        pr = tmp_lay.dataProvider()
+        pr.addAttributes(layerFields)
+        tmp_lay.updateFields()
 
         fets = []
-        if self.pretelemac.version == "V6":
-            pass
-        elif self.pretelemac.version == "V7":
-            pass
-        elif self.pretelemac.version == "V8":
-            with open(path, "r") as txt_file:
-                # OSEF de la première ligne
-                txt_file.readline()
-                # On récup la valeur de relaxation et le nombre d'ouvrage
-                relax, nb_OH = get_values(txt_file.readline())
-                headers = get_values(txt_file.readline())
-                # TODO: ajouter check des headers avec self.tablechamps
+        with open(txt_path, "r") as txt_file:
+            # 1st line is comment
+            txt_file.readline()
+            # Relaxation and number of culverts
+            relax, nb_culvert = get_values(txt_file.readline())
+            # Headers are already retrive during dialog import
+            headers = get_values(txt_file.readline())
 
-                for i in range(int(nb_OH)):
-                    values = asDict(headers, get_values(txt_file.readline()))
+            for i in range(int(nb_culvert)):
+                values = asDict(headers, get_values(txt_file.readline()))
 
-                    fet = QgsFeature()
-                    line = QgsGeometry.fromPolylineXY([XYfromNodeID(values["N1"]), XYfromNodeID(values["N2"])])
+                fet = QgsFeature()
 
-                    fet.setGeometry(line)
-                    fet.setAttributes(["OH{}".format(i + 1)] + list(values.values()))
+                print(str(values[items["n1"][1]]), str(values[items["n2"][1]]))
+                point_n1, err1 = self.recup_XY_from_n(values[items["n1"][1]], crs)
+                point_n2, err2 = self.recup_XY_from_n(values[items["n2"][1]], crs)
+                print(point_n1, err1, point_n2, err2)
+                if err1 is not None or err2 is not None:
+                    err = " ".join(filter(None, (err1, err2)))
+                    self.write_log(
+                        self.tr("Error when importing culvert {i} with error(s) : {err}").format(i=i, err=err), 2
+                    )
+                    continue
 
-                    fets.append(fet)
+                line = QgsGeometry.fromPolylineXY([point_n1, point_n2])
+
+                fet.setGeometry(line)
+                fets.append(fet)
+
         if fets:
-            self.culvertVectorLayer.dataProvider().addFeatures(fets)
-        self.culvertVectorLayer.commitChanges()
+            pr.addFeatures(fets)
+
+        QgsVectorFileWriter.writeAsVectorFormat(tmp_lay, layer_path, None, destCRS=crs, driverName="ESRI Shapefile")
+        shp_lay = QgsVectorLayer(layer_path, os.path.basename(layer_path).rsplit(".", 1)[0], "ogr")
+        shp_lay.loadNamedStyle(self.file_culv_style)
+        shp_lay.saveDefaultStyle()
+        self.project.addMapLayer(shp_lay)
+        self.cb_lay_culv.setCurrentIndex(self.cb_lay_culv.findData(shp_lay.id(), 32))
 
 
 def correctAngle(angle):

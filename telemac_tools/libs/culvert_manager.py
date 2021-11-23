@@ -177,6 +177,10 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 itm.setData(lay.id(), 32)
                 self.mdl_lay_culv.appendRow(itm)
                 self.mdl_lay_culv.sort(0)
+    
+    def clean(self):
+        self.project.layersAdded.disconnect(self.addLayers)
+        self.project.layersRemoved.disconnect(self.removeLayers)
 
     ######################################################################################
     #                                                                                    #

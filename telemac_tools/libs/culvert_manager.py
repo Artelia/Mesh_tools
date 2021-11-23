@@ -164,10 +164,9 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             self.analyse_layer(lay)
 
     def removeLayers(self, layers):
-        for mdl in [self.mdl_lay_culv, self.mdl_lay_mesh]:
-            for r in range(mdl.rowCount() - 1, -1, -1):
-                if mdl.item(r, 0).data(32) in layers:
-                    mdl.takeRow(r)
+        for r in range(self.mdl_lay_culv.rowCount() - 1, -1, -1):
+            if self.mdl_lay_culv.item(r, 0).data(32) in layers:
+                self.mdl_lay_culv.takeRow(r)
 
     def analyse_layer(self, lay):
         if lay.type() == QgsMapLayerType.VectorLayer:
@@ -178,7 +177,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 itm.setData(lay.id(), 32)
                 self.mdl_lay_culv.appendRow(itm)
                 self.mdl_lay_culv.sort(0)
-    
+
     def clean(self):
         self.project.layersAdded.disconnect(self.addLayers)
         self.project.layersRemoved.disconnect(self.removeLayers)

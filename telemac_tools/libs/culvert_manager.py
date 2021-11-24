@@ -21,6 +21,7 @@ from qgis.core import (
     QgsSpatialIndex,
     QgsVectorFileWriter,
     QgsVectorLayer,
+    NULL,
 )
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QVariant, pyqtSignal
@@ -659,24 +660,24 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     def verif_culvert_validity(self):
         selectedids = []
         for ft in self.lay_culv.getFeatures():
-            if ft["NAME"] in [None, ""]:
-                ft_name = self.tr("Nameless culvert")
+            if ft["NAME"] in [NULL, ""]:
+                ft_name = self.tr("Nameless culvert (feature id {})").format(ft.id())
             else:
                 ft_name = ft["NAME"]
 
-            if (ft["N1"] is None) or (ft["N2"] is None):
-                selectedids.append([ft_name, self.tr("Culvert extremity is without mesh extent.")])
+            if (ft["N1"] == NULL) or (ft["N2"] == NULL):
+                selectedids.append([ft_name, self.tr("Culvert extremity is not within the mesh.")])
 
             for fld in self.culv_flds:
                 if fld[0] not in ["NAME", "Remarques"] and fld[2]:
                     if fld[1] == QVariant.String:
-                        if (ft[fld[0]] is None) or not isinstance(ft[fld[0]], str):
+                        if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], str):
                             selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
                     elif fld[1] == QVariant.Double:
-                        if (ft[fld[0]] is None) or not isinstance(ft[fld[0]], float):
+                        if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], float):
                             selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
                     elif fld[1] == QVariant.Int:
-                        if (ft[fld[0]] is None) or not isinstance(ft[fld[0]], int):
+                        if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], int):
                             selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
 
         return selectedids

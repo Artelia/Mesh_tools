@@ -24,7 +24,7 @@ from qgis.core import (
 )
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QVariant, pyqtSignal
-from qgis.PyQt.QtGui import QColor, QFont, QStandardItem, QStandardItemModel
+from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -32,7 +32,6 @@ from qgis.PyQt.QtWidgets import (
     QFileDialog,
     QLineEdit,
     QMessageBox,
-    QWidget,
 )
 from qgis.utils import iface
 

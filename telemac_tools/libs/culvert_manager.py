@@ -63,7 +63,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
         self.native_mesh = None
         self.vertices = None
-        self.faces = None
 
         self.cur_culv_id = None
         self.cur_mesh_dataset = None
@@ -198,7 +197,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             self.lay_mesh = None
             self.native_mesh = None
             self.vertices = None
-            self.faces = None
             self.cb_dataset_mesh.setEnabled(False)
             self.cb_time_mesh.setEnabled(False)
         self.cur_mesh_changed()
@@ -209,7 +207,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             self.write_log(self.tr("Current mesh changed : {}").format(self.lay_mesh.name()))
             self.native_mesh = QgsMesh()
             self.lay_mesh.dataProvider().populateMesh(self.native_mesh)
-            self.faces = self.create_faces_spatial_index()
 
             mesh_prov = self.lay_mesh.dataProvider()
             for i in range(mesh_prov.datasetGroupCount()):
@@ -271,32 +268,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 offset += iterations
 
             self.write_log(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))
-            return spindex
-        else:
-            return None
-
-    def create_faces_spatial_index(self):
-        if self.lay_mesh:
-            self.write_log(self.tr("Creation of faces spatial index…"))
-            t0 = time.time()
-            spindex = QgsSpatialIndex()
-
-            count = self.native_mesh.faceCount()
-            offset = 0
-            batch_size = 10
-            while offset < count:
-                lst_ft = list()
-                iterations = min(batch_size, count - offset)
-                for i in range(iterations):
-                    ft = QgsFeature()
-                    polygon = self.face_to_poly(offset + i)
-                    ft.setGeometry(QgsGeometry(polygon))
-                    ft.setId(offset + i)
-                    lst_ft.append(ft)
-                spindex.addFeatures(lst_ft)
-                offset += iterations
-
-            self.write_log(self.tr("Faces spatial index created in {} sec.").format(round(time.time() - t0, 1)))
             return spindex
         else:
             return None
@@ -566,7 +537,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 for p in [0, -1]:
                     pt = pts[p][p]
                     x_pt = xform.transform(pt)
-                    if self.pt_within_mesh(x_pt):
+                    if not self.lay_mesh.snapOnElement(QgsMesh.Face, QgsPointXY(x_pt), 0).isEmpty():
                         idx = self.vertices.nearestNeighbor(x_pt, 1)[0]
                         n[p * -1] = idx + 1
                     else:
@@ -608,7 +579,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 for p in [0, -1]:
                     pt = pts[p][p]
                     x_pt = xform.transform(pt)
-                    if self.pt_within_mesh(x_pt):
+                    if not self.lay_mesh.snapOnElement(QgsMesh.Face, QgsPointXY(x_pt), 0).isEmpty():
                         idx = self.vertices.nearestNeighbor(x_pt, 1)[0]
                         dset_val = self.lay_mesh.dataProvider().datasetValues(
                             QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1
@@ -624,14 +595,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             err = self.tr("No mesh layer selected")
 
         return z, n, err
-
-    def pt_within_mesh(self, pt):
-        idxs = self.faces.intersects(QgsGeometry.fromPointXY(pt).boundingBox())
-        for idx in idxs:
-            f = QgsGeometry(self.face_to_poly(idx))
-            if f.contains(pt):
-                return True
-        return False
 
     ######################################################################################
     #                                                                                    #

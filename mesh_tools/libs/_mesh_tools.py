@@ -58,18 +58,22 @@ def find_nearest_node(self, point):
     return n, err
 
 def find_z_from_mesh(self, point):
-    err, z = None, None, None
+    err, z = None, None
     if self.lay_mesh:
         mesh_crs = self.lay_mesh.crs()
         if mesh_crs.isValid():
             shp_crs = self.lay_culv.sourceCrs()
             xform = QgsCoordinateTransform(shp_crs, mesh_crs, QgsProject.instance())
             x_pt = xform.transform(point)
+            print("eeee",pt_within_mesh(self, x_pt))
+
             if pt_within_mesh(self, x_pt):
                 idx, err = find_nearest_node(self, x_pt)
+                print(idx)
                 dset_val = self.lay_mesh.dataProvider().datasetValues(
                     QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1
                 )
+                print(dset_val.value(0).scalar())
                 z = round(dset_val.value(0).scalar(), 2)
             else:
                 z = 0.0

@@ -484,8 +484,12 @@ class CulvertManager(QWidget, FORM_CLASS):
             self.sb_z2.setEnabled(not self.cb_auto_z.isChecked())
             if ft:
                 if self.cb_auto_z.isChecked():
-                    (z1, z2), (n1, n2), err = self.recup_z_from_mesh(ft)
-                    if err:
+                    (z1, z2), err = self.recup_z_from_mesh(ft)
+                    (n1, n2), errn = self.recup_n_from_mesh(ft)
+                    print((n1, n2), err,(z1, z2))
+                    print(self.recup_z_from_mesh(ft))
+                    print(self.recup_n_from_mesh(ft))
+                    if err or errn:
                         self.write_log("Error on Z calculation : {}".format(err), 2)
                     else:
                         self.sb_z1.setValue(z1)

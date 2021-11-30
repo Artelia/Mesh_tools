@@ -15,8 +15,8 @@ about=Tools for for management of Data using Mesh format :
         and Christophe Coulet (BRGM)
       - Mesh Quality Analysis developed by Nicolas Godet (ISL)
 
-tracker=https://github.com/Artelia/telemac_tools/issues
-repository=https://github.com/Artelia/telemac_tools
+tracker=https://github.com/Artelia/mesh_tools/issues
+repository=https://github.com/Artelia/mesh_tools
 # End of mandatory metadata
 
 # Recommended items:
@@ -35,7 +35,7 @@ changelog=
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=https://github.com/Artelia/telemac_tools/wiki
+homepage=https://github.com/Artelia/mesh_tools/wiki
 category=Plugins
 icon=icon.png
 # experimental flag

@@ -246,6 +246,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                     )
                     == QMessageBox.Ok
                 ):
+                    self.cb_auto_z.setCheckState(True)
                     self.update_all_auto_z()
 
     def create_vertices_spatial_index(self):
@@ -335,6 +336,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                     )
                     == QMessageBox.Ok
                 ):
+                    self.cb_auto_z.setCheckState(True)
                     self.update_all_auto_z()
         else:
             self.lay_culv = None
@@ -730,7 +732,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             txt_file.readline()
             # Relaxation and number of culverts
             relax, nb_culvert = get_values(txt_file.readline())
-            # Headers are already retrive during dialog import
+            # Retrieve headers
             headers = get_values(txt_file.readline())
 
             for i in range(int(nb_culvert)):
@@ -738,10 +740,8 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
                 fet = QgsFeature()
 
-                print(str(values[items["n1"][1]]), str(values[items["n2"][1]]))
                 point_n1, err1 = self.recup_XY_from_n(values[items["n1"][1]], crs)
                 point_n2, err2 = self.recup_XY_from_n(values[items["n2"][1]], crs)
-                print(point_n1, err1, point_n2, err2)
                 if err1 is not None or err2 is not None:
                     err = " ".join(filter(None, (err1, err2)))
                     self.write_log(
@@ -750,7 +750,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                     continue
 
                 line = QgsGeometry.fromPolylineXY([point_n1, point_n2])
-
                 fet.setGeometry(line)
                 fets.append(fet)
 

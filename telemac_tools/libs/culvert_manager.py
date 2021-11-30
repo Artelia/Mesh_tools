@@ -751,6 +751,11 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
                 line = QgsGeometry.fromPolylineXY([point_n1, point_n2])
                 fet.setGeometry(line)
+                
+                attrs = []
+                for fld in self.culv_flds:
+                    attr = values[items[fld[0].lower()][1]]
+                    
                 fets.append(fet)
 
         if fets:

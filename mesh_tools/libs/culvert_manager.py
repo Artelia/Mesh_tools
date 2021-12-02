@@ -42,6 +42,8 @@ from ..mesh_tools_dockwidget import MeshToolDockWidget
 from .create_culvert_shp_dlg import dlg_create_culvert_shapefile
 from .import_culvert_file_dlg import dlg_import_culvert_file
 
+from ._mesh_tools import find_nearest_node, find_z_from_mesh
+
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
 
 
@@ -71,6 +73,10 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
         self.cur_mesh_dataset = None
         self.cur_mesh_time = None
 
+        self.software_select = 0
+
+# Col4 - Index for Telemac
+# Col5 - Index for Uhaina
         self.culv_flds = [
             ["NAME", QVariant.String, self.txt_name, 28, 22],
             ["N1", QVariant.Int, None, 0, None],
@@ -131,6 +137,7 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
         self.btn_res_val.clicked.connect(self.reset_val)
         self.btn_verif.clicked.connect(self.verif_culvert)
         self.btn_create_file.clicked.connect(self.create_file)
+        self.cb_software_select.currentIndexChanged.connect(self.soft_changed)
         # self.btn_sel_culv.clicked.connect(self.select_culv)
 
         for fld in self.culv_flds:
@@ -182,6 +189,15 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
         self.cb_lay_culv.currentIndexChanged.disconnect(self.culv_lay_changed)
         self.cb_dataset_mesh.currentIndexChanged.disconnect(self.mesh_dataset_changed)
         self.cb_time_mesh.currentIndexChanged.disconnect(self.mesh_time_changed)
+
+    ######################################################################################
+    #                                                                                    #
+    #                                      SOFTWARE                                      #
+    #                                                                                    #
+    ######################################################################################
+
+    def soft_changed(self):
+        self.software_select = self.cb_software_select.currentIndex()
 
     ######################################################################################
     #                                                                                    #
@@ -455,7 +471,8 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
             self.sb_z2.setEnabled(not self.cb_auto_z.isChecked())
             if ft:
                 if self.cb_auto_z.isChecked():
-                    (z1, z2), (n1, n2), err = self.recup_z_from_mesh(ft)
+                    (n1, n2), err = self.recup_n_from_mesh(ft)
+                    (z1, z2), err = self.recup_z_from_mesh(ft)
                     if err:
                         self.write_log(self.tr("Error on Z calculation : {}").format(err), 2)
                     else:

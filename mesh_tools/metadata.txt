@@ -3,19 +3,20 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Telemac Tools
-qgisMinimumVersion=3.10
-description=Tools for Telemac(http://www.opentelemac.org/).
-version=0.2
+name=Mesh Tools
+qgisMinimumVersion=3.16
+description=Tools for management of Data on mesh (Telemac, Uhaina).
+version=0.4
 author=Artelia
 email=a@a
 
-about=Tools for Telemac result using Mesh format :
-      - Culvert Manager developed by Aurélien Perrin(Artelia)
+about=Tools for for management of Data using Mesh format :
+      - Culvert Manager developed by Aurélien Perrin(Artelia) 
+        and Christophe Coulet (BRGM)
       - Mesh Quality Analysis developed by Nicolas Godet (ISL)
 
-tracker=https://github.com/Artelia/telemac_tools/issues
-repository=https://github.com/Artelia/telemac_tools
+tracker=https://github.com/Artelia/mesh_tools/issues
+repository=https://github.com/Artelia/mesh_tools
 # End of mandatory metadata
 
 # Recommended items:
@@ -23,6 +24,10 @@ repository=https://github.com/Artelia/telemac_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+   0.4   : Change plugin Name
+           Change ui to add a software parameter for output
+           Change culvert_manager to allow export capabilities for Uhaina
+   0.3   : Restructuration of github folders 
    0.2   : add Mesh quality analysis (Qgis >= 3.22.0)
 
 
@@ -30,7 +35,7 @@ changelog=
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=https://github.com/Artelia/telemac_tools/wiki
+homepage=https://github.com/Artelia/mesh_tools/wiki
 category=Plugins
 icon=icon.png
 # experimental flag

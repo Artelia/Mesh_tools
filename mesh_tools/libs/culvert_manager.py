@@ -2,6 +2,7 @@
 
 import os
 import time
+from datetime import datetime
 
 import numpy as np
 from qgis.core import (
@@ -42,7 +43,6 @@ from qgis.utils import iface
 from .create_culvert_shp import dlg_create_culvert_shapefile
 
 from ._mesh_tools import find_nearest_node, find_z_from_mesh
-from ._log_tools import write_log
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
 
@@ -226,7 +226,7 @@ class CulvertManager(QWidget, FORM_CLASS):
     def cur_mesh_changed(self):
         self.mdl_mesh_dataset.clear()
         if self.lay_mesh is not None:
-            write_log("Current mesh changed : {}".format(self.lay_mesh.name()))
+            self.write_log("Current mesh changed : {}".format(self.lay_mesh.name()))
             self.native_mesh = QgsMesh()
             self.lay_mesh.dataProvider().populateMesh(self.native_mesh)
             self.faces = self.create_faces_spatial_index()
@@ -242,7 +242,7 @@ class CulvertManager(QWidget, FORM_CLASS):
         self.mdl_mesh_time.clear()
         self.cur_mesh_dataset = self.cb_dataset_mesh.currentData(32)
         if self.cur_mesh_dataset is not None:
-            write_log("Current mesh dataset changed : {}".format(self.cb_dataset_mesh.currentText()))
+            self.write_log("Current mesh dataset changed : {}".format(self.cb_dataset_mesh.currentText()))
             mesh_prov = self.lay_mesh.dataProvider()
             for i in range(mesh_prov.datasetCount(self.cur_mesh_dataset)):
                 itm = QStandardItem()
@@ -253,7 +253,7 @@ class CulvertManager(QWidget, FORM_CLASS):
     def mesh_time_changed(self):
         self.cur_mesh_time = self.cb_time_mesh.currentData(32)
         if self.cur_mesh_time is not None:
-            write_log("Current mesh timestep changed : {}".format(self.cb_time_mesh.currentText()))
+            self.write_log("Current mesh timestep changed : {}".format(self.cb_time_mesh.currentText()))
             self.vertices = self.create_vertices_spatial_index()
             if self.lay_culv is not None and self.is_opening is False:
                 self.update_all_n()
@@ -270,7 +270,7 @@ class CulvertManager(QWidget, FORM_CLASS):
 
     def create_vertices_spatial_index(self):
         if self.lay_mesh:
-            write_log("Creation of vertices spatial index ...")
+            self.write_log("Creation of vertices spatial index ...")
             t0 = time.time()
             spindex = QgsSpatialIndex()
 
@@ -288,14 +288,14 @@ class CulvertManager(QWidget, FORM_CLASS):
                 spindex.addFeatures(lst_ft)
                 offset += iterations
 
-            write_log("Vertices spatial index created in {} sec".format(round(time.time() - t0, 1)))
+            self.write_log("Vertices spatial index created in {} sec".format(round(time.time() - t0, 1)))
             return spindex
         else:
             return None
 
     def create_faces_spatial_index(self):
         if self.lay_mesh:
-            write_log("Creation of faces spatial index ...")
+            self.write_log("Creation of faces spatial index ...")
             t0 = time.time()
             spindex = QgsSpatialIndex()
 
@@ -314,7 +314,7 @@ class CulvertManager(QWidget, FORM_CLASS):
                 spindex.addFeatures(lst_ft)
                 offset += iterations
 
-            write_log("Faces spatial index created in {} sec".format(round(time.time() - t0, 1)))
+            self.write_log("Faces spatial index created in {} sec".format(round(time.time() - t0, 1)))
             return spindex
         else:
             return None
@@ -490,7 +490,7 @@ class CulvertManager(QWidget, FORM_CLASS):
                     print(self.recup_z_from_mesh(ft))
                     print(self.recup_n_from_mesh(ft))
                     if err or errn:
-                        write_log("Error on Z calculation : {}".format(err), 2)
+                        self.write_log("Error on Z calculation : {}".format(err), 2)
                     else:
                         self.sb_z1.setValue(z1)
                         self.sb_z2.setValue(z2)
@@ -542,13 +542,13 @@ class CulvertManager(QWidget, FORM_CLASS):
             if not err:
                 attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
             else:
-                write_log("Error on N calculation : {}".format(err), 2)
+                self.write_log("Error on N calculation : {}".format(err), 2)
                 return
 
         self.lay_culv.dataProvider().changeAttributeValues(attrs)
         self.lay_culv.commitChanges()
         if log:
-            write_log("N values updated", 0)
+            self.write_log("N values updated", 0)
 
     def update_all_auto_z(self):
         attrs = dict()
@@ -558,12 +558,12 @@ class CulvertManager(QWidget, FORM_CLASS):
                 if not err:
                     attrs[ft.id()] = {ft.fieldNameIndex("z1"): z1, ft.fieldNameIndex("z2"): z2}
                 else:
-                    write_log("Error on Z calculation : {}".format(err), 2)
+                    self.write_log("Error on Z calculation : {}".format(err), 2)
                     return
 
         self.lay_culv.dataProvider().changeAttributeValues(attrs)
         self.lay_culv.commitChanges()
-        write_log("Z values updated", 0)
+        self.write_log("Z values updated", 0)
         self.display_culv_info()
 
     def recup_n_from_mesh(self, ft):
@@ -596,16 +596,16 @@ class CulvertManager(QWidget, FORM_CLASS):
             self.update_all_n(log=False)
             ids = self.verif_culvert_validity()
             if not ids:
-                write_log("All culverts are valid", 0)
+                self.write_log("All culverts are valid", 0)
             else:
                 for id in ids:
-                    write_log("{} : {}".format(*id), 2)
+                    self.write_log("{} : {}".format(*id), 2)
 
     def create_file(self):
         if self.lay_culv:
             ids = self.verif_culvert_validity()
             if ids:
-                write_log("File creation is not possible, some culverts are not valid", 2)
+                self.write_log("File creation is not possible, some culverts are not valid", 2)
                 return
             else:
                 try:
@@ -627,7 +627,7 @@ class CulvertManager(QWidget, FORM_CLASS):
                             culv_file.write(str(nb_culv) + str("\n"))
                             idx_out = 4
                         else:
-                            write_log("Unknown software", 2)
+                            self.write_log("Unknown software", 2)
 
                         self.culv_flds_srtd = sorted(self.culv_flds, key=lambda x: (x[idx_out] is None, x[idx_out]))
 
@@ -678,10 +678,10 @@ class CulvertManager(QWidget, FORM_CLASS):
                             culv_file.write(txt + str("\n"))
 
                         culv_file.close()
-                        write_log("Culvert File Created", 0)
+                        self.write_log("Culvert File Created", 0)
 
                 except Exception as e:
-                    write_log("Error on File Creation", 2)
+                    self.write_log("Error on File Creation", 2)
                     pass
 
     def verif_culvert_validity(self):
@@ -709,6 +709,20 @@ class CulvertManager(QWidget, FORM_CLASS):
                                 selectedids.append([ft_name, "{} value is not correct.".format(fld[0])])
 
         return selectedids
+
+    def write_log(self, txt, mode=1):
+        self.log.setTextColor(QColor("black"))
+        self.log.setFontWeight(QFont.Bold)
+        self.log.append("{} - ".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+        if mode == 0:
+            self.log.setTextColor(QColor("green"))
+        elif mode == 1:
+            self.log.setTextColor(QColor("black"))
+        elif mode == 2:
+            self.log.setTextColor(QColor("red"))
+        self.log.setFontWeight(QFont.Normal)
+        self.log.insertPlainText(txt)
+        self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())
 
 
 def correctAngle(angle):

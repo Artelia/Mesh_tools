@@ -2,7 +2,6 @@
 
 import math
 import os
-from datetime import datetime
 
 from qgis.core import (
     QgsCoordinateTransform,
@@ -21,6 +20,8 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QColor, QFont, QIcon, QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import QWidget
 from qgis.utils import iface
+
+from ._log_tools import write_log
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_quality.ui"))
 
@@ -64,7 +65,7 @@ class MeshQuality(QWidget, FORM_CLASS):
         self.lay_mesh = self.mMapLayerComboBox.currentLayer()
 
         if self.lay_mesh:
-            self.write_log(f"Current mesh changed : {self.lay_mesh.name()}")
+            write_log(f"Current mesh changed : {self.lay_mesh.name()}")
             self.xform = QgsCoordinateTransform(
                 self.lay_mesh.crs(),
                 self.canvas.mapSettings().destinationCrs(),
@@ -83,7 +84,7 @@ class MeshQuality(QWidget, FORM_CLASS):
 
     def analyse_mesh(self):
         if not self.lay_mesh:
-            self.write_log("No mesh selected", 2)
+            write_log("No mesh selected", 2)
 
         wasInEditMode = False
         if self.lay_mesh.isEditable():
@@ -121,6 +122,8 @@ class MeshQuality(QWidget, FORM_CLASS):
 
         if wasInEditMode:
             self.lay_mesh.startFrameEditing(self.xform)
+        
+        write_log(self, "End of analyse", 0)
 
     def addVertexMarker(self, point, type):
         marker = QgsVertexMarker(self.canvas)
@@ -177,17 +180,3 @@ class MeshQuality(QWidget, FORM_CLASS):
                 self.canvas.scene().removeItem(marker)
         self.bad_faces_center = []
         self.btn_reset_marker.setEnabled(False)
-
-    def write_log(self, txt, mode=1):
-        self.log.setTextColor(QColor("black"))
-        self.log.setFontWeight(QFont.Bold)
-        self.log.append(f"{datetime.now().strftime('%H:%M:%S')} - ")
-        if mode == 0:
-            self.log.setTextColor(QColor("green"))
-        elif mode == 1:
-            self.log.setTextColor(QColor("black"))
-        elif mode == 2:
-            self.log.setTextColor(QColor("red"))
-        self.log.setFontWeight(QFont.Normal)
-        self.log.insertPlainText(txt)
-        self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())

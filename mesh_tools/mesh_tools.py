@@ -169,7 +169,10 @@ class MeshTools:
         icon_path = os.path.join(self.plugin_dir, "icon.png")
         # icon_path = ':/plugins/mesh_tools/icon.png'
         self.add_action(
-            icon_path, text=self.tr("Culvert Manager"), callback=lambda: self.run(1), parent=self.iface.mainWindow()
+            icon_path, 
+            text=self.tr("Culvert Manager"), 
+            callback=lambda: self.run(1), 
+            parent=self.iface.mainWindow()
         )
         if Qgis.versionInt() >= 32200:
             self.add_action(
@@ -179,7 +182,10 @@ class MeshTools:
                 parent=self.iface.mainWindow(),
             )
         self.add_action(
-            icon_path, text=self.tr("Mesh Tool 2"), callback=lambda: self.run(3), parent=self.iface.mainWindow()
+            icon_path, 
+            text=self.tr("Mesh Tool 3"), 
+            callback=lambda: self.run(3), 
+            parent=self.iface.mainWindow()
         )
 
     # --------------------------------------------------------------------------

@@ -199,15 +199,6 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
 
     ######################################################################################
     #                                                                                    #
-    #                                      SOFTWARE                                      #
-    #                                                                                    #
-    ######################################################################################
-
-    def soft_changed(self):
-        self.software_select = self.cb_software_select.currentIndex()
-
-    ######################################################################################
-    #                                                                                    #
     #                                     MESH LAYER                                     #
     #                                                                                    #
     ######################################################################################
@@ -353,9 +344,7 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
                     QMessageBox.question(
                         self,
                         self.tr("Automatic Z Update"),
-                        self.tr(
-                            "Culvert culvert layer has been changed.\nUpdate culvert features with Automatic Z checked ?"
-                        ),
+                        self.tr("Culvert layer has been changed.\nUpdate culvert features with Automatic Z checked ?"),
                         QMessageBox.Cancel | QMessageBox.Ok,
                     )
                     == QMessageBox.Ok
@@ -755,7 +744,7 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
         dlg.setWindowModality(2)
         if dlg.exec_():
             items = dlg.items
-            software = dlg.cb_soft.currentText()
+            self.cb_software_select.setCurrentIndex(dlg.cb_soft.currentIndex())
             txt_path = dlg.text_file.filePath()
             layer_path = dlg.layer_file.filePath()
             layerDriver = GdalUtils.getVectorDriverFromFileName(layer_path)
@@ -782,7 +771,7 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
             txt_file.readline()
             # Relaxation and number of culverts
             relax, nb_culvert = get_values(txt_file.readline())
-            self.sb_relax.setValue(relax)
+            self.sb_relax.setValue(float(relax))
             # Retrieve headers
             headers = get_values(txt_file.readline())
 

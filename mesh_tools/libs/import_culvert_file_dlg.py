@@ -22,17 +22,17 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
         self.updateTable()
 
         self.text_file.setStorageMode(QgsFileWidget.GetFile)
-        self.text_file.setDialogTitle(self.tr("Select directory"))
+        self.text_file.setDialogTitle(self.tr("Select file"))
         self.text_file.setFilter(self.tr("Text Files (*.txt);;All Files (*.*)"))
 
         self.layer_file.setStorageMode(QgsFileWidget.SaveFile)
         self.layer_file.setConfirmOverwrite(True)
         self.layer_file.setDialogTitle(self.tr("Select file"))
-        self.layer_file.setFilter(self.tr("ESRI Shapefile (*.shp)"))
-        # self.layer_file.setFilter(self.tr("ESRI Shapefile (*.shp);;GeoPackage (*.gpkg)"))
+        self.layer_file.setFilter("ESRI Shapefile (*.shp)")
+        # self.layer_file.setFilter("ESRI Shapefile (*.shp);;GeoPackage (*.gpkg)")
 
         self.text_file.fileChanged.connect(self.parseTextFile)
-        self.cb_tel_ver.currentIndexChanged.connect(self.parseTextFile)
+        self.cb_soft.currentIndexChanged.connect(self.parseTextFile)
 
         self.buttonBox.accepted.connect(self.dialogAccepted)
         self.buttonBox.rejected.connect(self.dialogRejected)
@@ -87,7 +87,6 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
             return values
 
         path = self.text_file.filePath()
-        software = self.cb_tel_ver.currentText()
 
         if not path:
             for value in self.items.values():

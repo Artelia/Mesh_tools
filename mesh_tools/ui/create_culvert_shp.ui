@@ -63,9 +63,6 @@
        </item>
        <item>
         <widget class="QPushButton" name="btn_valid">
-         <property name="toolTip">
-          <string>Créer le nouveau projet</string>
-         </property>
          <property name="text">
           <string>OK</string>
          </property>

@@ -19,7 +19,7 @@ done
 UPDATE=false
 for LOCALE in ${LOCALES}
 do
-  TRANSLATION_FILE="telemac_tools/i18n/TelemacTools_$LOCALE.ts"
+  TRANSLATION_FILE="mesh_tools/i18n/MeshTools_$LOCALE.ts"
   if [ ! -f ${TRANSLATION_FILE} ]
   then
     # Force translation string collection as we have a new language file
@@ -45,10 +45,10 @@ then
   echo "Please provide translations by editing the translation files below:"
   for LOCALE in ${LOCALES}
   do
-    echo "telemac_tools/i18n/TelemacTools_"${LOCALE}".ts"
+    echo "mesh_tools/i18n/MeshTools_"${LOCALE}".ts"
     # Note we don't use pylupdate with qt .pro file approach as it is flakey
     # about what is made available.
-    pylupdate5 -noobsolete ${PYTHON_FILES} -ts telemac_tools/i18n/TelemacTools_${LOCALE}.ts
+    pylupdate5 -noobsolete ${PYTHON_FILES} -ts mesh_tools/i18n/MeshTools_${LOCALE}.ts
   done
 else
   echo "No need to edit any translation files (.ts) because no python files"

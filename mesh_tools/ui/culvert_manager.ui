@@ -21,35 +21,25 @@
        <string>Mesh Parameters</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="2">
+        <widget class="QLabel" name="label_6">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Timestep</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
           <string>Dataset</string>
          </property>
         </widget>
-       </item>
-       <item row="1" column="2">
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QComboBox" name="cb_dataset_mesh"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_6">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Timestep</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cb_time_mesh"/>
-         </item>
-        </layout>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
@@ -64,7 +54,13 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
+       <item row="1" column="1">
+        <widget class="QComboBox" name="cb_dataset_mesh"/>
+       </item>
+       <item row="1" column="3">
+        <widget class="QComboBox" name="cb_time_mesh"/>
+       </item>
+       <item row="0" column="1" colspan="3">
         <widget class="QgsMapLayerComboBox" name="cb_lay_mesh">
          <property name="showCrs">
           <bool>true</bool>
@@ -1098,7 +1094,7 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
       </property>
       <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1" columnminimumwidth="0,0">
        <item row="0" column="1">
-        <widget class="QPushButton" name="btn_create_file_2">
+        <widget class="QPushButton" name="btn_create_file">
          <property name="text">
           <string>Create Culvert file</string>
          </property>
@@ -1120,12 +1116,12 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
          </property>
          <item>
           <property name="text">
-           <string>TELEMAC</string>
+           <string notr="true">TELEMAC</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Uhaina</string>
+           <string notr="true">Uhaina</string>
           </property>
          </item>
         </widget>

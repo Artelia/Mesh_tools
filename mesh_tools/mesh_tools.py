@@ -157,7 +157,7 @@ class MeshTools:
             self.toolbar.addAction(action)
 
         if add_to_menu:
-            self.iface.addPluginToMenu(self.menu, action)
+            self.pluginMenu.addAction(action)
 
         self.actions.append(action)
 
@@ -166,15 +166,16 @@ class MeshTools:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         icon_path = os.path.join(self.plugin_dir, "icon.png")
+        self.pluginMenu = self.iface.pluginMenu().addMenu(QIcon(icon_path), self.menu)
         self.add_action(
-            icon_path,
+            os.path.join(self.path_icon, "culvert.png"),
             text=self.tr("Culvert Manager"),
             callback=lambda: self.run(1),
             parent=self.iface.mainWindow(),
         )
         if Qgis.versionInt() >= 32200:
             self.add_action(
-                icon_path,
+                ":images/themes/default/algorithms/mAlgorithmCheckGeometry.svg",
                 text=self.tr("Mesh Quality Analysis"),
                 callback=lambda: self.run(2),
                 parent=self.iface.mainWindow(),
@@ -201,8 +202,8 @@ class MeshTools:
         if self.dockwidget:
             self.dockwidget.close()
 
+        self.pluginMenu.parentWidget().removeAction(self.pluginMenu.menuAction())
         for action in self.actions:
-            self.iface.removePluginMenu(self.tr("&Mesh Tools"), action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar
         del self.toolbar
@@ -225,7 +226,7 @@ class MeshTools:
             self.dockwidget = MeshQuality()
             self.dockwidget.setWindowTitle(self.tr("Telemac - Mesh Quality Analysis"))
         else:
-            self.dockwidget = TelemacToolDockWidget()
+            self.dockwidget = MeshToolDockWidget()
             self.dockwidget.setWindowTitle(self.tr("MeshTool - Error"))
 
         self.dockwidget.closingPlugin.connect(self.onClosePlugin)

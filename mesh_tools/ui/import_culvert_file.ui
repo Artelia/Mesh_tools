@@ -80,7 +80,7 @@
      </property>
      <item>
       <property name="text">
-       <string>TELEMAC</string>
+       <string notr="true">TELEMAC</string>
       </property>
      </item>
     </widget>

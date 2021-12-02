@@ -25,11 +25,6 @@
     </message>
     <message>
         <location filename="../ui/create_culvert_shp.ui" line="67"/>
-        <source>Créer le nouveau projet</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/create_culvert_shp.ui" line="70"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -37,17 +32,17 @@
 <context>
     <name>CulvertManager</name>
     <message>
-        <location filename="../libs/culvert_manager.py" line="206"/>
+        <location filename="../libs/culvert_manager.py" line="233"/>
         <source>Current mesh changed : {}</source>
         <translation>Maillage actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="222"/>
+        <location filename="../libs/culvert_manager.py" line="248"/>
         <source>Current mesh dataset changed : {}</source>
         <translation>Groupe actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="233"/>
+        <location filename="../libs/culvert_manager.py" line="259"/>
         <source>Current mesh timestep changed : {}</source>
         <translation>Pas de temps actuel modifié : {}</translation>
     </message>
@@ -57,137 +52,148 @@
         <translation>Actualisation automatique de Z</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="237"/>
+        <location filename="../libs/culvert_manager.py" line="263"/>
         <source>Mesh parameters have been changed.
 Update culvert features with Automatic Z checked ?</source>
         <translation>Les paramètres du maillage ont changé.
 Voulez-vous mettre à jour les paramètres des ouvrages avec Z automatique coché ?</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="252"/>
+        <location filename="../libs/culvert_manager.py" line="278"/>
         <source>Creation of vertices spatial indexâ¦</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libs/culvert_manager.py" line="270"/>
-        <source>Vertices spatial index created in {} sec.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libs/culvert_manager.py" line="277"/>
-        <source>Creation of faces spatial indexâ¦</source>
-        <translation type="unfinished"></translation>
+        <translation>Création de l&apos;index spatial des nœudsâ¦</translation>
     </message>
     <message>
         <location filename="../libs/culvert_manager.py" line="296"/>
-        <source>Faces spatial index created in {} sec.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libs/culvert_manager.py" line="352"/>
-        <source>Culvert culvert layer has been changed.
-Update culvert features with Automatic Z checked ?</source>
-        <translation type="unfinished"></translation>
+        <source>Vertices spatial index created in {} sec.</source>
+        <translation>Index spatial des nœuds créé en {} sec.</translation>
     </message>
     <message>
         <location filename="../libs/culvert_manager.py" line="382"/>
         <source>No culvert selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas d&apos;ouvrage sélectionné</translation>
     </message>
     <message>
         <location filename="../libs/culvert_manager.py" line="384"/>
         <source>More than one culvert selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Plus d&apos;un ouvrage sélectionné</translation>
     </message>
     <message>
         <location filename="../libs/culvert_manager.py" line="388"/>
         <source>Selected culvert informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Information de l&apos;ouvrage sélectionné</translation>
     </message>
     <message>
         <location filename="../libs/culvert_manager.py" line="392"/>
         <source>No culvert layer selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de couche des ouvrages sélectionnée</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="547"/>
+        <location filename="../libs/culvert_manager.py" line="543"/>
         <source>Error on Z calculation : {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur dans le calcul de Z : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="526"/>
+        <location filename="../libs/culvert_manager.py" line="527"/>
         <source>Error on N calculation : {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur dans le calcul de N : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="532"/>
+        <location filename="../libs/culvert_manager.py" line="533"/>
         <source>N values updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs des N mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="552"/>
+        <location filename="../libs/culvert_manager.py" line="548"/>
         <source>Z values updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs des Z mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="600"/>
+        <location filename="../libs/culvert_manager.py" line="613"/>
         <source>CRS defined for mesh layer is not valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Le SRC du maillage n&apos;est pas valide</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="602"/>
+        <location filename="../libs/culvert_manager.py" line="615"/>
         <source>No mesh layer selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de maillage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="627"/>
+        <location filename="../libs/culvert_manager.py" line="632"/>
         <source>All culverts are valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les ouvrages sont valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="638"/>
+        <location filename="../libs/culvert_manager.py" line="643"/>
         <source>File creation is not possible, some culverts are not valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Création du fichier impossible, certains ouvrages ne sont pas valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="641"/>
+        <location filename="../libs/culvert_manager.py" line="646"/>
         <source>Culvert file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="641"/>
+        <location filename="../libs/culvert_manager.py" line="646"/>
         <source>Text File (*.txt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier texte (*.txt)</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="651"/>
+        <location filename="../libs/culvert_manager.py" line="660"/>
         <source>Culvert count</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre d&apos;ouvrage</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="669"/>
+        <location filename="../libs/culvert_manager.py" line="701"/>
         <source>Culvert File Created</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier des ouvrages créé</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="672"/>
+        <location filename="../libs/culvert_manager.py" line="828"/>
         <source>Error during culvert file creation</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de la création du fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="678"/>
-        <source>Nameless culvert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libs/culvert_manager.py" line="683"/>
-        <source>Culvert extremity is without mesh extent.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libs/culvert_manager.py" line="695"/>
+        <location filename="../libs/culvert_manager.py" line="727"/>
         <source>{} value is not correct.</source>
-        <translation type="unfinished"></translation>
+        <translation>La valeur de {} est incorrecte.</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="584"/>
+        <source>{} node is not in mesh layer</source>
+        <translation>Le nœud {} n&apos;est pas dans le maillage</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="710"/>
+        <source>Nameless culvert (feature id {})</source>
+        <translation>Ouvrage sans nom (entité n°{})</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="715"/>
+        <source>Culvert extremity is not within the mesh.</source>
+        <translation>L&apos;une des extrémités de l&apos;ouvrage n&apos;est pas dans l&apos;emprise du maillage.</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="774"/>
+        <source>Culverts</source>
+        <translation>Ouvrages</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="802"/>
+        <source>Error when importing culvert {i} with error(s) : {err}</source>
+        <translation>Erreur lors de l&apos;import de l&apos;ouvrage {i} avec l&apos;erreur : {err}</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="849"/>
+        <source>Created culvert layer is not valid.</source>
+        <translation>La couche des ouvrages créée n&apos;est pas valdie.</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="352"/>
+        <source>Culvert layer has been changed.
+Update culvert features with Automatic Z checked ?</source>
+        <translation type="unfinished">La couche des ouvrage a changé.
+Mettre à jour les valeurs de Z ?</translation>
     </message>
 </context>
 <context>
@@ -203,37 +209,37 @@ Update culvert features with Automatic Z checked ?</source>
         <translation>Paramètres du maillage</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="27"/>
+        <location filename="../ui/culvert_manager.ui" line="40"/>
         <source>Dataset</source>
         <translation>Groupe</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="45"/>
+        <location filename="../ui/culvert_manager.ui" line="33"/>
         <source>Timestep</source>
         <translation>Pas de temps</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="113"/>
+        <location filename="../ui/culvert_manager.ui" line="109"/>
         <source>Layer</source>
         <translation>Couche</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="80"/>
+        <location filename="../ui/culvert_manager.ui" line="76"/>
         <source>Culvert Parameters</source>
         <translation>Paramètres des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="129"/>
+        <location filename="../ui/culvert_manager.ui" line="125"/>
         <source>Create</source>
         <translation>Créer</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="142"/>
+        <location filename="../ui/culvert_manager.ui" line="138"/>
         <source>Import</source>
         <translation>Importer</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="161"/>
+        <location filename="../ui/culvert_manager.ui" line="157"/>
         <source>The relaxation coefficient is initially used to prescribe the discharge in the culvert on a progressive basis in order to avoid the formation of an eddy.
 
 A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80% of the previous result.</source>
@@ -242,297 +248,297 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
 Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temps T est mélangé à 80 % du résultat au pas de temps précédent.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="166"/>
+        <location filename="../ui/culvert_manager.ui" line="162"/>
         <source>Relaxation</source>
         <translation>Relaxation</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="195"/>
+        <location filename="../ui/culvert_manager.ui" line="191"/>
         <source>Add Culvert</source>
         <translation>Ajouter un ouvrage</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="202"/>
+        <location filename="../ui/culvert_manager.ui" line="198"/>
         <source>Select Culvert</source>
         <translation>Sélectionner un ouvrage</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="222"/>
+        <location filename="../ui/culvert_manager.ui" line="218"/>
         <source>Delete Culvert</source>
         <translation>Supprimer un ouvrage</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="232"/>
+        <location filename="../ui/culvert_manager.ui" line="228"/>
         <source>Selected culvert</source>
         <translation>Ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="262"/>
+        <location filename="../ui/culvert_manager.ui" line="258"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="346"/>
+        <location filename="../ui/culvert_manager.ui" line="342"/>
         <source>The loss coefficient due to the presence of a valve.</source>
         <translation>Le coefficient de perte de charge due à la présence d&apos;une valve.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="349"/>
+        <location filename="../ui/culvert_manager.ui" line="345"/>
         <source>CV*</source>
         <translation>CV*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="378"/>
+        <location filename="../ui/culvert_manager.ui" line="374"/>
         <source>CS1 is the head loss coefficients of 1 when it is operating as outlet.</source>
         <translation>CS1 est le coefficient de perte de charge à la section 1 lorsqu&apos;ele opère en sortie.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="381"/>
+        <location filename="../ui/culvert_manager.ui" line="377"/>
         <source>CS1</source>
         <translation>CS1</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="388"/>
+        <location filename="../ui/culvert_manager.ui" line="384"/>
         <source>CS2 is the head loss coefficients of 2 when it is operating as outlet.</source>
         <translation>CS1 est le coefficient de perte de charge à la section 2 lorsqu&apos;ele opère en sortie.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="391"/>
+        <location filename="../ui/culvert_manager.ui" line="387"/>
         <source>CS2</source>
         <translation>CS2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="420"/>
+        <location filename="../ui/culvert_manager.ui" line="416"/>
         <source>LARG is the width of the culvert.</source>
         <translation>LARG est la largeur de l&apos;ouvrage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="423"/>
+        <location filename="../ui/culvert_manager.ui" line="419"/>
         <source>LARG</source>
         <translation>LARG</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="452"/>
+        <location filename="../ui/culvert_manager.ui" line="448"/>
         <source>The constant used to differentiate flow types 5 and 6 in the formulation by Bodhaine.</source>
         <translation>La constante utilisée pour différencier les écoulements de type 5 et 6 dans la formulation de Bodhaine.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="455"/>
+        <location filename="../ui/culvert_manager.ui" line="451"/>
         <source>C56*</source>
         <translation>C56*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="506"/>
+        <location filename="../ui/culvert_manager.ui" line="502"/>
         <source>CE1 is the head loss coefficients of 1 when it is operating as inlet.</source>
         <translation>CE1 est le coefficient de perte de charge à la section 1 lorsqu&apos;ele opère en entrée.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="509"/>
+        <location filename="../ui/culvert_manager.ui" line="505"/>
         <source>CE1</source>
         <translation>CE1</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="560"/>
+        <location filename="../ui/culvert_manager.ui" line="556"/>
         <source>CE2 is the head loss coefficients of 2 when it is operating as inlet.</source>
         <translation>CE2 est le coefficient de perte de charge à la section 2 lorsqu&apos;ele opère en entrée.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="563"/>
+        <location filename="../ui/culvert_manager.ui" line="559"/>
         <source>CE2</source>
         <translation>CE2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="570"/>
+        <location filename="../ui/culvert_manager.ui" line="566"/>
         <source>Z2 is the level of the outlet.</source>
         <translation>Z2 est la cote du radier de la section 2.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="573"/>
+        <location filename="../ui/culvert_manager.ui" line="569"/>
         <source>Z2</source>
         <translation>Z2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="580"/>
+        <location filename="../ui/culvert_manager.ui" line="576"/>
         <source>L12 is the linear head loss in the culvert.</source>
         <translation>L12 est la perte de charge linéaire dans l&apos;ouvrage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="583"/>
+        <location filename="../ui/culvert_manager.ui" line="579"/>
         <source>L12</source>
         <translation>L12</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="631"/>
+        <location filename="../ui/culvert_manager.ui" line="627"/>
         <source>CV5 represent correction coefficient to CV coefficient due to the occurrence of the type 5 flow in the Bodhaine formulation.</source>
         <translation>CV5 représente le coefficient de correction du coefficient CV en présence d&apos;un écoulement de type 5 selon la formulation de Bodhaine.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="634"/>
+        <location filename="../ui/culvert_manager.ui" line="630"/>
         <source>CV5*</source>
         <translation>CV5*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="707"/>
+        <location filename="../ui/culvert_manager.ui" line="703"/>
         <source>The loss coefficient due to the presence of trash screens.</source>
         <translation>Le coefficient de perte de charge dûe à la présence d&apos;une grille.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="710"/>
+        <location filename="../ui/culvert_manager.ui" line="706"/>
         <source>CT*</source>
         <translation>CT*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="736"/>
+        <location filename="../ui/culvert_manager.ui" line="732"/>
         <source>HAUT1 is the height of the construction work (in meters) at the inlet.</source>
         <translation>HAUT1 est la hauteur la section 1 de l&apos;ouvrage. Diamètre en cas d&apos;ouvrage circulaire.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="739"/>
+        <location filename="../ui/culvert_manager.ui" line="735"/>
         <source>HAUT1</source>
         <translation>HAUT1</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="746"/>
+        <location filename="../ui/culvert_manager.ui" line="742"/>
         <source>Z1 is the level of the inlet.</source>
         <translation>Z2 est la cote du radier de la section 1.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="749"/>
+        <location filename="../ui/culvert_manager.ui" line="745"/>
         <source>Z1</source>
         <translation>Z1</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="756"/>
+        <location filename="../ui/culvert_manager.ui" line="752"/>
         <source>HAUT2 is the height of the construction work (in meters) at the outlet.</source>
         <translation>HAUT2 est la hauteur la section 2 de l&apos;ouvrage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="759"/>
+        <location filename="../ui/culvert_manager.ui" line="755"/>
         <source>HAUT2*</source>
         <translation>HAUT2*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="766"/>
+        <location filename="../ui/culvert_manager.ui" line="762"/>
         <source>C5 represent correction coefficient to C1 coefficient due to the occurrence of the type 5 flow in the Bodhaine formulation.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="769"/>
+        <location filename="../ui/culvert_manager.ui" line="765"/>
         <source>C5*</source>
         <translation>C5*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="808"/>
+        <location filename="../ui/culvert_manager.ui" line="804"/>
         <source>D1 and D2 are the angles that the pipe makes with respect to the bottom, in degrees.</source>
         <translation>D1 et D2 sont les angles, en degrés, formés par l&apos;ouvrage avec le fond.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="801"/>
+        <location filename="../ui/culvert_manager.ui" line="797"/>
         <source>D2</source>
         <translation>D2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="811"/>
+        <location filename="../ui/culvert_manager.ui" line="807"/>
         <source>D1</source>
         <translation>D1</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="847"/>
+        <location filename="../ui/culvert_manager.ui" line="843"/>
         <source>0 : 1&lt;-&gt;2</source>
         <translation>0 : 1&lt;-&gt;2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="852"/>
+        <location filename="../ui/culvert_manager.ui" line="848"/>
         <source>1 : 1-&gt;2</source>
         <translation>1 : 1-&gt;2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="857"/>
+        <location filename="../ui/culvert_manager.ui" line="853"/>
         <source>2 : 1&lt;-2</source>
         <translation>2 : 1&lt;-2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="862"/>
+        <location filename="../ui/culvert_manager.ui" line="858"/>
         <source>3 : 1 / 2</source>
         <translation>3 : 1 / 2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="870"/>
+        <location filename="../ui/culvert_manager.ui" line="866"/>
         <source>Check it in case of a circular section.</source>
         <translation>Cocher en cas d&apos;ouvrage circulaire.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="873"/>
+        <location filename="../ui/culvert_manager.ui" line="869"/>
         <source>CIRC</source>
         <translation>CIRC</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="915"/>
+        <location filename="../ui/culvert_manager.ui" line="911"/>
         <source>A1 and A2 are the angles with respect to the X axis.</source>
         <translation>A1 et A2 sont les angles formés par l&apos;ouvrage selon l&apos;axe X.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="886"/>
+        <location filename="../ui/culvert_manager.ui" line="882"/>
         <source>A1</source>
         <translation>A1</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="918"/>
+        <location filename="../ui/culvert_manager.ui" line="914"/>
         <source>A2</source>
         <translation>A2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1022"/>
+        <location filename="../ui/culvert_manager.ui" line="1018"/>
         <source>Automatically set Z1 and Z2 from mesh.</source>
         <translation>Définir automatiquement Z1 et Z2 depuis le maillage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1025"/>
+        <location filename="../ui/culvert_manager.ui" line="1021"/>
         <source>Automatic Z</source>
         <translation>Z automatique</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1035"/>
+        <location filename="../ui/culvert_manager.ui" line="1031"/>
         <source>Automatically compute A1 and A2.</source>
         <translation>Calculer automatiquement A1 et A2.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1038"/>
+        <location filename="../ui/culvert_manager.ui" line="1034"/>
         <source>Automatic A</source>
         <translation>A automatique</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="947"/>
+        <location filename="../ui/culvert_manager.ui" line="943"/>
         <source>The Manning Strikler coefficient.</source>
         <translation>Le coefficient de Manning Strickler.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="950"/>
+        <location filename="../ui/culvert_manager.ui" line="946"/>
         <source>FRIC*</source>
         <translation>FRIC*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1048"/>
+        <location filename="../ui/culvert_manager.ui" line="1044"/>
         <source>Automatically compute the length of the culvert.</source>
         <translation>Calculer automatiquement la longueur de l&apos;ouvrage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1051"/>
+        <location filename="../ui/culvert_manager.ui" line="1047"/>
         <source>Automatic L</source>
         <translation>L automatique</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="976"/>
+        <location filename="../ui/culvert_manager.ui" line="972"/>
         <source>The length of the culvert.</source>
         <translation>La longueur de l&apos;ouvrage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="979"/>
+        <location filename="../ui/culvert_manager.ui" line="975"/>
         <source>LENGTH*</source>
         <translation>LENGTH*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1008"/>
+        <location filename="../ui/culvert_manager.ui" line="1004"/>
         <source>The flow direction is imposed through the keyword CLP : 
  - 0 : flow is allowed in both directions,
  - 1 : flow is only allowed from section 1 to section 2,
@@ -545,29 +551,39 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
  - 3 : l&apos;écoulement est bloqué.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1015"/>
+        <location filename="../ui/culvert_manager.ui" line="1011"/>
         <source>CLP</source>
         <translation>CLP</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1064"/>
+        <location filename="../ui/culvert_manager.ui" line="1060"/>
         <source>Reset values</source>
         <translation>Réinitialiser les valeurs</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1090"/>
+        <location filename="../ui/culvert_manager.ui" line="1086"/>
         <source>Check culvert layer validity</source>
         <translation>Vérifier la validité de la couche des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1097"/>
+        <location filename="../ui/culvert_manager.ui" line="1099"/>
         <source>Create Culvert file</source>
         <translation>Créer le fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1077"/>
+        <location filename="../ui/culvert_manager.ui" line="1073"/>
         <source>Parameters with * are only used with keyword OPTION FOR CULVERTS = 2</source>
         <translation>Les paramètres avec * sont utilisés uniquement avec le mot-clé OPTION POUR LES BUSES = 2</translation>
+    </message>
+    <message>
+        <location filename="../ui/culvert_manager.ui" line="1093"/>
+        <source>Output Parameters</source>
+        <translation>Paramètres de sortie</translation>
+    </message>
+    <message>
+        <location filename="../ui/culvert_manager.ui" line="1112"/>
+        <source>TELEMAC</source>
+        <translation>TELEMAC</translation>
     </message>
 </context>
 <context>
@@ -578,39 +594,19 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
         <translation>Importer un fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="30"/>
+        <location filename="../ui/import_culvert_file.ui" line="37"/>
         <source>Parameter mapping</source>
         <translation>Correspondance des paramètres</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="49"/>
+        <location filename="../ui/import_culvert_file.ui" line="56"/>
         <source>Parameter name</source>
         <translation>Nom du paramètre</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="54"/>
+        <location filename="../ui/import_culvert_file.ui" line="61"/>
         <source>Parameter name from culvert file</source>
         <translation>Nom du paramètre dans le fichier</translation>
-    </message>
-    <message>
-        <location filename="../ui/import_culvert_file.ui" line="65"/>
-        <source>Telemac version of culvert file</source>
-        <translation type="unfinished">Version de Telemac du fichier</translation>
-    </message>
-    <message>
-        <location filename="../ui/import_culvert_file.ui" line="76"/>
-        <source>V6</source>
-        <translation>V6</translation>
-    </message>
-    <message>
-        <location filename="../ui/import_culvert_file.ui" line="81"/>
-        <source>V7</source>
-        <translation>V7</translation>
-    </message>
-    <message>
-        <location filename="../ui/import_culvert_file.ui" line="86"/>
-        <source>V8</source>
-        <translation>V8</translation>
     </message>
     <message>
         <location filename="../ui/import_culvert_file.ui" line="94"/>
@@ -618,20 +614,25 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
         <translation>Fichier texte des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="104"/>
+        <location filename="../ui/import_culvert_file.ui" line="72"/>
         <source>Culvert layer</source>
         <translation>Couche des ouvrages</translation>
+    </message>
+    <message>
+        <location filename="../ui/import_culvert_file.ui" line="30"/>
+        <source>Software</source>
+        <translation>Logiciel</translation>
     </message>
 </context>
 <context>
     <name>MeshQuality</name>
     <message>
-        <location filename="../libs/mesh_quality.py" line="67"/>
+        <location filename="../libs/mesh_quality.py" line="63"/>
         <source>Current mesh changed : {}</source>
         <translation>Maillage actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/mesh_quality.py" line="86"/>
+        <location filename="../libs/mesh_quality.py" line="82"/>
         <source>No mesh selected</source>
         <translation>Aucun maillage sélectionné</translation>
     </message>
@@ -705,49 +706,44 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
     </message>
 </context>
 <context>
-    <name>TelemacTools</name>
+    <name>MeshTools</name>
     <message>
-        <location filename="../telemac_tools.py" line="206"/>
-        <source>&amp;Telemac Tools</source>
-        <translation>&amp;Outils Telemac</translation>
+        <location filename="../mesh_tools.py" line="205"/>
+        <source>&amp;Mesh Tools</source>
+        <translation>&amp;Mesh Tools</translation>
     </message>
     <message>
-        <location filename="../telemac_tools.py" line="170"/>
+        <location filename="../mesh_tools.py" line="223"/>
         <source>Culvert Manager</source>
         <translation>Gestionnaire des ouvrages</translation>
     </message>
     <message>
-        <location filename="../telemac_tools.py" line="177"/>
+        <location filename="../mesh_tools.py" line="176"/>
         <source>Mesh Quality Analysis</source>
         <translation>Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../telemac_tools.py" line="224"/>
-        <source>Telemac - Culvert Manager</source>
-        <translation>Telemac - Gestionnaire des ouvrages</translation>
-    </message>
-    <message>
-        <location filename="../telemac_tools.py" line="227"/>
+        <location filename="../mesh_tools.py" line="226"/>
         <source>Telemac - Mesh Quality Analysis</source>
         <translation>Telemac - Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../telemac_tools.py" line="230"/>
-        <source>Telemac - Error</source>
-        <translation>Telemac - Erreur</translation>
+        <location filename="../mesh_tools.py" line="229"/>
+        <source>MeshTool - Error</source>
+        <translation>MeshTool - Erreur</translation>
     </message>
 </context>
 <context>
     <name>dlg_import_culvert_file</name>
     <message>
-        <location filename="../libs/import_culvert_file_dlg.py" line="24"/>
+        <location filename="../libs/import_culvert_file_dlg.py" line="26"/>
         <source>Text Files (*.txt);;All Files (*.*)</source>
         <translation>Fichiers texte (*.txt);;Tous les fichiers (*.*)</translation>
     </message>
     <message>
-        <location filename="../libs/import_culvert_file_dlg.py" line="25"/>
-        <source>ESRI Shapefile (*.shp);;GeoPackage (*.gpkg)</source>
-        <translation>ESRI Shapefile (*.shp);;GeoPackage (*.gpkg)</translation>
+        <location filename="../libs/import_culvert_file_dlg.py" line="30"/>
+        <source>Select file</source>
+        <translation>Sélectionner un fichier</translation>
     </message>
 </context>
 </TS>

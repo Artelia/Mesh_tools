@@ -637,26 +637,30 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         relax = round(self.sb_relax.value(), 2)
 
         with open(culv_file_name, "w") as culv_file:
-            if self.software_select == 0: # Telemac
+            if self.software_select == 0:  # Telemac
                 culv_file.write("Relaxation" + str("\t") + self.tr("Culvert count") + str("\n"))
                 culv_file.write(str(relax) + str("\t") + str(nb_culv) + str("\n"))
                 idx_out = 3
-            elif self.software_select == 1: #Uhaina
+            elif self.software_select == 1:  # Uhaina
                 culv_file.write(self.tr("Culvert count") + str("\n"))
                 culv_file.write(str(nb_culv) + str("\n"))
                 idx_out = 4
-            
-            culv_flds_srtd = [fld for fld in sorted(self.culv_flds, key=lambda x: (x[idx_out] is None, x[idx_out])) if fld[idx_out] is not None]
+
+            culv_flds_srtd = [
+                fld
+                for fld in sorted(self.culv_flds, key=lambda x: (x[idx_out] is None, x[idx_out]))
+                if fld[idx_out] is not None
+            ]
 
             txt = ""
             for fld in culv_flds_srtd[:-1]:
-                if (self.software_select == 1) & (fld[0] in ["z1", "z2"]): # Uhaina Only
+                if (self.software_select == 1) & (fld[0] in ["z1", "z2"]):  # Uhaina Only
                     txt += "X1\t"
                     txt += "Y1\t"
                 else:
                     txt += "X2\t"
                     txt += "Y2\t"
-                
+
                 txt += f"{fld[0]}\t"
             txt += f"{culv_flds_srtd[-1][0]}\n"
             culv_file.write(txt)
@@ -668,8 +672,13 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 x2, y2 = QgsPointXY(pts[-1][-1])
 
                 for fld in culv_flds_srtd[:-1]:
-                    if fld[0] in ["Z1", "Z2"]:
-                        
+                    if (self.software_select == 1) and (fld[0] in ["Z1", "Z2"]):
+                        if fld[0] == "Z1":
+                            txt += f"{x1}\t"
+                            txt += f"{y1}\t"
+                        else:
+                            txt += f"{x2}\t"
+                            txt += f"{y2}\t"
                     txt += f"{ft[fld[0]]}\t"
                 txt += f"{ft[culv_flds_srtd[-1][0]]}\n"
                 culv_file.write(txt.replace("NULL", " "))

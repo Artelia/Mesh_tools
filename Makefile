@@ -1,7 +1,7 @@
 #/***************************************************************************
-# TelemacTools
+# MeshTools
 #
-# Tools for Telemac
+# Tools for management of Data on mesh (Telemac, Uhaina)
 #							 -------------------
 #		begin				: 2021-03-24
 #		git sha				: $Format:%H$
@@ -37,7 +37,7 @@ PY_FILES = \
 	__init__.py \
 	mesh_tools.py mesh_tools_dockwidget.py
 
-UI_FILES = telemac_tools_dockwidget_base.ui
+UI_FILES = mesh_tools_dockwidget_base.ui
 
 EXTRAS = metadata.txt icon.png
 

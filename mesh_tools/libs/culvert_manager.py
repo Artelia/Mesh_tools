@@ -42,8 +42,6 @@ from ..mesh_tools_dockwidget import MeshToolDockWidget
 from .create_culvert_shp_dlg import dlg_create_culvert_shapefile
 from .import_culvert_file_dlg import dlg_import_culvert_file
 
-from ._mesh_tools import find_nearest_node, find_z_from_mesh
-
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
 
 
@@ -75,8 +73,8 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
 
         self.software_select = 0
 
-# Col4 - Index for Telemac
-# Col5 - Index for Uhaina
+        # Col4 - Index for Telemac
+        # Col5 - Index for Uhaina
         self.culv_flds = [
             ["NAME", QVariant.String, self.txt_name, 28, 22],
             ["N1", QVariant.Int, None, 0, None],

@@ -22,7 +22,7 @@
  ***************************************************************************/
 """
 
-import os
+from contextlib import suppress
 from datetime import datetime
 
 from qgis.PyQt.QtCore import QCoreApplication, pyqtSignal
@@ -37,7 +37,9 @@ class TelemacToolDockWidget(QDockWidget):
         super(TelemacToolDockWidget, self).__init__(parent)
 
     def closeEvent(self, event):
-        self.clean()
+        with suppress(AttributeError, RuntimeError, TypeError):
+            self.clean()
+
         self.closingPlugin.emit()
         event.accept()
 

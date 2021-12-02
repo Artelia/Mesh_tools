@@ -5,20 +5,16 @@ import os
 
 from qgis.core import (
     QgsCoordinateTransform,
-    QgsFeature,
     QgsLineString,
     QgsMapLayerProxyModel,
-    QgsMapLayerType,
     QgsMesh,
     QgsPointXY,
     QgsProject,
     QgsTriangle,
-    QgsVectorLayer,
 )
 from qgis.gui import QgsVertexMarker
 from qgis.PyQt import uic
-from qgis.PyQt.QtGui import QColor, QFont, QIcon, QStandardItem, QStandardItemModel
-from qgis.PyQt.QtWidgets import QWidget
+from qgis.PyQt.QtGui import QColor
 from qgis.utils import iface
 
 from ..telemac_tools_dockwidget import TelemacToolDockWidget
@@ -110,7 +106,7 @@ class MeshQuality(TelemacToolDockWidget, FORM_CLASS):
                     self.addVertexMarker(triangle.centroid(), "bad_angle_3")
 
             if self.chk_min_size.isChecked():
-                if any(l < self.qdsb_min_element_length.value() for l in triangle.lengths()):
+                if any(length < self.qdsb_min_element_length.value() for length in triangle.lengths()):
                     self.addVertexMarker(triangle.centroid(), "bad_length")
                 if triangle.area() < self.qdsb_min_face_area.value():
                     self.addVertexMarker(triangle.centroid(), "bad_area")
@@ -158,14 +154,14 @@ class MeshQuality(TelemacToolDockWidget, FORM_CLASS):
 
     def showVertexMarker(self, id=None):
         if id:
-            marker[id].show()
+            self.bad_faces_center[id].show()
         else:
             for marker in self.bad_faces_center:
                 marker.show()
 
     def hideVertexMarker(self, id=None):
         if id:
-            marker[id].hide()
+            self.bad_faces_center[id].hide()
         else:
             for marker in self.bad_faces_center:
                 marker.hide()

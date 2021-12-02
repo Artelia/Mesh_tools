@@ -24,9 +24,9 @@
 import os.path
 
 from qgis.core import Qgis
-from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator, pyqtSignal
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QToolBar, QWidget
+from qgis.PyQt.QtWidgets import QAction, QToolBar
 
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality

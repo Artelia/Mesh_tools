@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>478</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,6 +21,13 @@
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Software</string>
      </property>
     </widget>
    </item>
@@ -59,49 +66,32 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Telemac version of culvert file</string>
+      <string>Culvert layer</string>
      </property>
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QComboBox" name="cb_tel_ver">
+    <widget class="QComboBox" name="cb_soft">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <item>
       <property name="text">
-       <string>V6</string>
+       <string>TELEMAC</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string>V7</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>V8</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Culvert text file</string>
-     </property>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QgsFileWidget" name="text_file"/>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>Culvert layer</string>
+      <string>Culvert text file</string>
      </property>
     </widget>
    </item>

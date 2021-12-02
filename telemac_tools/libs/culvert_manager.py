@@ -4,8 +4,11 @@ import os
 import time
 
 import numpy as np
+from processing.algs.gdal.GdalUtils import GdalUtils
 from qgis.core import (
+    NULL,
     QgsCoordinateTransform,
+    QgsCoordinateTransformContext,
     QgsFeature,
     QgsField,
     QgsFields,
@@ -21,7 +24,6 @@ from qgis.core import (
     QgsSpatialIndex,
     QgsVectorFileWriter,
     QgsVectorLayer,
-    NULL,
 )
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QVariant, pyqtSignal
@@ -154,10 +156,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
         self.is_opening = False
 
-    def closeEvent(self, event):
-        self.closingTool.emit()
-        event.accept()
-
     def addLayers(self, layers):
         for lay in layers:
             self.analyse_layer(lay)
@@ -180,6 +178,11 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
     def clean(self):
         self.project.layersAdded.disconnect(self.addLayers)
         self.project.layersRemoved.disconnect(self.removeLayers)
+
+        self.cb_lay_mesh.layerChanged.disconnect(self.mesh_lay_changed)
+        self.cb_lay_culv.currentIndexChanged.disconnect(self.culv_lay_changed)
+        self.cb_dataset_mesh.currentIndexChanged.disconnect(self.mesh_dataset_changed)
+        self.cb_time_mesh.currentIndexChanged.disconnect(self.mesh_time_changed)
 
     ######################################################################################
     #                                                                                    #
@@ -246,7 +249,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                     )
                     == QMessageBox.Ok
                 ):
-                    self.cb_auto_z.setCheckState(True)
                     self.update_all_auto_z()
 
     def create_vertices_spatial_index(self):
@@ -336,7 +338,6 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                     )
                     == QMessageBox.Ok
                 ):
-                    self.cb_auto_z.setCheckState(True)
                     self.update_all_auto_z()
         else:
             self.lay_culv = None
@@ -558,7 +559,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
             mesh_crs = self.lay_mesh.crs()
             if mesh_crs.isValid():
                 xform = QgsCoordinateTransform(mesh_crs, shp_crs, self.project)
-                pt = self.native_mesh.vertex(n - 1)
+                pt = self.native_mesh.vertex(int(n - 1))
                 if not pt.isEmpty():
                     point = xform.transform(QgsPointXY(pt))
                 else:
@@ -652,7 +653,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                 for fld in culv_flds_srtd[:-1]:
                     txt += f"{ft[fld[0]]}\t"
                 txt += f"{ft[culv_flds_srtd[-1][0]]}\n"
-                culv_file.write(txt)
+                culv_file.write(txt.replace("NULL", " "))
 
             self.write_log(self.tr("Culvert File Created"), 0)
             return
@@ -700,15 +701,21 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         def asDict(headers, values):
             dico = {}
             for i, h in enumerate(headers):
-                dico[h] = float(values[i])
+                if values[i] == NULL:
+                    dico[h] = ""
+                else:
+                    dico[h] = float(values[i])
             return dico
 
         culv_flds = [x[0] for x in self.culv_flds]
         dlg = dlg_import_culvert_file(culv_flds, self)
         dlg.setWindowModality(2)
         if dlg.exec_():
-            items, version = dlg.items, dlg.cb_tel_ver.currentText()
-            txt_path, layer_path = dlg.text_file.filePath(), dlg.layer_file.filePath()
+            items = dlg.items
+            software = dlg.cb_soft.currentText()
+            txt_path = dlg.text_file.filePath()
+            layer_path = dlg.layer_file.filePath()
+            layerDriver = GdalUtils.getVectorDriverFromFileName(layer_path)
         else:
             return
 
@@ -721,22 +728,27 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         for fld in self.culv_flds:
             layerFields.append(QgsField(fld[0], fld[1]))
 
-        tmp_lay = QgsVectorLayer(f"MultiLineString?crs={crs.authid()}", "", "memory")
-        pr = tmp_lay.dataProvider()
+        layer = QgsVectorLayer(f"MultiLineString?crs={crs.authid()}", self.tr("Culverts"), "memory")
+        pr = layer.dataProvider()
         pr.addAttributes(layerFields)
-        tmp_lay.updateFields()
+        layer.updateFields()
+        layer.startEditing()
 
-        fets = []
         with open(txt_path, "r") as txt_file:
             # 1st line is comment
             txt_file.readline()
             # Relaxation and number of culverts
             relax, nb_culvert = get_values(txt_file.readline())
+            self.sb_relax.setValue(relax)
             # Retrieve headers
             headers = get_values(txt_file.readline())
 
             for i in range(int(nb_culvert)):
-                values = asDict(headers, get_values(txt_file.readline()))
+                lineValues = get_values(txt_file.readline())
+                if lineValues == [""]:
+                    continue
+
+                values = asDict(headers, lineValues)
 
                 fet = QgsFeature()
 
@@ -751,22 +763,47 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
 
                 line = QgsGeometry.fromPolylineXY([point_n1, point_n2])
                 fet.setGeometry(line)
-                
+
                 attrs = []
                 for fld in self.culv_flds:
-                    attr = values[items[fld[0].lower()][1]]
-                    
-                fets.append(fet)
+                    key = items[fld[0].lower()][1]
+                    if key:
+                        attr = values[key]
+                    else:
+                        if fld[1] in [QVariant.Int, QVariant.Double]:
+                            attr = 0
+                        else:
+                            attr = ""
+                    attrs.append(attr)
 
-        if fets:
-            pr.addFeatures(fets)
+                fet.setAttributes(attrs)
 
-        QgsVectorFileWriter.writeAsVectorFormat(tmp_lay, layer_path, None, destCRS=crs, driverName="ESRI Shapefile")
-        shp_lay = QgsVectorLayer(layer_path, os.path.basename(layer_path).rsplit(".", 1)[0], "ogr")
-        shp_lay.loadNamedStyle(self.file_culv_style)
-        shp_lay.saveDefaultStyle()
-        self.project.addMapLayer(shp_lay)
-        self.cb_lay_culv.setCurrentIndex(self.cb_lay_culv.findData(shp_lay.id(), 32))
+                if fet.isValid():
+                    layer.addFeature(fet)
+
+        if not layer.commitChanges():
+            self.write_log(self.tr("Error during culvert file creation"), 2)
+            return
+
+        if layer_path:
+            options = QgsVectorFileWriter.SaveVectorOptions()
+            options.driverName = layerDriver
+            options.fileEncoding = "utf-8"
+            QgsVectorFileWriter.writeAsVectorFormatV2(
+                layer=layer,
+                fileName=layer_path,
+                transformContext=QgsCoordinateTransformContext(),
+                options=options,
+            )
+            layer = QgsVectorLayer(layer_path, os.path.basename(layer_path).rsplit(".", 1)[0], "ogr")
+
+        if layer.isValid():
+            layer.loadNamedStyle(self.file_culv_style)
+            layer.saveDefaultStyle()
+            self.project.addMapLayer(layer)
+            self.cb_lay_culv.setCurrentIndex(self.cb_lay_culv.findData(layer.id(), 32))
+        else:
+            self.write_log(self.tr("Created culvert layer is not valid."), 2)
 
 
 def correctAngle(angle):

@@ -2,6 +2,7 @@
 
 import os
 
+from qgis.gui import QgsFileWidget
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QComboBox, QDialog, QTableWidgetItem
@@ -20,8 +21,15 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
 
         self.updateTable()
 
+        self.text_file.setStorageMode(QgsFileWidget.GetFile)
+        self.text_file.setDialogTitle(self.tr("Select directory"))
         self.text_file.setFilter(self.tr("Text Files (*.txt);;All Files (*.*)"))
-        self.layer_file.setFilter(self.tr("ESRI Shapefile (*.shp);;GeoPackage (*.gpkg)"))
+
+        self.layer_file.setStorageMode(QgsFileWidget.SaveFile)
+        self.layer_file.setConfirmOverwrite(True)
+        self.layer_file.setDialogTitle(self.tr("Select file"))
+        self.layer_file.setFilter(self.tr("ESRI Shapefile (*.shp)"))
+        # self.layer_file.setFilter(self.tr("ESRI Shapefile (*.shp);;GeoPackage (*.gpkg)"))
 
         self.text_file.fileChanged.connect(self.parseTextFile)
         self.cb_tel_ver.currentIndexChanged.connect(self.parseTextFile)
@@ -46,6 +54,9 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
                 txt_params.append(x[1])
 
         for param, txt_param in self.items.values():
+            if not param:
+                continue
+
             self.tableWidget.insertRow(self.tableWidget.rowCount())
             self.tableWidget.setItem(
                 self.tableWidget.rowCount() - 1,
@@ -76,7 +87,13 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
             return values
 
         path = self.text_file.filePath()
-        tel_ver = self.cb_tel_ver.currentText()
+        software = self.cb_tel_ver.currentText()
+
+        if not path:
+            for value in self.items.values():
+                value[1] = ""
+            self.updateTable()
+            return
 
         with open(path, "r") as txt_file:
             # First line is always a comment
@@ -86,8 +103,16 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
             headers = get_values(txt_file.readline())
 
         for header in headers:
+            key = None
             if header.lower() in self.items.keys():
-                self.items[header.lower()][1] = header
+                key = header.lower()
+            elif header.lower() in ["i1", "i2"]:
+                key = f"n{header.lower()[1]}"
+
+            if key is not None:
+                self.items[key][1] = header
+            else:
+                self.items[header.lower()] = ["", header]
 
         self.updateTable()
 

@@ -38,14 +38,14 @@ from qgis.PyQt.QtWidgets import (
 )
 from qgis.utils import iface
 
-from ..telemac_tools_dockwidget import TelemacToolDockWidget
+from ..mesh_tools_dockwidget import MeshToolDockWidget
 from .create_culvert_shp_dlg import dlg_create_culvert_shapefile
 from .import_culvert_file_dlg import dlg_import_culvert_file
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
 
 
-class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
+class CulvertManager(MeshToolDockWidget, FORM_CLASS):
     closingTool = pyqtSignal()
 
     def __init__(self, parent=None):

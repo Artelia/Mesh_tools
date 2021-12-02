@@ -17,12 +17,12 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QColor
 from qgis.utils import iface
 
-from ..telemac_tools_dockwidget import TelemacToolDockWidget
+from ..mesh_tools_dockwidget import MeshToolDockWidget
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_quality.ui"))
 
 
-class MeshQuality(TelemacToolDockWidget, FORM_CLASS):
+class MeshQuality(MeshToolDockWidget, FORM_CLASS):
     def __init__(self, parent=None):
         super(MeshQuality, self).__init__(parent)
         self.setupUi(self)

@@ -30,11 +30,11 @@ from qgis.PyQt.QtGui import QColor, QFont
 from qgis.PyQt.QtWidgets import QDockWidget
 
 
-class TelemacToolDockWidget(QDockWidget):
+class MeshToolDockWidget(QDockWidget):
     closingPlugin = pyqtSignal()
 
     def __init__(self, parent=None):
-        super(TelemacToolDockWidget, self).__init__(parent)
+        super(MeshToolDockWidget, self).__init__(parent)
 
     def closeEvent(self, event):
         with suppress(AttributeError, RuntimeError, TypeError):

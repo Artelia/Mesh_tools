@@ -32,13 +32,13 @@ from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
 
 # Import the code for the DockWidget
-from .telemac_tools_dockwidget import TelemacToolDockWidget
+from .mesh_tools_dockwidget import MeshToolDockWidget
 
 # Initialize Qt resources from file resources.py
 # from .resources import *
 
 
-class TelemacTools:
+class MeshTools:
     """QGIS Plugin Implementation."""
 
     def __init__(self, iface):
@@ -89,7 +89,7 @@ class TelemacTools:
         :rtype: QString
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate("TelemacTools", message)
+        return QCoreApplication.translate("MeshTools", message)
 
     def add_action(
         self,
@@ -203,7 +203,7 @@ class TelemacTools:
             self.dockwidget.close()
 
         for action in self.actions:
-            self.iface.removePluginMenu(self.tr("&Telemac Tools"), action)
+            self.iface.removePluginMenu(self.tr("&Mesh Tools"), action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar
         del self.toolbar
@@ -221,13 +221,13 @@ class TelemacTools:
 
         if tool == 1:
             self.dockwidget = CulvertManager()
-            self.dockwidget.setWindowTitle(self.tr("Telemac - Culvert Manager"))
+            self.dockwidget.setWindowTitle(self.tr("Culvert Manager"))
         elif tool == 2:
             self.dockwidget = MeshQuality()
             self.dockwidget.setWindowTitle(self.tr("Telemac - Mesh Quality Analysis"))
         else:
             self.dockwidget = TelemacToolDockWidget()
-            self.dockwidget.setWindowTitle(self.tr("Telemac - Error"))
+            self.dockwidget.setWindowTitle(self.tr("MeshTool - Error"))
 
         self.dockwidget.closingPlugin.connect(self.onClosePlugin)
         self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)

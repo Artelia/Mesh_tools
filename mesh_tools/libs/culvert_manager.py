@@ -72,36 +72,35 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         self.cur_mesh_time = None
 
         self.culv_flds = [
-            ["NAME", QVariant.String, self.txt_name, 28],
-            ["N1", QVariant.Int, None, 0],
-            ["N2", QVariant.Int, None, 1],
-            ["CE1", QVariant.Double, self.sb_ce1, 2],
-            ["CE2", QVariant.Double, self.sb_ce2, 3],
-            ["CS1", QVariant.Double, self.sb_cs1, 4],
-            ["CS2", QVariant.Double, self.sb_cs2, 5],
-            ["LARG", QVariant.Double, self.sb_larg, 6],
-            ["HAUT", QVariant.Double, self.sb_haut1, 7],
-            ["CLAP", QVariant.String, self.cb_clapet, 8],
-            ["L12", QVariant.Double, self.sb_l12, 9],
-            ["Z1", QVariant.Double, self.sb_z1, 10],
-            ["Z2", QVariant.Double, self.sb_z2, 11],
-            ["CV", QVariant.Double, self.sb_cv, 12],
-            ["C56", QVariant.Double, self.sb_c56, 13],
-            ["CV5", QVariant.Double, self.sb_cv5, 14],
-            ["C5", QVariant.Double, self.sb_c5, 15],
-            ["CT", QVariant.Double, self.sb_ct, 16],
-            ["HAUT2", QVariant.Double, self.sb_haut2, 17],
-            ["FRIC", QVariant.Double, self.sb_fric, 18],
-            ["LENGTH", QVariant.Double, self.sb_length, 19],
-            ["CIRC", QVariant.Int, self.cb_circ, 20],
-            ["d1", QVariant.Double, self.sb_d1, 21],
-            ["d2", QVariant.Double, self.sb_d2, 22],
-            ["a1", QVariant.Double, self.sb_a1, 23],
-            ["a2", QVariant.Double, self.sb_a2, 24],
-            ["AA", QVariant.Int, self.cb_auto_a, 25],
-            ["AL", QVariant.Int, self.cb_auto_l, 26],
-            ["AZ", QVariant.Int, self.cb_auto_z, 27],
-            ["Remarques", QVariant.String, None, 29],
+            ["NAME", QVariant.String, self.txt_name, 28, 22],
+            ["N1", QVariant.Int, None, 0, None],
+            ["N2", QVariant.Int, None, 1, None],
+            ["CE1", QVariant.Double, self.sb_ce1, 2, 6],
+            ["CE2", QVariant.Double, self.sb_ce2, 3, 7],
+            ["CS1", QVariant.Double, self.sb_cs1, 4, 8],
+            ["CS2", QVariant.Double, self.sb_cs2, 5, 9],
+            ["LARG", QVariant.Double, self.sb_larg, 6, 17],
+            ["HAUT", QVariant.Double, self.sb_haut1, 7, 18],
+            ["CLAP", QVariant.String, self.cb_clapet, 8, 20],
+            ["L12", QVariant.Double, self.sb_l12, 9, 10],
+            ["Z1", QVariant.Double, self.sb_z1, 10, 2],
+            ["Z2", QVariant.Double, self.sb_z2, 11, 5],
+            ["CV", QVariant.Double, self.sb_cv, 12, None],
+            ["C56", QVariant.Double, self.sb_c56, 13, None],
+            ["CV5", QVariant.Double, self.sb_cv5, 14, None],
+            ["C5", QVariant.Double, self.sb_c5, 15, None],
+            ["CT", QVariant.Double, self.sb_ct, 16, None],
+            ["HAUT2", QVariant.Double, self.sb_haut2, 17, 19],
+            ["FRIC", QVariant.Double, self.sb_fric, 18, None],
+            ["LENGTH", QVariant.Double, self.sb_length, 19, None],
+            ["CIRC", QVariant.Int, self.cb_circ, 20, 16],
+            ["d1", QVariant.Double, self.sb_d1, 21, 11],
+            ["d2", QVariant.Double, self.sb_d2, 22, 12],
+            ["a1", QVariant.Double, self.sb_a1, 23, 14],
+            ["a2", QVariant.Double, self.sb_a2, 24, 15],
+            ["AA", QVariant.Int, self.cb_auto_a, 25, 13],
+            ["AL", QVariant.Int, self.cb_auto_l, 26, None],
+            ["AZ", QVariant.Int, self.cb_auto_z, 27, 21],
         ]
 
         self.is_opening = True
@@ -183,6 +182,15 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         self.cb_lay_culv.currentIndexChanged.disconnect(self.culv_lay_changed)
         self.cb_dataset_mesh.currentIndexChanged.disconnect(self.mesh_dataset_changed)
         self.cb_time_mesh.currentIndexChanged.disconnect(self.mesh_time_changed)
+
+    ######################################################################################
+    #                                                                                    #
+    #                                      SOFTWARE                                      #
+    #                                                                                    #
+    ######################################################################################
+
+    def soft_changed(self):
+        self.software_select = self.cb_software_select.currentIndex()
 
     ######################################################################################
     #                                                                                    #
@@ -513,14 +521,9 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         attrs = dict()
         for ft in self.lay_culv.getFeatures():
             if ft["AZ"] == 2:
-                (z1, z2), (n1, n2), err = self.recup_z_from_mesh(ft)
+                (z1, z2), err = self.recup_z_from_mesh(ft)
                 if not err:
-                    attrs[ft.id()] = {
-                        ft.fieldNameIndex("N1"): n1,
-                        ft.fieldNameIndex("N2"): n2,
-                        ft.fieldNameIndex("z1"): z1,
-                        ft.fieldNameIndex("z2"): z2,
-                    }
+                    attrs[ft.id()] = {ft.fieldNameIndex("Z1"): z1, ft.fieldNameIndex("Z2"): z2}
                 else:
                     self.write_log(self.tr("Error on Z calculation : {}").format(err), 2)
                     return
@@ -573,7 +576,7 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         return point, err
 
     def recup_z_from_mesh(self, ft):
-        err, n, z = None, [None, None], [None, None]
+        err, z = None, [None, None]
         if self.lay_mesh:
             mesh_crs = self.lay_mesh.crs()
             if mesh_crs.isValid():
@@ -588,17 +591,15 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
                         dset_val = self.lay_mesh.dataProvider().datasetValues(
                             QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1
                         )
-                        n[p * -1] = idx + 1
                         z[p * -1] = round(dset_val.value(0).scalar(), 2)
                     else:
-                        n[p * -1] = None
                         z[p * -1] = 0.0
             else:
                 err = self.tr("CRS defined for mesh layer is not valid")
         else:
             err = self.tr("No mesh layer selected")
 
-        return z, n, err
+        return z, err
 
     ######################################################################################
     #                                                                                    #
@@ -636,21 +637,39 @@ class CulvertManager(TelemacToolDockWidget, FORM_CLASS):
         relax = round(self.sb_relax.value(), 2)
 
         with open(culv_file_name, "w") as culv_file:
-
-            culv_file.write("Relaxation" + str("\t") + self.tr("Culvert count") + str("\n"))
-            culv_file.write(str(relax) + str("\t") + str(nb_culv) + str("\n"))
-
-            culv_flds_srtd = sorted(self.culv_flds, key=lambda x: x[3])
+            if self.software_select == 0: # Telemac
+                culv_file.write("Relaxation" + str("\t") + self.tr("Culvert count") + str("\n"))
+                culv_file.write(str(relax) + str("\t") + str(nb_culv) + str("\n"))
+                idx_out = 3
+            elif self.software_select == 1: #Uhaina
+                culv_file.write(self.tr("Culvert count") + str("\n"))
+                culv_file.write(str(nb_culv) + str("\n"))
+                idx_out = 4
+            
+            culv_flds_srtd = [fld for fld in sorted(self.culv_flds, key=lambda x: (x[idx_out] is None, x[idx_out])) if fld[idx_out] is not None]
 
             txt = ""
             for fld in culv_flds_srtd[:-1]:
+                if (self.software_select == 1) & (fld[0] in ["z1", "z2"]): # Uhaina Only
+                    txt += "X1\t"
+                    txt += "Y1\t"
+                else:
+                    txt += "X2\t"
+                    txt += "Y2\t"
+                
                 txt += f"{fld[0]}\t"
             txt += f"{culv_flds_srtd[-1][0]}\n"
             culv_file.write(txt)
 
             for ft in self.lay_culv.getFeatures():
                 txt = ""
+                pts = ft.geometry().asMultiPolyline()
+                x1, y1 = QgsPointXY(pts[0][0])
+                x2, y2 = QgsPointXY(pts[-1][-1])
+
                 for fld in culv_flds_srtd[:-1]:
+                    if fld[0] in ["Z1", "Z2"]:
+                        
                     txt += f"{ft[fld[0]]}\t"
                 txt += f"{ft[culv_flds_srtd[-1][0]]}\n"
                 culv_file.write(txt.replace("NULL", " "))

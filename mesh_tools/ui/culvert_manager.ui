@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>538</width>
-    <height>730</height>
+    <height>765</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1092,10 +1092,45 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="btn_create_file">
-      <property name="text">
-       <string>Create Culvert file</string>
+     <widget class="QGroupBox" name="OutputParameters">
+      <property name="title">
+       <string>Output Parameters</string>
       </property>
+      <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1" columnminimumwidth="0,0">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="btn_create_file_2">
+         <property name="text">
+          <string>Create Culvert file</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QComboBox" name="cb_software_select">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="currentText">
+          <string>TELEMAC</string>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>TELEMAC</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Uhaina</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item>

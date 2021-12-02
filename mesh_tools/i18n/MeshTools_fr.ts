@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<!DOCTYPE TS><TS version="2.0" language="fr" sourcelanguage="">
 <context>
     <name>Create_culvert_shp_UI</name>
     <message>
@@ -32,164 +31,164 @@
 <context>
     <name>CulvertManager</name>
     <message>
-        <location filename="../libs/culvert_manager.py" line="233"/>
+        <location filename="../libs/culvert_manager.py" line="224"/>
         <source>Current mesh changed : {}</source>
         <translation>Maillage actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="248"/>
+        <location filename="../libs/culvert_manager.py" line="239"/>
         <source>Current mesh dataset changed : {}</source>
         <translation>Groupe actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="259"/>
+        <location filename="../libs/culvert_manager.py" line="250"/>
         <source>Current mesh timestep changed : {}</source>
         <translation>Pas de temps actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="352"/>
+        <location filename="../libs/culvert_manager.py" line="343"/>
         <source>Automatic Z Update</source>
         <translation>Actualisation automatique de Z</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="263"/>
+        <location filename="../libs/culvert_manager.py" line="254"/>
         <source>Mesh parameters have been changed.
 Update culvert features with Automatic Z checked ?</source>
         <translation>Les paramètres du maillage ont changé.
 Voulez-vous mettre à jour les paramètres des ouvrages avec Z automatique coché ?</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="278"/>
-        <source>Creation of vertices spatial indexâ¦</source>
+        <location filename="../libs/culvert_manager.py" line="269"/>
+        <source>Creation of vertices spatial index&#xe2;&#x80;&#xa6;</source>
         <translation>Création de l&apos;index spatial des nœudsâ¦</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="296"/>
+        <location filename="../libs/culvert_manager.py" line="287"/>
         <source>Vertices spatial index created in {} sec.</source>
         <translation>Index spatial des nœuds créé en {} sec.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="382"/>
+        <location filename="../libs/culvert_manager.py" line="371"/>
         <source>No culvert selected</source>
         <translation>Pas d&apos;ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="384"/>
+        <location filename="../libs/culvert_manager.py" line="373"/>
         <source>More than one culvert selected</source>
         <translation>Plus d&apos;un ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="388"/>
+        <location filename="../libs/culvert_manager.py" line="377"/>
         <source>Selected culvert informations</source>
         <translation>Information de l&apos;ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="392"/>
+        <location filename="../libs/culvert_manager.py" line="381"/>
         <source>No culvert layer selected</source>
         <translation>Pas de couche des ouvrages sélectionnée</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="543"/>
+        <location filename="../libs/culvert_manager.py" line="532"/>
         <source>Error on Z calculation : {}</source>
         <translation>Erreur dans le calcul de Z : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="527"/>
+        <location filename="../libs/culvert_manager.py" line="516"/>
         <source>Error on N calculation : {}</source>
         <translation>Erreur dans le calcul de N : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="533"/>
+        <location filename="../libs/culvert_manager.py" line="522"/>
         <source>N values updated</source>
         <translation>Valeurs des N mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="548"/>
+        <location filename="../libs/culvert_manager.py" line="537"/>
         <source>Z values updated</source>
         <translation>Valeurs des Z mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="613"/>
+        <location filename="../libs/culvert_manager.py" line="602"/>
         <source>CRS defined for mesh layer is not valid</source>
         <translation>Le SRC du maillage n&apos;est pas valide</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="615"/>
+        <location filename="../libs/culvert_manager.py" line="604"/>
         <source>No mesh layer selected</source>
         <translation>Pas de maillage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="632"/>
+        <location filename="../libs/culvert_manager.py" line="621"/>
         <source>All culverts are valid</source>
         <translation>Tous les ouvrages sont valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="643"/>
+        <location filename="../libs/culvert_manager.py" line="632"/>
         <source>File creation is not possible, some culverts are not valid</source>
         <translation>Création du fichier impossible, certains ouvrages ne sont pas valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="646"/>
+        <location filename="../libs/culvert_manager.py" line="635"/>
         <source>Culvert file</source>
         <translation>Fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="646"/>
+        <location filename="../libs/culvert_manager.py" line="635"/>
         <source>Text File (*.txt)</source>
         <translation>Fichier texte (*.txt)</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="660"/>
+        <location filename="../libs/culvert_manager.py" line="649"/>
         <source>Culvert count</source>
         <translation>Nombre d&apos;ouvrage</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="701"/>
+        <location filename="../libs/culvert_manager.py" line="690"/>
         <source>Culvert File Created</source>
         <translation>Fichier des ouvrages créé</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="828"/>
+        <location filename="../libs/culvert_manager.py" line="817"/>
         <source>Error during culvert file creation</source>
         <translation>Erreur lors de la création du fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="727"/>
+        <location filename="../libs/culvert_manager.py" line="716"/>
         <source>{} value is not correct.</source>
         <translation>La valeur de {} est incorrecte.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="584"/>
+        <location filename="../libs/culvert_manager.py" line="573"/>
         <source>{} node is not in mesh layer</source>
         <translation>Le nœud {} n&apos;est pas dans le maillage</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="710"/>
+        <location filename="../libs/culvert_manager.py" line="699"/>
         <source>Nameless culvert (feature id {})</source>
         <translation>Ouvrage sans nom (entité n°{})</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="715"/>
+        <location filename="../libs/culvert_manager.py" line="704"/>
         <source>Culvert extremity is not within the mesh.</source>
         <translation>L&apos;une des extrémités de l&apos;ouvrage n&apos;est pas dans l&apos;emprise du maillage.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="774"/>
+        <location filename="../libs/culvert_manager.py" line="763"/>
         <source>Culverts</source>
         <translation>Ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="802"/>
+        <location filename="../libs/culvert_manager.py" line="791"/>
         <source>Error when importing culvert {i} with error(s) : {err}</source>
         <translation>Erreur lors de l&apos;import de l&apos;ouvrage {i} avec l&apos;erreur : {err}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="849"/>
+        <location filename="../libs/culvert_manager.py" line="838"/>
         <source>Created culvert layer is not valid.</source>
         <translation>La couche des ouvrages créée n&apos;est pas valdie.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="352"/>
+        <location filename="../libs/culvert_manager.py" line="343"/>
         <source>Culvert layer has been changed.
 Update culvert features with Automatic Z checked ?</source>
         <translation type="unfinished">La couche des ouvrage a changé.
@@ -708,27 +707,27 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
 <context>
     <name>MeshTools</name>
     <message>
-        <location filename="../mesh_tools.py" line="205"/>
+        <location filename="../mesh_tools.py" line="70"/>
         <source>&amp;Mesh Tools</source>
         <translation>&amp;Mesh Tools</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="223"/>
+        <location filename="../mesh_tools.py" line="224"/>
         <source>Culvert Manager</source>
         <translation>Gestionnaire des ouvrages</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="176"/>
+        <location filename="../mesh_tools.py" line="177"/>
         <source>Mesh Quality Analysis</source>
         <translation>Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="226"/>
+        <location filename="../mesh_tools.py" line="227"/>
         <source>Telemac - Mesh Quality Analysis</source>
         <translation>Telemac - Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="229"/>
+        <location filename="../mesh_tools.py" line="230"/>
         <source>MeshTool - Error</source>
         <translation>MeshTool - Erreur</translation>
     </message>

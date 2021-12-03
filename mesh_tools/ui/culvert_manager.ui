@@ -955,6 +955,9 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="decimals">
+                <number>3</number>
+               </property>
                <property name="minimum">
                 <double>0.000000000000000</double>
                </property>

@@ -658,12 +658,9 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
 
             txt = ""
             for fld in culv_flds_srtd[:-1]:
-                if (self.software_select == 1) & (fld[0] in ["z1", "z2"]):  # Uhaina Only
-                    txt += "X1\t"
-                    txt += "Y1\t"
-                else:
-                    txt += "X2\t"
-                    txt += "Y2\t"
+                if (self.software_select == 1) and (fld[0] in ["Z1", "Z2"]):  # Uhaina Only
+                    txt += f"X{fld[0][1]}\t"
+                    txt += f"Y{fld[0][1]}\t"
 
                 txt += f"{fld[0]}\t"
             txt += f"{culv_flds_srtd[-1][0]}\n"
@@ -677,12 +674,9 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
 
                 for fld in culv_flds_srtd[:-1]:
                     if (self.software_select == 1) and (fld[0] in ["Z1", "Z2"]):
-                        if fld[0] == "Z1":
-                            txt += f"{x1}\t"
-                            txt += f"{y1}\t"
-                        else:
-                            txt += f"{x2}\t"
-                            txt += f"{y2}\t"
+                        txt += f"X{fld[0][1]}\t"
+                        txt += f"Y{fld[0][1]}\t"
+
                     txt += f"{ft[fld[0]]}\t"
                 txt += f"{ft[culv_flds_srtd[-1][0]]}\n"
                 culv_file.write(txt.replace("NULL", " "))

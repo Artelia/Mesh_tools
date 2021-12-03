@@ -21,6 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import os.path
 
 from qgis.core import Qgis
@@ -33,9 +34,6 @@ from .libs.mesh_quality import MeshQuality
 
 # Import the code for the DockWidget
 from .mesh_tools_dockwidget import MeshToolDockWidget
-
-# Initialize Qt resources from file resources.py
-# from .resources import *
 
 
 class MeshTools:

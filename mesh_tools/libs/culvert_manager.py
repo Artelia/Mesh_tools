@@ -505,21 +505,27 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.sb_z1.setEnabled(not self.cb_auto_z.isChecked())
             self.sb_z2.setEnabled(not self.cb_auto_z.isChecked())
             if ft:
+                (n1, n2), err = MeshUtils.n1n2FromMesh(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+
+                if err is not None:
+                    self.writeError(self.tr("Error on Z calculation : {}").format(err))
+                    return
+
+                attrs = {self.cur_culv_id: {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}}
+
                 if self.cb_auto_z.isChecked():
-                    (n1, n2), err = MeshUtils.n1n2FromMesh(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
-                    (z1, z2), err = self.recup_z_from_mesh(ft)
-                    if err:
-                        self.writeError(self.tr("Error on Z calculation : {}").format(err))
-                    else:
-                        self.sb_z1.setValue(z1)
-                        self.sb_z2.setValue(z2)
-                        attrs = {self.cur_culv_id: {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}}
-                        self.lay_culv.dataProvider().changeAttributeValues(attrs)
-                        self.lay_culv.commitChanges()
-                else:
-                    attrs = {self.cur_culv_id: {ft.fieldNameIndex("N1"): None, ft.fieldNameIndex("N2"): None}}
-                    self.lay_culv.dataProvider().changeAttributeValues(attrs)
-                    self.lay_culv.commitChanges()
+                    z1 = MeshUtils.zFromMesh(
+                        self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1
+                    )
+                    z2 = MeshUtils.zFromMesh(
+                        self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2
+                    )
+
+                    self.sb_z1.setValue(z1)
+                    self.sb_z2.setValue(z2)
+
+                self.lay_culv.dataProvider().changeAttributeValues(attrs)
+                self.lay_culv.commitChanges()
 
         if self.sender() == self.cb_auto_a:
             self.sb_a1.setEnabled(not self.cb_auto_a.isChecked())
@@ -575,8 +581,14 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             if ft["AZ"] != 1:
                 continue
 
-            (z1, z2), err = self.recup_z_from_mesh(ft)
-            if not err:
+            (n1, n2), err = MeshUtils.n1n2FromMesh(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+            if err is None:
+                z1 = MeshUtils.zFromMesh(
+                    self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1
+                )
+                z2 = MeshUtils.zFromMesh(
+                    self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2
+                )
                 attrs[ft.id()] = {ft.fieldNameIndex("Z1"): z1, ft.fieldNameIndex("Z2"): z2}
             else:
                 self.writeError(self.tr("Error on Z calculation : {}").format(err))
@@ -586,32 +598,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         self.lay_culv.commitChanges()
         self.writeSuccess(self.tr("Z values updated"))
         self.display_culv_info()
-
-    def recup_z_from_mesh(self, ft):
-        err, z = None, [None, None]
-        if self.lay_mesh:
-            mesh_crs = self.lay_mesh.crs()
-            if mesh_crs.isValid():
-                shp_crs = self.lay_culv.sourceCrs()
-                xform = QgsCoordinateTransform(shp_crs, mesh_crs, self.project)
-                pts = ft.geometry().asMultiPolyline()
-                for p in [0, -1]:
-                    pt = pts[p][p]
-                    x_pt = xform.transform(pt)
-                    if not self.lay_mesh.snapOnElement(QgsMesh.Face, QgsPointXY(pt), 0).isEmpty():
-                        idx = self.vertices.nearestNeighbor(x_pt, 1)[0]
-                        dset_val = self.lay_mesh.dataProvider().datasetValues(
-                            QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), idx, 1
-                        )
-                        z[p * -1] = round(dset_val.value(0).scalar(), 2)
-                    else:
-                        z[p * -1] = 0.0
-            else:
-                err = self.tr("CRS defined for mesh layer is not valid")
-        else:
-            err = self.tr("No mesh layer selected")
-
-        return z, err
 
     ######################################################################################
     #                                                                                    #

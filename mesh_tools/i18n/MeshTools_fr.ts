@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fr" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.1" language="fr">
 <context>
     <name>Create_culvert_shp_UI</name>
     <message>
@@ -31,168 +32,178 @@
 <context>
     <name>CulvertManager</name>
     <message>
-        <location filename="../libs/culvert_manager.py" line="224"/>
+        <location filename="../libs/culvert_manager.py" line="261"/>
         <source>Current mesh changed : {}</source>
         <translation>Maillage actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="239"/>
+        <location filename="../libs/culvert_manager.py" line="294"/>
         <source>Current mesh dataset changed : {}</source>
         <translation>Groupe actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="250"/>
+        <location filename="../libs/culvert_manager.py" line="305"/>
         <source>Current mesh timestep changed : {}</source>
         <translation>Pas de temps actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="343"/>
+        <location filename="../libs/culvert_manager.py" line="389"/>
         <source>Automatic Z Update</source>
         <translation>Actualisation automatique de Z</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="254"/>
+        <location filename="../libs/culvert_manager.py" line="308"/>
         <source>Mesh parameters have been changed.
 Update culvert features with Automatic Z checked ?</source>
         <translation>Les paramètres du maillage ont changé.
 Voulez-vous mettre à jour les paramètres des ouvrages avec Z automatique coché ?</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="269"/>
-        <source>Creation of vertices spatial index&#xe2;&#x80;&#xa6;</source>
+        <location filename="../libs/culvert_manager.py" line="278"/>
+        <source>Creation of vertices spatial indexâ¦</source>
         <translation>Création de l&apos;index spatial des nœudsâ¦</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="287"/>
+        <location filename="../libs/culvert_manager.py" line="281"/>
         <source>Vertices spatial index created in {} sec.</source>
         <translation>Index spatial des nœuds créé en {} sec.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="371"/>
+        <location filename="../libs/culvert_manager.py" line="419"/>
         <source>No culvert selected</source>
         <translation>Pas d&apos;ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="373"/>
+        <location filename="../libs/culvert_manager.py" line="421"/>
         <source>More than one culvert selected</source>
         <translation>Plus d&apos;un ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="377"/>
+        <location filename="../libs/culvert_manager.py" line="425"/>
         <source>Selected culvert informations</source>
         <translation>Information de l&apos;ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="381"/>
+        <location filename="../libs/culvert_manager.py" line="429"/>
         <source>No culvert layer selected</source>
         <translation>Pas de couche des ouvrages sélectionnée</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="532"/>
+        <location filename="../libs/culvert_manager.py" line="582"/>
         <source>Error on Z calculation : {}</source>
         <translation>Erreur dans le calcul de Z : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="516"/>
+        <location filename="../libs/culvert_manager.py" line="564"/>
         <source>Error on N calculation : {}</source>
         <translation>Erreur dans le calcul de N : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="522"/>
+        <location filename="../libs/culvert_manager.py" line="570"/>
         <source>N values updated</source>
         <translation>Valeurs des N mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="537"/>
+        <location filename="../libs/culvert_manager.py" line="587"/>
         <source>Z values updated</source>
         <translation>Valeurs des Z mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="602"/>
+        <location filename="../libs/culvert_manager.py" line="610"/>
         <source>CRS defined for mesh layer is not valid</source>
         <translation>Le SRC du maillage n&apos;est pas valide</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="604"/>
+        <location filename="../libs/culvert_manager.py" line="612"/>
         <source>No mesh layer selected</source>
         <translation>Pas de maillage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="621"/>
+        <location filename="../libs/culvert_manager.py" line="629"/>
         <source>All culverts are valid</source>
         <translation>Tous les ouvrages sont valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="632"/>
+        <location filename="../libs/culvert_manager.py" line="640"/>
         <source>File creation is not possible, some culverts are not valid</source>
         <translation>Création du fichier impossible, certains ouvrages ne sont pas valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="635"/>
+        <location filename="../libs/culvert_manager.py" line="643"/>
         <source>Culvert file</source>
         <translation>Fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="635"/>
+        <location filename="../libs/culvert_manager.py" line="643"/>
         <source>Text File (*.txt)</source>
         <translation>Fichier texte (*.txt)</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="649"/>
+        <location filename="../libs/culvert_manager.py" line="657"/>
         <source>Culvert count</source>
         <translation>Nombre d&apos;ouvrage</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="690"/>
+        <location filename="../libs/culvert_manager.py" line="705"/>
         <source>Culvert File Created</source>
         <translation>Fichier des ouvrages créé</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="817"/>
+        <location filename="../libs/culvert_manager.py" line="849"/>
         <source>Error during culvert file creation</source>
         <translation>Erreur lors de la création du fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="716"/>
+        <location filename="../libs/culvert_manager.py" line="731"/>
         <source>{} value is not correct.</source>
         <translation>La valeur de {} est incorrecte.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="573"/>
-        <source>{} node is not in mesh layer</source>
-        <translation>Le nœud {} n&apos;est pas dans le maillage</translation>
-    </message>
-    <message>
-        <location filename="../libs/culvert_manager.py" line="699"/>
+        <location filename="../libs/culvert_manager.py" line="714"/>
         <source>Nameless culvert (feature id {})</source>
         <translation>Ouvrage sans nom (entité n°{})</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="704"/>
+        <location filename="../libs/culvert_manager.py" line="719"/>
         <source>Culvert extremity is not within the mesh.</source>
         <translation>L&apos;une des extrémités de l&apos;ouvrage n&apos;est pas dans l&apos;emprise du maillage.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="763"/>
+        <location filename="../libs/culvert_manager.py" line="792"/>
         <source>Culverts</source>
         <translation>Ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="791"/>
+        <location filename="../libs/culvert_manager.py" line="823"/>
         <source>Error when importing culvert {i} with error(s) : {err}</source>
         <translation>Erreur lors de l&apos;import de l&apos;ouvrage {i} avec l&apos;erreur : {err}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="838"/>
+        <location filename="../libs/culvert_manager.py" line="871"/>
         <source>Created culvert layer is not valid.</source>
         <translation>La couche des ouvrages créée n&apos;est pas valdie.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="343"/>
+        <location filename="../libs/culvert_manager.py" line="389"/>
         <source>Culvert layer has been changed.
 Update culvert features with Automatic Z checked ?</source>
-        <translation type="unfinished">La couche des ouvrage a changé.
-Mettre à jour les valeurs de Z ?</translation>
+        <translation>La couche des ouvrage a changé.
+Mettre à jour les ouvrages ayant Z automatique cochés ?</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="273"/>
+        <source>Mesh CRS is not valid.</source>
+        <translation>Le SCR du maillage n&apos;est pas valide.</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="385"/>
+        <source>Culvert layer CRS is not valid.</source>
+        <translation>Le SCR de la couche des ouvrages n&apos;est pas valide.</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="763"/>
+        <source>Import a mesh first.</source>
+        <translation>Importer un maillage dans un premier temps.</translation>
     </message>
 </context>
 <context>
@@ -289,7 +300,7 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
     <message>
         <location filename="../ui/culvert_manager.ui" line="374"/>
         <source>CS1 is the head loss coefficients of 1 when it is operating as outlet.</source>
-        <translation>CS1 est le coefficient de perte de charge à la section 1 lorsqu&apos;ele opère en sortie.</translation>
+        <translation>CS1 est le coefficient de perte de charge à la section 1 lorsqu&apos;elle opère en sortie.</translation>
     </message>
     <message>
         <location filename="../ui/culvert_manager.ui" line="377"/>
@@ -299,7 +310,7 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
     <message>
         <location filename="../ui/culvert_manager.ui" line="384"/>
         <source>CS2 is the head loss coefficients of 2 when it is operating as outlet.</source>
-        <translation>CS1 est le coefficient de perte de charge à la section 2 lorsqu&apos;ele opère en sortie.</translation>
+        <translation>CS1 est le coefficient de perte de charge à la section 2 lorsqu&apos;elle opère en sortie.</translation>
     </message>
     <message>
         <location filename="../ui/culvert_manager.ui" line="387"/>
@@ -329,7 +340,7 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
     <message>
         <location filename="../ui/culvert_manager.ui" line="502"/>
         <source>CE1 is the head loss coefficients of 1 when it is operating as inlet.</source>
-        <translation>CE1 est le coefficient de perte de charge à la section 1 lorsqu&apos;ele opère en entrée.</translation>
+        <translation>CE1 est le coefficient de perte de charge à la section 1 lorsqu&apos;elle opère en entrée.</translation>
     </message>
     <message>
         <location filename="../ui/culvert_manager.ui" line="505"/>
@@ -339,7 +350,7 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
     <message>
         <location filename="../ui/culvert_manager.ui" line="556"/>
         <source>CE2 is the head loss coefficients of 2 when it is operating as inlet.</source>
-        <translation>CE2 est le coefficient de perte de charge à la section 2 lorsqu&apos;ele opère en entrée.</translation>
+        <translation>CE2 est le coefficient de perte de charge à la section 2 lorsqu&apos;elle opère en entrée.</translation>
     </message>
     <message>
         <location filename="../ui/culvert_manager.ui" line="559"/>
@@ -487,22 +498,22 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
         <translation>A2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1018"/>
+        <location filename="../ui/culvert_manager.ui" line="1021"/>
         <source>Automatically set Z1 and Z2 from mesh.</source>
         <translation>Définir automatiquement Z1 et Z2 depuis le maillage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1021"/>
+        <location filename="../ui/culvert_manager.ui" line="1024"/>
         <source>Automatic Z</source>
         <translation>Z automatique</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1031"/>
+        <location filename="../ui/culvert_manager.ui" line="1034"/>
         <source>Automatically compute A1 and A2.</source>
         <translation>Calculer automatiquement A1 et A2.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1034"/>
+        <location filename="../ui/culvert_manager.ui" line="1037"/>
         <source>Automatic A</source>
         <translation>A automatique</translation>
     </message>
@@ -517,27 +528,27 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
         <translation>FRIC*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1044"/>
+        <location filename="../ui/culvert_manager.ui" line="1047"/>
         <source>Automatically compute the length of the culvert.</source>
         <translation>Calculer automatiquement la longueur de l&apos;ouvrage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1047"/>
+        <location filename="../ui/culvert_manager.ui" line="1050"/>
         <source>Automatic L</source>
         <translation>L automatique</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="972"/>
+        <location filename="../ui/culvert_manager.ui" line="975"/>
         <source>The length of the culvert.</source>
         <translation>La longueur de l&apos;ouvrage.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="975"/>
+        <location filename="../ui/culvert_manager.ui" line="978"/>
         <source>LENGTH*</source>
         <translation>LENGTH*</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1004"/>
+        <location filename="../ui/culvert_manager.ui" line="1007"/>
         <source>The flow direction is imposed through the keyword CLP : 
  - 0 : flow is allowed in both directions,
  - 1 : flow is only allowed from section 1 to section 2,
@@ -550,12 +561,12 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
  - 3 : l&apos;écoulement est bloqué.</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1011"/>
+        <location filename="../ui/culvert_manager.ui" line="1014"/>
         <source>CLP</source>
         <translation>CLP</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1060"/>
+        <location filename="../ui/culvert_manager.ui" line="1063"/>
         <source>Reset values</source>
         <translation>Réinitialiser les valeurs</translation>
     </message>
@@ -565,22 +576,22 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
         <translation>Vérifier la validité de la couche des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1099"/>
+        <location filename="../ui/culvert_manager.ui" line="1102"/>
         <source>Create Culvert file</source>
         <translation>Créer le fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1073"/>
+        <location filename="../ui/culvert_manager.ui" line="1076"/>
         <source>Parameters with * are only used with keyword OPTION FOR CULVERTS = 2</source>
         <translation>Les paramètres avec * sont utilisés uniquement avec le mot-clé OPTION POUR LES BUSES = 2</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1093"/>
+        <location filename="../ui/culvert_manager.ui" line="1096"/>
         <source>Output Parameters</source>
         <translation>Paramètres de sortie</translation>
     </message>
     <message>
-        <location filename="../ui/culvert_manager.ui" line="1112"/>
+        <location filename="../ui/culvert_manager.ui" line="1115"/>
         <source>TELEMAC</source>
         <translation>TELEMAC</translation>
     </message>
@@ -593,45 +604,55 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
         <translation>Importer un fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="37"/>
+        <location filename="../ui/import_culvert_file.ui" line="59"/>
         <source>Parameter mapping</source>
         <translation>Correspondance des paramètres</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="56"/>
+        <location filename="../ui/import_culvert_file.ui" line="87"/>
         <source>Parameter name</source>
         <translation>Nom du paramètre</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="61"/>
+        <location filename="../ui/import_culvert_file.ui" line="92"/>
         <source>Parameter name from culvert file</source>
         <translation>Nom du paramètre dans le fichier</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="94"/>
+        <location filename="../ui/import_culvert_file.ui" line="52"/>
         <source>Culvert text file</source>
         <translation>Fichier texte des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="72"/>
+        <location filename="../ui/import_culvert_file.ui" line="103"/>
         <source>Culvert layer</source>
         <translation>Couche des ouvrages</translation>
     </message>
     <message>
-        <location filename="../ui/import_culvert_file.ui" line="30"/>
+        <location filename="../ui/import_culvert_file.ui" line="42"/>
         <source>Software</source>
         <translation>Logiciel</translation>
+    </message>
+    <message>
+        <location filename="../ui/import_culvert_file.ui" line="109"/>
+        <source>File path</source>
+        <translation>Nom de fichier</translation>
+    </message>
+    <message>
+        <location filename="../ui/import_culvert_file.ui" line="122"/>
+        <source>Projection</source>
+        <translation>Projection</translation>
     </message>
 </context>
 <context>
     <name>MeshQuality</name>
     <message>
-        <location filename="../libs/mesh_quality.py" line="63"/>
+        <location filename="../libs/mesh_quality.py" line="75"/>
         <source>Current mesh changed : {}</source>
         <translation>Maillage actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/mesh_quality.py" line="82"/>
+        <location filename="../libs/mesh_quality.py" line="94"/>
         <source>No mesh selected</source>
         <translation>Aucun maillage sélectionné</translation>
     </message>
@@ -707,40 +728,53 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
 <context>
     <name>MeshTools</name>
     <message>
-        <location filename="../mesh_tools.py" line="70"/>
+        <location filename="../mesh_tools.py" line="67"/>
         <source>&amp;Mesh Tools</source>
         <translation>&amp;Mesh Tools</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="224"/>
+        <location filename="../mesh_tools.py" line="221"/>
         <source>Culvert Manager</source>
         <translation>Gestionnaire des ouvrages</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="177"/>
+        <location filename="../mesh_tools.py" line="174"/>
         <source>Mesh Quality Analysis</source>
         <translation>Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="227"/>
+        <location filename="../mesh_tools.py" line="224"/>
         <source>Telemac - Mesh Quality Analysis</source>
         <translation>Telemac - Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="230"/>
+        <location filename="../mesh_tools.py" line="227"/>
         <source>MeshTool - Error</source>
         <translation>MeshTool - Erreur</translation>
     </message>
 </context>
 <context>
+    <name>MeshUtils</name>
+    <message>
+        <location filename="../libs/MeshUtils.py" line="57"/>
+        <source>The point is not within the mesh.</source>
+        <translation>Le nœud  n&apos;est pas dans le maillage.</translation>
+    </message>
+    <message>
+        <location filename="../libs/MeshUtils.py" line="94"/>
+        <source>N should a strict positive integer.</source>
+        <translation>N doit être un entier strictement positif.</translation>
+    </message>
+</context>
+<context>
     <name>dlg_import_culvert_file</name>
     <message>
-        <location filename="../libs/import_culvert_file_dlg.py" line="26"/>
+        <location filename="../libs/import_culvert_file_dlg.py" line="49"/>
         <source>Text Files (*.txt);;All Files (*.*)</source>
         <translation>Fichiers texte (*.txt);;Tous les fichiers (*.*)</translation>
     </message>
     <message>
-        <location filename="../libs/import_culvert_file_dlg.py" line="30"/>
+        <location filename="../libs/import_culvert_file_dlg.py" line="53"/>
         <source>Select file</source>
         <translation>Sélectionner un fichier</translation>
     </message>

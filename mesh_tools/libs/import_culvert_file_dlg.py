@@ -34,7 +34,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui
 
 
 class dlg_import_culvert_file(QDialog, FORM_CLASS):
-    def __init__(self, culv_flds=None, parent=None):
+    def __init__(self, culv_flds=None, mesh_crs=None, parent=None):
         super(dlg_import_culvert_file, self).__init__()
         self.setupUi(self)
 
@@ -53,6 +53,9 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
         self.layer_file.setDialogTitle(self.tr("Select file"))
         self.layer_file.setFilter("ESRI Shapefile (*.shp)")
         # self.layer_file.setFilter("ESRI Shapefile (*.shp);;GeoPackage (*.gpkg)")
+
+        if mesh_crs is not None:
+            self.layer_crs.setCrs(mesh_crs)
 
         self.text_file.fileChanged.connect(self.parseTextFile)
         self.cb_soft.currentIndexChanged.connect(self.parseTextFile)

@@ -756,8 +756,17 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
                     dico[h] = float(values[i])
             return dico
 
+        if not self.lay_mesh:
+            self.writeError(self.tr("Import a mesh first."))
+            return
+
+        if self.lay_mesh.crs().isValid():
+            mesh_crs = self.lay_mesh.crs()
+        else:
+            mesh_crs = self.project.crs()
+
         culv_flds = [x[0] for x in self.culv_flds]
-        dlg = dlg_import_culvert_file(culv_flds, self)
+        dlg = dlg_import_culvert_file(culv_flds, mesh_crs, self)
         dlg.setWindowModality(2)
         if dlg.exec_():
             items = dlg.items
@@ -768,10 +777,8 @@ class CulvertManager(MeshToolDockWidget, FORM_CLASS):
         else:
             return
 
-        if self.lay_mesh and self.lay_mesh.crs() is not None:
-            crs = self.lay_mesh.crs()
-        else:
-            crs = self.project.crs()
+        if not txt_path:
+            return
 
         layerFields = QgsFields()
         for fld in self.culv_flds:

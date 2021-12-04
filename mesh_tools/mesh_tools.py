@@ -32,9 +32,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolBar
 
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
-
-# Import the code for the DockWidget
-from .mesh_tools_dockwidget import MeshToolDockWidget
+from .mesh_tools_dockwidget import MeshToolsDockWidget
 
 
 class MeshTools:
@@ -225,7 +223,7 @@ class MeshTools:
             self.dockwidget = MeshQuality()
             self.dockwidget.setWindowTitle(self.tr("Telemac - Mesh Quality Analysis"))
         else:
-            self.dockwidget = MeshToolDockWidget()
+            self.dockwidget = MeshToolsDockWidget()
             self.dockwidget.setWindowTitle(self.tr("MeshTool - Error"))
 
         self.dockwidget.closingPlugin.connect(self.onClosePlugin)

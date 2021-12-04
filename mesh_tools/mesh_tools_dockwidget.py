@@ -26,16 +26,22 @@
 from contextlib import suppress
 from datetime import datetime
 
+from qgis.core import QgsProject
 from qgis.PyQt.QtCore import QCoreApplication, pyqtSignal
 from qgis.PyQt.QtGui import QColor, QFont
 from qgis.PyQt.QtWidgets import QDockWidget
+from qgis.utils import iface
 
 
-class MeshToolDockWidget(QDockWidget):
+class MeshToolsDockWidget(QDockWidget):
     closingPlugin = pyqtSignal()
 
     def __init__(self, parent=None):
-        super(MeshToolDockWidget, self).__init__(parent)
+        super(MeshToolsDockWidget, self).__init__(parent)
+
+        self.iface = iface
+        self.canvas = self.iface.mapCanvas()
+        self.project = QgsProject.instance()
 
     def closeEvent(self, event):
         with suppress(AttributeError, RuntimeError, TypeError):
@@ -50,16 +56,27 @@ class MeshToolDockWidget(QDockWidget):
     def tr(self, message):
         return QCoreApplication.translate(self.__class__.__name__, message)
 
-    def write_log(self, txt, mode=1):
+    def write_log(self, txt, mode="Info"):
         self.log.setTextColor(QColor("black"))
         self.log.setFontWeight(QFont.Bold)
         self.log.append(f"{datetime.now().strftime('%H:%M:%S')} - ")
-        if mode == 0:
+        if mode == "Success":
             self.log.setTextColor(QColor("green"))
-        elif mode == 1:
+        elif mode == "Info":
             self.log.setTextColor(QColor("black"))
-        elif mode == 2:
+        elif mode == "Error":
             self.log.setTextColor(QColor("red"))
+        elif mode == "Warning":
+            self.log.setTextColor(QColor("orange"))
         self.log.setFontWeight(QFont.Normal)
         self.log.insertPlainText(txt)
         self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())
+
+    def writeSuccess(self, txt):
+        self.write_log(txt, "Success")
+
+    def writeError(self, txt):
+        self.write_log(self, txt, "Error")
+
+    def writeWarning(self, txt):
+        self.write_log(txt, "Warning")

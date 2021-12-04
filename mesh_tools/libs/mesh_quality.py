@@ -26,32 +26,21 @@
 import math
 import os
 
-from qgis.core import (
-    QgsCoordinateTransform,
-    QgsLineString,
-    QgsMapLayerProxyModel,
-    QgsMesh,
-    QgsPointXY,
-    QgsProject,
-    QgsTriangle,
-)
+from qgis.core import QgsCoordinateTransform, QgsMapLayerProxyModel, QgsMesh, QgsPointXY
 from qgis.gui import QgsVertexMarker
 from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QColor
-from qgis.utils import iface
 
-from ..mesh_tools_dockwidget import MeshToolDockWidget
+from ..mesh_tools_dockwidget import MeshToolsDockWidget
+from .MeshUtils import MeshUtils
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_quality.ui"))
 
 
-class MeshQuality(MeshToolDockWidget, FORM_CLASS):
+class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
     def __init__(self, parent=None):
         super(MeshQuality, self).__init__(parent)
         self.setupUi(self)
-        self.iface = iface
-        self.canvas = self.iface.mapCanvas()
-        self.project = QgsProject.instance()
         self.prt = parent
         self.path_icon = os.path.join(os.path.dirname(__file__), "..", "icons/")
 
@@ -115,24 +104,23 @@ class MeshQuality(MeshToolDockWidget, FORM_CLASS):
         self.native_mesh_faces_count = self.native_mesh.faceCount()
 
         for index in range(self.native_mesh_faces_count):
-            face = self.native_mesh.face(index)
-            points = [self.native_mesh.vertex(v) for v in face]
-            triangle = QgsTriangle()
-            triangle.setExteriorRing(QgsLineString(points))
+            triangle = MeshUtils.faceToTriangle(self.native_mesh, index)
+            centroid = self.xform.transform(QgsPointXY(triangle.centroid()))
 
             if self.chk_equilateralness.isChecked():
-                if any(math.degrees(a) < self.qdsb_bad_angle_1.value() for a in triangle.angles()):
-                    self.addVertexMarker(triangle.centroid(), "bad_angle_1")
-                elif any(math.degrees(a) < self.qdsb_bad_angle_2.value() for a in triangle.angles()):
-                    self.addVertexMarker(triangle.centroid(), "bad_angle_2")
-                elif any(math.degrees(a) < self.qdsb_bad_angle_3.value() for a in triangle.angles()):
-                    self.addVertexMarker(triangle.centroid(), "bad_angle_3")
+                if any(abs(math.degrees(a)) < self.qdsb_bad_angle_1.value() for a in triangle.angles()):
+                    print(triangle, [a for a in triangle.angles()])
+                    self.addVertexMarker(centroid, "bad_angle_1")
+                elif any(abs(math.degrees(a)) < self.qdsb_bad_angle_2.value() for a in triangle.angles()):
+                    self.addVertexMarker(centroid, "bad_angle_2")
+                elif any(abs(math.degrees(a)) < self.qdsb_bad_angle_3.value() for a in triangle.angles()):
+                    self.addVertexMarker(centroid, "bad_angle_3")
 
             if self.chk_min_size.isChecked():
                 if any(length < self.qdsb_min_element_length.value() for length in triangle.lengths()):
-                    self.addVertexMarker(triangle.centroid(), "bad_length")
+                    self.addVertexMarker(centroid, "bad_length")
                 if triangle.area() < self.qdsb_min_face_area.value():
-                    self.addVertexMarker(triangle.centroid(), "bad_area")
+                    self.addVertexMarker(centroid, "bad_area")
 
         if self.bad_faces_center:
             self.btn_reset_marker.setEnabled(True)

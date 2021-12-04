@@ -1080,18 +1080,18 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="btn_verif">
+         <property name="text">
+          <string>Check culvert layer validity</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="btn_verif">
-      <property name="text">
-       <string>Check culvert layer validity</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="OutputParameters">
+     <widget class="QGroupBox" name="gb_output">
       <property name="title">
        <string>Output Parameters</string>
       </property>

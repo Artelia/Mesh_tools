@@ -108,12 +108,11 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
             centroid = self.xform.transform(QgsPointXY(triangle.centroid()))
 
             if self.chk_equilateralness.isChecked():
-                if any(abs(math.degrees(a)) < self.qdsb_bad_angle_1.value() for a in triangle.angles()):
-                    print(triangle, [a for a in triangle.angles()])
+                if checkAngles(triangle.angles(), self.qdsb_bad_angle_1.value()):
                     self.addVertexMarker(centroid, "bad_angle_1")
-                elif any(abs(math.degrees(a)) < self.qdsb_bad_angle_2.value() for a in triangle.angles()):
+                elif checkAngles(triangle.angles(), self.qdsb_bad_angle_2.value()):
                     self.addVertexMarker(centroid, "bad_angle_2")
-                elif any(abs(math.degrees(a)) < self.qdsb_bad_angle_3.value() for a in triangle.angles()):
+                elif checkAngles(triangle.angles(), self.qdsb_bad_angle_3.value()):
                     self.addVertexMarker(centroid, "bad_angle_3")
 
             if self.chk_min_size.isChecked():
@@ -184,3 +183,15 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
                 self.canvas.scene().removeItem(marker)
         self.bad_faces_center = []
         self.btn_reset_marker.setEnabled(False)
+
+
+def checkAngles(angles, checkValue):
+    angles = [math.degrees(a) for a in angles]
+
+    # We need to trick because of a strange behavior of QgsTriangle.angles()
+    # Sum all angles and check if it's lower than 179 (case of rounding issue...)
+    # https://lists.osgeo.org/pipermail/qgis-developer/2021-December/064349.html
+    if sum(angles) < 179:
+        angles[angles.index(min(angles))] += 90
+
+    return any(a < checkValue for a in angles)

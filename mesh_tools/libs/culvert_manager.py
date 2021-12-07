@@ -258,7 +258,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         if self.lay_mesh is None:
             return
 
-        self.write_log(self.tr("Current mesh changed : {}").format(self.lay_mesh.name()))
+        self.writeInfo(self.tr("Current mesh changed : {}").format(self.lay_mesh.name()))
         self.native_mesh = QgsMesh()
         self.lay_mesh.dataProvider().populateMesh(self.native_mesh)
 
@@ -275,10 +275,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         self.valid_mesh_culv()
 
-        self.write_log(self.tr("Creation of vertices spatial index…"))
+        self.writeInfo(self.tr("Creation of vertices spatial index…"))
         t0 = time.time()
         self.vertices = MeshUtils.createVerticesSpatialIndex(self.native_mesh, self.lay_mesh_xform)
-        self.write_log(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))
+        self.writeInfo(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))
 
         mesh_prov = self.lay_mesh.dataProvider()
         for i in range(mesh_prov.datasetGroupCount()):
@@ -291,7 +291,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         self.mdl_mesh_time.clear()
         self.cur_mesh_dataset = self.cb_dataset_mesh.currentData(32)
         if self.cur_mesh_dataset is not None:
-            self.write_log(self.tr("Current mesh dataset changed : {}").format(self.cb_dataset_mesh.currentText()))
+            self.writeInfo(self.tr("Current mesh dataset changed : {}").format(self.cb_dataset_mesh.currentText()))
             mesh_prov = self.lay_mesh.dataProvider()
             for i in range(mesh_prov.datasetCount(self.cur_mesh_dataset)):
                 itm = QStandardItem()
@@ -302,7 +302,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
     def mesh_time_changed(self):
         self.cur_mesh_time = self.cb_time_mesh.currentData(32)
         if self.cur_mesh_time is not None:
-            self.write_log(self.tr("Current mesh timestep changed : {}").format(self.cb_time_mesh.currentText()))
+            self.writeInfo(self.tr("Current mesh timestep changed : {}").format(self.cb_time_mesh.currentText()))
             if self.lay_culv is not None and not self.is_opening:
                 self.update_all_n()
                 if (
@@ -505,7 +505,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.sb_z1.setEnabled(not self.cb_auto_z.isChecked())
             self.sb_z2.setEnabled(not self.cb_auto_z.isChecked())
             if ft:
-                (n1, n2), err = MeshUtils.n1n2FromMesh(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+                (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
 
                 if err is not None:
                     self.writeError(self.tr("Error on Z calculation : {}").format(err))
@@ -514,10 +514,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 attrs = {self.cur_culv_id: {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}}
 
                 if self.cb_auto_z.isChecked():
-                    z1 = MeshUtils.zFromMesh(
+                    z1 = MeshUtils.zFromN(
                         self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1
                     )
-                    z2 = MeshUtils.zFromMesh(
+                    z2 = MeshUtils.zFromN(
                         self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2
                     )
 
@@ -563,7 +563,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
     def update_all_n(self, log=True):
         attrs = dict()
         for ft in self.lay_culv.getFeatures():
-            (n1, n2), err = MeshUtils.n1n2FromMesh(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+            (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
             if err is None:
                 attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
             else:
@@ -581,12 +581,12 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             if ft["AZ"] != 1:
                 continue
 
-            (n1, n2), err = MeshUtils.n1n2FromMesh(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+            (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
             if err is None:
-                z1 = MeshUtils.zFromMesh(
+                z1 = MeshUtils.zFromN(
                     self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1
                 )
-                z2 = MeshUtils.zFromMesh(
+                z2 = MeshUtils.zFromN(
                     self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2
                 )
                 attrs[ft.id()] = {ft.fieldNameIndex("Z1"): z1, ft.fieldNameIndex("Z2"): z2}
@@ -801,8 +801,8 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
                 n1 = int(values[items["n1"][1]])
                 n2 = int(values[items["n2"][1]])
-                point_n1, err1 = MeshUtils.XYFromN(self.native_mesh, n1, self.lay_mesh_xform, culv_xform)
-                point_n2, err2 = MeshUtils.XYFromN(self.native_mesh, n2, self.lay_mesh_xform, culv_xform)
+                point_n1, err1 = MeshUtils.xyFromN(self.native_mesh, n1, self.lay_mesh_xform, culv_xform)
+                point_n2, err2 = MeshUtils.xyFromN(self.native_mesh, n2, self.lay_mesh_xform, culv_xform)
 
                 if err1 is not None or err2 is not None:
                     err = " ".join(filter(None, (err1, err2)))

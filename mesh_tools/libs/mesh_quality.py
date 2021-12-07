@@ -72,7 +72,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
         self.lay_mesh = self.mMapLayerComboBox.currentLayer()
 
         if self.lay_mesh:
-            self.write_log(self.tr("Current mesh changed : {}").format(self.lay_mesh.name()))
+            self.writeInfo(self.tr("Current mesh changed : {}").format(self.lay_mesh.name()))
             self.xform = QgsCoordinateTransform(
                 self.lay_mesh.crs(),
                 self.canvas.mapSettings().destinationCrs(),
@@ -91,7 +91,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
 
     def analyse_mesh(self):
         if not self.lay_mesh:
-            self.write_log(self.tr("No mesh selected"), 2)
+            self.writeError(self.tr("No mesh selected"))
 
         wasInEditMode = False
         if self.lay_mesh.isEditable():

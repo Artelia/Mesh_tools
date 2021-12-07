@@ -74,9 +74,12 @@ class MeshToolsDockWidget(QDockWidget):
 
     def writeSuccess(self, txt):
         self.write_log(txt, "Success")
+    
+    def writeInfo(self, txt):
+        self.write_log(txt, "Info")
 
     def writeError(self, txt):
-        self.write_log(self, txt, "Error")
+        self.write_log(txt, "Error")
 
     def writeWarning(self, txt):
         self.write_log(txt, "Warning")

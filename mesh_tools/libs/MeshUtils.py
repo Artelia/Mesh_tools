@@ -62,7 +62,7 @@ class MeshUtils:
         return vertexIndex + 1, error
 
     @staticmethod
-    def n1n2FromMesh(
+    def n1n2FromFeature(
         mesh: QgsMeshLayer, vertexSpatialIndex: QgsSpatialIndex, feat: QgsFeature, xform: QgsCoordinateTransform
     ):
         error = None
@@ -80,13 +80,13 @@ class MeshUtils:
         return n, error
 
     @staticmethod
-    def zFromMesh(mesh: QgsMeshLayer, meshDatasetIndex: QgsMeshDatasetIndex, n: int):
+    def zFromN(mesh: QgsMeshLayer, meshDatasetIndex: QgsMeshDatasetIndex, n: int):
         dset_val = mesh.dataProvider().datasetValues(meshDatasetIndex, n, 1)
 
         return round(dset_val.value(0).scalar(), 2)
 
     @staticmethod
-    def XYFromN(nativeMesh: QgsMesh, n: int, mesh_xorm: QgsCoordinateTransform, culv_xform: QgsCoordinateTransform):
+    def xyFromN(nativeMesh: QgsMesh, n: int, mesh_xorm: QgsCoordinateTransform, culv_xform: QgsCoordinateTransform):
         error = None
         point = None
 

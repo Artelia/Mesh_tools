@@ -275,7 +275,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         self.valid_mesh_culv()
 
-        self.writeInfo(self.tr("Creation of vertices spatial index…"))
+        self.writeInfo(self.tr("Creation of vertices spatial index..."))
         t0 = time.time()
         self.vertices = MeshUtils.createVerticesSpatialIndex(self.native_mesh, self.lay_mesh_xform)
         self.writeInfo(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))

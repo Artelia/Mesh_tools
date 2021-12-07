@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fr" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.1" language="fr">
 <context>
     <name>Create_culvert_shp_UI</name>
     <message>
@@ -56,11 +57,6 @@
 Update culvert features with Automatic Z checked ?</source>
         <translation>Les paramètres du maillage ont changé.
 Voulez-vous mettre à jour les paramètres des ouvrages avec Z automatique coché ?</translation>
-    </message>
-    <message>
-        <location filename="../libs/culvert_manager.py" line="278"/>
-        <source>Creation of vertices spatial index&#xe2;&#x80;&#xa6;</source>
-        <translation>Création de l&apos;index spatial des nœudsâ¦</translation>
     </message>
     <message>
         <location filename="../libs/culvert_manager.py" line="281"/>
@@ -193,6 +189,11 @@ Mettre à jour les ouvrages ayant Z automatique cochés ?</translation>
         <location filename="../libs/culvert_manager.py" line="745"/>
         <source>Import a mesh first.</source>
         <translation>Importer un maillage dans un premier temps.</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="278"/>
+        <source>Creation of vertices spatial index...</source>
+        <translation>Création de l&apos;index nœuds des noeuds...</translation>
     </message>
 </context>
 <context>

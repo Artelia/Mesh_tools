@@ -583,12 +583,8 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
             (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
             if err is None:
-                z1 = MeshUtils.zFromN(
-                    self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1
-                )
-                z2 = MeshUtils.zFromN(
-                    self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2
-                )
+                z1 = MeshUtils.zFromN(self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1)
+                z2 = MeshUtils.zFromN(self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2)
                 attrs[ft.id()] = {ft.fieldNameIndex("Z1"): z1, ft.fieldNameIndex("Z2"): z2}
             else:
                 self.writeError(self.tr("Error on Z calculation : {}").format(err))

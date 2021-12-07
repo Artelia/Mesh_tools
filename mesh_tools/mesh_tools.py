@@ -163,7 +163,7 @@ class MeshTools:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         icon_path = os.path.join(self.plugin_dir, "icon.png")
-        self.mesh_menu = self.iface.mainWindow().findChild(QMenu, 'mMeshMenu')
+        self.mesh_menu = self.iface.mainWindow().findChild(QMenu, "mMeshMenu")
         self.pluginMenu = self.mesh_menu.addMenu(QIcon(icon_path), self.menu)
         self.add_action(
             os.path.join(self.path_icon, "culvert.png"),

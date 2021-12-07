@@ -28,7 +28,7 @@ import os.path
 from qgis.core import Qgis
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QToolBar
+from qgis.PyQt.QtWidgets import QAction, QMenu, QToolBar
 
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
@@ -163,7 +163,8 @@ class MeshTools:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         icon_path = os.path.join(self.plugin_dir, "icon.png")
-        self.pluginMenu = self.iface.pluginMenu().addMenu(QIcon(icon_path), self.menu)
+        self.mesh_menu = self.iface.mainWindow().findChild(QMenu, 'mMeshMenu')
+        self.pluginMenu = self.mesh_menu.addMenu(QIcon(icon_path), self.menu)
         self.add_action(
             os.path.join(self.path_icon, "culvert.png"),
             text=self.tr("Culvert Manager"),

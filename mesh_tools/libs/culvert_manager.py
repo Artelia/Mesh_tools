@@ -202,11 +202,17 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
     def valid_mesh_culv(self):
         if self.lay_mesh_xform is not None and self.lay_culv_xform is not None:
-            self.gb_culv.setEnabled(True)
             self.gb_output.setEnabled(True)
+            self.btn_verif.setEnabled(True)
+            self.frm_relax.setEnabled(True)
+            self.gb_cur_culv.setEnabled(True)
+            self.frm_culv_tools.setEnabled(True)
         else:
-            self.gb_culv.setEnabled(False)
             self.gb_output.setEnabled(False)
+            self.btn_verif.setEnabled(False)
+            self.frm_relax.setEnabled(False)
+            self.gb_cur_culv.setEnabled(False)
+            self.frm_culv_tools.setEnabled(False)
 
     def clean(self):
         self.project.layersAdded.disconnect(self.addLayers)
@@ -375,7 +381,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.lay_culv.editingStarted.connect(self.cur_culv_changed)
             self.lay_culv.editingStopped.connect(self.cur_culv_changed)
             self.lay_culv.crsChanged.connect(self.culv_lay_changed)
-
+    
             if self.lay_culv.crs().isValid():
                 self.lay_culv_xform = QgsCoordinateTransform(
                     self.lay_culv.crs(), self.canvas.mapSettings().destinationCrs(), self.project

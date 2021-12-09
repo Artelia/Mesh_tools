@@ -740,8 +740,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 try:
                     if values[i] == NULL:
                         dico[h] = ""
-                    else:
+                    elif values[i].isdigit():
                         dico[h] = float(values[i])
+                    else:
+                        dico[h] = values[i]
                 # Usually means that NAME is empty
                 except IndexError:
                     dico[h] = ""

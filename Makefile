@@ -25,15 +25,7 @@
 
 #Add iso code for any locales you want to support here (space separated)
 # default is no locales
-# LOCALES = af
 LOCALES = fr
-
-# If locales are enabled, set the name of the lrelease binary on your system. If
-# you have trouble compiling the translations, you may have to specify the full path to
-# lrelease
-#LRELEASE = lrelease
-#LRELEASE = lrelease-qt4
-
 
 # translation
 SOURCES = \
@@ -91,7 +83,7 @@ compile: $(COMPILED_RESOURCE_FILES)
 	pyrcc5 -o $*.py  $<
 
 %.qm : %.ts
-	$(LRELEASE) $<
+	lrelease $<
 
 test: compile transcompile
 	@echo
@@ -193,7 +185,7 @@ transcompile:
 	@echo "Compiled translation files to .qm files."
 	@echo "----------------------------------------"
 	@chmod +x scripts/compile-strings.sh
-	@scripts/compile-strings.sh $(LRELEASE) $(LOCALES)
+	@scripts/compile-strings.sh $(LOCALES)
 
 transclean:
 	@echo
@@ -229,6 +221,13 @@ pylint:
 	@echo "e.g. source run-env-linux.sh <path to qgis install>; make pylint"
 	@echo "----------------------"
 
+black:
+	@echo
+	@echo "-------------------------"
+	@echo "Isort and Black formating"
+	@echo "-------------------------"
+	@isort --profile black $(SOURCES)
+	@black -l 120 -t py39 $(SOURCES)
 
 # Run pep8 style checking
 #http://pypi.python.org/pypi/pep8

@@ -6,7 +6,7 @@
 name=Mesh Tools
 qgisMinimumVersion=3.16
 description=Tools for management of Data on mesh (Telemac, Uhaina).
-version=0.4
+version=0.5
 author=Artelia
 email=a@a
 
@@ -25,6 +25,15 @@ repository=https://github.com/Artelia/mesh_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+   0.5   : the plugin was moved to the mesh menu
+           New icon
+           Change code structure  ( creation file grouping together useful functions, etc.)
+           Import function of a file of existing works (TELEMAC only)
+           French translation
+           Addition of tooltips for the parameters of the works directly drawn from the Telemac doc
+           Addition of the relaxation parameter
+           Using QgsMapLayerComboBox to choose the mesh
+
    0.4   : Change plugin Name
            Change ui to add a software parameter for output
            Change culvert_manager to allow export capabilities for Uhaina

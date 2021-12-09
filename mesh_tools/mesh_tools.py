@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 """
 /***************************************************************************
  MeshTools
@@ -8,7 +9,7 @@
                               -------------------
         begin                : 2021-03-24
         git sha              : $Format:%H$
-        copyright            : (C) 2021 by APn/Artelia
+        copyright            : (C) 2021 by Artelia/BRGM/ISL
         email                : a@a
  ***************************************************************************/
 
@@ -21,19 +22,17 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import os.path
 
 from qgis.core import Qgis
-from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator, pyqtSignal
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QDockWidget, QToolBar, QWidget
+from qgis.PyQt.QtWidgets import QAction, QMenu, QToolBar
 
-# Import the code for the DockWidget
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
-
-# Initialize Qt resources from file resources.py
-# from .resources import *
+from .mesh_tools_dockwidget import MeshToolsDockWidget
 
 
 class MeshTools:
@@ -70,8 +69,6 @@ class MeshTools:
         self.toolbar = QToolBar()
         # self.toolbar = self.iface.addToolBar(u'MeshTools')
         # self.toolbar.setObjectName(u'MeshTools')
-
-        # print "** INITIALIZING MeshTools"
 
         self.pluginIsActive = False
         self.dockwidget = None
@@ -157,7 +154,7 @@ class MeshTools:
             self.toolbar.addAction(action)
 
         if add_to_menu:
-            self.iface.addPluginToMenu(self.menu, action)
+            self.pluginMenu.addAction(action)
 
         self.actions.append(action)
 
@@ -165,29 +162,27 @@ class MeshTools:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        # self.postAct.triggered.connect(lambda: self.run("post"))
         icon_path = os.path.join(self.plugin_dir, "icon.png")
-        # icon_path = ':/plugins/mesh_tools/icon.png'
+        self.mesh_menu = self.iface.mainWindow().findChild(QMenu, "mMeshMenu")
+        self.pluginMenu = self.mesh_menu.addMenu(QIcon(icon_path), self.menu)
         self.add_action(
-            icon_path, text=self.tr("Culvert Manager"), callback=lambda: self.run(1), parent=self.iface.mainWindow()
+            os.path.join(self.path_icon, "culvert.png"),
+            text=self.tr("Culvert Manager"),
+            callback=lambda: self.run(1),
+            parent=self.iface.mainWindow(),
         )
         if Qgis.versionInt() >= 32200:
             self.add_action(
-                icon_path,
+                ":images/themes/default/algorithms/mAlgorithmCheckGeometry.svg",
                 text=self.tr("Mesh Quality Analysis"),
                 callback=lambda: self.run(2),
                 parent=self.iface.mainWindow(),
             )
-        self.add_action(
-            icon_path, text=self.tr("Mesh Tool 2"), callback=lambda: self.run(3), parent=self.iface.mainWindow()
-        )
 
     # --------------------------------------------------------------------------
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
-
-        self.dockwidget.widget().close()
 
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
@@ -202,11 +197,11 @@ class MeshTools:
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
+        if self.dockwidget:
+            self.dockwidget.close()
 
-        # print "** UNLOAD MeshTools"
-
+        self.pluginMenu.parentWidget().removeAction(self.pluginMenu.menuAction())
         for action in self.actions:
-            self.iface.removePluginMenu(self.tr("&Mesh Tools"), action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar
         del self.toolbar
@@ -219,48 +214,19 @@ class MeshTools:
         if not self.pluginIsActive:
             self.pluginIsActive = True
 
-            # print "** STARTING MenuMar"
-
-            # dockwidget may not exist if:
-            #    first run of plugin
-            #    removed on close (see self.onClosePlugin method)
-            if self.dockwidget == None:
-                # Create the dockwidget (after translation) and keep reference
-                self.dockwidget = MeshToolDockWidget()
-
-                # connect to provide cleanup on closing of dockwidget
-                self.dockwidget.closingPlugin.connect(self.onClosePlugin)
-
-                # show the dockwidget
-                # TODO: fix to allow choice of dock location
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
-                self.dockwidget.show()
-
-        if self.dockwidget.widget():
-            print(self.dockwidget.widget().close())
+        if self.dockwidget:
+            print(self.dockwidget.close())
 
         if tool == 1:
-            self.dockwidget.setWindowTitle("Mesh - Culvert Manager")
-            self.dockwidget.setWidget(CulvertManager())
+            self.dockwidget = CulvertManager()
+            self.dockwidget.setWindowTitle(self.tr("Culvert Manager"))
         elif tool == 2:
-            self.dockwidget.setWindowTitle("Mesh - Mesh Quality Analysis")
-            self.dockwidget.setWidget(MeshQuality())
-        elif tool == 3:
-            self.dockwidget.setWindowTitle("Mesh - Tool {}".format(tool))
-            self.dockwidget.setWidget(QWidget())
+            self.dockwidget = MeshQuality()
+            self.dockwidget.setWindowTitle(self.tr("Telemac - Mesh Quality Analysis"))
         else:
-            self.dockwidget.setWindowTitle("Mesh - Erreur")
-            self.dockwidget.setWidget(QWidget())
+            self.dockwidget = MeshToolsDockWidget()
+            self.dockwidget.setWindowTitle(self.tr("MeshTool - Error"))
 
-        self.dockwidget.widget().show()
-
-
-class MeshToolDockWidget(QDockWidget):
-    closingPlugin = pyqtSignal()
-
-    def __init__(self, parent=None):
-        super(MeshToolDockWidget, self).__init__(parent)
-
-    def closeEvent(self, event):
-        self.closingPlugin.emit()
-        event.accept()
+        self.dockwidget.closingPlugin.connect(self.onClosePlugin)
+        self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
+        self.dockwidget.show()

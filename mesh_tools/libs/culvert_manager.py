@@ -286,6 +286,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         self.vertices = MeshUtils.createVerticesSpatialIndex(self.native_mesh, self.lay_mesh_xform)
         self.writeInfo(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))
 
+        self.cb_dataset_mesh.blockSignals(True)
         mesh_prov = self.lay_mesh.dataProvider()
         indexFound = None
         for i in range(mesh_prov.datasetGroupCount()):
@@ -299,9 +300,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 indexFound = i
 
         if indexFound is not None:
-            self.cb_dataset_mesh.blockSignals(True)
             self.cb_dataset_mesh.setCurrentIndex(indexFound)
-            self.cb_dataset_mesh.blockSignals(False)
+
+        self.cb_dataset_mesh.blockSignals(False)
+        self.mesh_dataset_changed()
 
     def mesh_dataset_changed(self):
         self.mdl_mesh_time.clear()

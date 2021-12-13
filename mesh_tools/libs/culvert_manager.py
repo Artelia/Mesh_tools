@@ -286,12 +286,24 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         self.vertices = MeshUtils.createVerticesSpatialIndex(self.native_mesh, self.lay_mesh_xform)
         self.writeInfo(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))
 
+        self.cb_dataset_mesh.blockSignals(True)
         mesh_prov = self.lay_mesh.dataProvider()
+        indexFound = None
         for i in range(mesh_prov.datasetGroupCount()):
             itm = QStandardItem()
-            itm.setData(mesh_prov.datasetGroupMetadata(i).name(), 0)
+            datasetName = mesh_prov.datasetGroupMetadata(i).name()
+            itm.setData(datasetName, 0)
             itm.setData(i, 32)
             self.mdl_mesh_dataset.appendRow(itm)
+
+            if any(name in datasetName for name in ["fond", "bottom"]):
+                indexFound = i
+
+        if indexFound is not None:
+            self.cb_dataset_mesh.setCurrentIndex(indexFound)
+
+        self.cb_dataset_mesh.blockSignals(False)
+        self.mesh_dataset_changed()
 
     def mesh_dataset_changed(self):
         self.mdl_mesh_time.clear()
@@ -381,7 +393,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.lay_culv.editingStarted.connect(self.cur_culv_changed)
             self.lay_culv.editingStopped.connect(self.cur_culv_changed)
             self.lay_culv.crsChanged.connect(self.culv_lay_changed)
-    
+
             if self.lay_culv.crs().isValid():
                 self.lay_culv_xform = QgsCoordinateTransform(
                     self.lay_culv.crs(), self.canvas.mapSettings().destinationCrs(), self.project

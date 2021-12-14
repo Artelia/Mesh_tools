@@ -317,6 +317,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 itm.setData(i, 32)
                 self.mdl_mesh_time.appendRow(itm)
 
+        tmpSettings = self.lay_mesh.rendererSettings()
+        tmpSettings.setActiveScalarDatasetGroup(self.cur_mesh_dataset)
+        self.lay_mesh.setRendererSettings(tmpSettings)
+
     def mesh_time_changed(self):
         self.cur_mesh_time = self.cb_time_mesh.currentData(32)
         if self.cur_mesh_time is not None:

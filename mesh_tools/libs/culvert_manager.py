@@ -179,8 +179,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         self.is_opening = False
 
-        self.valid_mesh_culv()
-
     def addLayers(self, layers):
         for lay in layers:
             self.analyse_layer(lay)
@@ -213,6 +211,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.frm_relax.setEnabled(False)
             self.gb_cur_culv.setEnabled(False)
             self.frm_culv_tools.setEnabled(False)
+        self.cur_culv_changed()
 
     def clean(self):
         self.project.layersAdded.disconnect(self.addLayers)
@@ -422,7 +421,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.lay_culv = None
             self.lay_culv_xform = None
         self.valid_mesh_culv()
-        self.cur_culv_changed()
 
     def cur_culv_changed(self):
         if self.lay_culv:
@@ -584,17 +582,22 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
     def update_all_n(self, log=True):
         attrs = dict()
+        success = True
         for ft in self.lay_culv.getFeatures():
             (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
-            if err is None:
-                attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
-            else:
-                self.writeError(self.tr("Error on N calculation : {}").format(err))
-                return
+
+            if err is not None:
+                success = False
+                n1 = NULL
+                n2 = NULL
+                if log:
+                    self.writeError(self.tr("Error on N calculation : {}").format(err))
+
+            attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
 
         self.lay_culv.dataProvider().changeAttributeValues(attrs)
         self.lay_culv.commitChanges()
-        if log:
+        if log and success:
             self.writeSuccess(self.tr("N values updated"))
 
     def update_all_auto_z(self):

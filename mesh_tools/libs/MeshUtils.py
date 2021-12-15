@@ -55,7 +55,7 @@ class MeshUtils:
 
         if not MeshUtils.pointInMesh(mesh, point):
             error = MeshUtils.tr("The point is not within the mesh.")
-            return error, vertexIndex
+            return vertexIndex, error
 
         vertexIndex = vertexSpatialIndex.nearestNeighbor(x_point, 1)[0]
 

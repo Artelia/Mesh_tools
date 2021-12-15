@@ -580,17 +580,22 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
     def update_all_n(self, log=True):
         attrs = dict()
+        success = True
         for ft in self.lay_culv.getFeatures():
             (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
-            if err is None:
-                attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
-            else:
-                self.writeError(self.tr("Error on N calculation : {}").format(err))
-                return
+
+            if err is not None:
+                success = False
+                n1 = NULL
+                n2 = NULL
+                if log:
+                    self.writeError(self.tr("Error on N calculation : {}").format(err))
+
+            attrs[ft.id()] = {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
 
         self.lay_culv.dataProvider().changeAttributeValues(attrs)
         self.lay_culv.commitChanges()
-        if log:
+        if log and success:
             self.writeSuccess(self.tr("N values updated"))
 
     def update_all_auto_z(self):

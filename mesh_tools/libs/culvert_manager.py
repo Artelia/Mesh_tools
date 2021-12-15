@@ -179,8 +179,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         self.is_opening = False
 
-        self.valid_mesh_culv()
-
     def addLayers(self, layers):
         for lay in layers:
             self.analyse_layer(lay)
@@ -213,6 +211,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.frm_relax.setEnabled(False)
             self.gb_cur_culv.setEnabled(False)
             self.frm_culv_tools.setEnabled(False)
+        self.cur_culv_changed()
 
     def clean(self):
         self.project.layersAdded.disconnect(self.addLayers)
@@ -418,7 +417,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.lay_culv = None
             self.lay_culv_xform = None
         self.valid_mesh_culv()
-        self.cur_culv_changed()
 
     def cur_culv_changed(self):
         if self.lay_culv:

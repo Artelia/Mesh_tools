@@ -6,13 +6,13 @@
 name=Mesh Tools
 qgisMinimumVersion=3.16
 description=Tools for management of Data on mesh (Telemac, Uhaina).
-version=0.5
+version=0.6
 author=Artelia
 email=a@a
 
 about=Tools for for management of Data using Mesh format :
       - Culvert Manager 
-      - Mesh Quality Analysis developed by 
+      - Mesh Quality Analysis 
      Developed by Aurélien Perrin(Artelia), Nicolas Godet (ISL), 
         and Christophe Coulet (BRGM)
 
@@ -25,6 +25,12 @@ repository=https://github.com/Artelia/mesh_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+   0.6   : Link selected dataset in combobox to displayed dataset in canvas
+           Try to autoselect bottom when changing mesh
+           Fix culvert import
+           Fix issue if a valid culvert becomes invalid
+           Correctly update GUI
+           Swapped return
    0.5   : the plugin was moved to the mesh menu
            New icon
            Change code structure  ( creation file grouping together useful functions, etc.)
@@ -33,7 +39,6 @@ changelog=
            Addition of tooltips for the parameters of the works directly drawn from the Telemac doc
            Addition of the relaxation parameter
            Using QgsMapLayerComboBox to choose the mesh
-
    0.4   : Change plugin Name
            Change ui to add a software parameter for output
            Change culvert_manager to allow export capabilities for Uhaina

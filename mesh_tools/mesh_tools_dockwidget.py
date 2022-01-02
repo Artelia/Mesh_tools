@@ -53,8 +53,10 @@ class MeshToolsDockWidget(QDockWidget):
     def clean(self):
         pass
 
-    def tr(self, message):
-        return QCoreApplication.translate(self.__class__.__name__, message)
+    def tr(self, message, context=""):
+        if not context:
+            context = self.__class__.__name__
+        return QCoreApplication.translate(context, message)
 
     def write_log(self, txt, mode="Info"):
         self.log.setTextColor(QColor("black"))

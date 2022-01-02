@@ -162,6 +162,8 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
 
         self.cb_lay_mesh.layerChanged.disconnect(self.mesh_lay_changed)
         self.cb_lay_src.currentIndexChanged.disconnect(self.src_lay_changed)
+        
+        self.clear_hl_vertices()
 
     ######################################################################################
     #                                                                                    #
@@ -371,14 +373,17 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
                     self.lay_src.dataProvider().changeAttributeValues({self.cur_src_id: attrs})
                     self.lay_src.commitChanges()
 
+    def clear_hl_vertices(self):
+        for marker in self.hl_vertices:
+            self.canvas.scene().removeItem(marker)
+        self.hl_vertices = []
+
     def highlight_vertices(self):
         if self.src_type == 0:  # Should not happen
             return
 
         if self.hl_vertices:
-            for marker in self.hl_vertices:
-                self.canvas.scene().removeItem(marker)
-            self.hl_vertices = []
+            self.clear_hl_vertices()
             return
 
         for feat in self.lay_src.getFeatures():

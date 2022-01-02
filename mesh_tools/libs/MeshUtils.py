@@ -62,6 +62,18 @@ class MeshUtils:
         return vertexIndex + 1, error
 
     @staticmethod
+    def findVerticesInGeometry(
+        nativeMesh: QgsMesh, vertexSpatialIndex: QgsSpatialIndex, xform: QgsCoordinateTransform, geometry: QgsGeometry
+    ):
+        vertices = []
+        ids = vertexSpatialIndex.intersects(geometry.boundingBox())
+        for id in ids:
+            point = xform.transform(QgsPointXY(nativeMesh.vertex(id)))
+            if geometry.contains(point):
+                vertices.append(point)
+        return vertices
+
+    @staticmethod
     def n1n2FromFeature(
         mesh: QgsMeshLayer, vertexSpatialIndex: QgsSpatialIndex, feat: QgsFeature, xform: QgsCoordinateTransform
     ):

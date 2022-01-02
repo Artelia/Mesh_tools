@@ -58,7 +58,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from ..mesh_tools_dockwidget import MeshToolsDockWidget
-from .create_culvert_shp_dlg import dlg_create_culvert_shapefile
+from .create_shp_dlg import dlg_create_shapefile
 from .import_culvert_file_dlg import dlg_import_culvert_file
 from .MeshUtils import MeshUtils
 
@@ -349,7 +349,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         srs_mesh = None
         if self.lay_mesh:
             srs_mesh = self.lay_mesh.crs()
-        dlg = dlg_create_culvert_shapefile(srs_mesh, self)
+        dlg = dlg_create_shapefile(self.tr("culvert"), srs_mesh, self)
         dlg.setWindowModality(2)
         if dlg.exec_():
             path, crs = dlg.cur_shp, dlg.cur_crs

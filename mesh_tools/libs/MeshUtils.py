@@ -86,7 +86,7 @@ class MeshUtils:
         return round(dset_val.value(0).scalar(), 2)
 
     @staticmethod
-    def xyFromN(nativeMesh: QgsMesh, n: int, mesh_xorm: QgsCoordinateTransform, culv_xform: QgsCoordinateTransform):
+    def xyFromN(nativeMesh: QgsMesh, n: int, mesh_xorm: QgsCoordinateTransform, layer_xform: QgsCoordinateTransform):
         error = None
         point = None
 
@@ -97,10 +97,10 @@ class MeshUtils:
         point = QgsPointXY(nativeMesh.vertex(n - 1))
 
         # It's safer to transform mesh point to canvas CRS then reverse transform
-        # to culvert layer CRS.
-        if mesh_xorm is not None and culv_xform is not None:
+        # to layer CRS.
+        if mesh_xorm is not None and layer_xform is not None:
             point = mesh_xorm.transform(point)
-            point = culv_xform.transform(point, QgsCoordinateTransform.ReverseTransform)
+            point = layer_xform.transform(point, QgsCoordinateTransform.ReverseTransform)
 
         return point, error
 

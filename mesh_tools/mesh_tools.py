@@ -32,6 +32,7 @@ from qgis.PyQt.QtWidgets import QAction, QMenu, QToolBar
 
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
+from .libs.source_manager import SourceManager
 from .mesh_tools_dockwidget import MeshToolsDockWidget
 
 
@@ -171,6 +172,12 @@ class MeshTools:
             callback=lambda: self.run(1),
             parent=self.iface.mainWindow(),
         )
+        self.add_action(
+            os.path.join(self.path_icon, "source_manager.svg"),
+            text=self.tr("Source Manager"),
+            callback=lambda: self.run(3),
+            parent=self.iface.mainWindow(),
+        )
         if Qgis.versionInt() >= 32200:
             self.add_action(
                 ":images/themes/default/algorithms/mAlgorithmCheckGeometry.svg",
@@ -223,6 +230,9 @@ class MeshTools:
         elif tool == 2:
             self.dockwidget = MeshQuality()
             self.dockwidget.setWindowTitle(self.tr("Telemac - Mesh Quality Analysis"))
+        elif tool == 3:
+            self.dockwidget = SourceManager()
+            self.dockwidget.setWindowTitle(self.tr("Source Manager"))
         else:
             self.dockwidget = MeshToolsDockWidget()
             self.dockwidget.setWindowTitle(self.tr("MeshTool - Error"))

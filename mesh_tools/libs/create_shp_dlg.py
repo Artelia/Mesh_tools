@@ -30,13 +30,15 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QMessageBox
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "create_culvert_shp.ui"))
+FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "create_shp.ui"))
 
 
-class dlg_create_culvert_shapefile(QDialog, FORM_CLASS):
-    def __init__(self, crs_mesh=None, parent=None):
-        super(dlg_create_culvert_shapefile, self).__init__()
+class dlg_create_shapefile(QDialog, FORM_CLASS):
+    def __init__(self, name, crs_mesh=None, parent=None):
+        super(dlg_create_shapefile, self).__init__()
         self.setupUi(self)
+        self.tr = parent.tr
+        self.setWindowTitle(self.tr("New {} layer", self.__class__.__name__).format(name))
         self.cur_shp = None
         self.cur_crs = crs_mesh
         path_icon = os.path.join(os.path.dirname(__file__), "..", "icons/")
@@ -75,14 +77,14 @@ class dlg_create_culvert_shapefile(QDialog, FORM_CLASS):
     def exec_maj(self):
         """Création de la BDD"""
         if self.txt_file.text() == "":
-            QMessageBox.warning(self, "Erreur", "Veuillez sélectionner un fichier.", QMessageBox.Ok)
+            QMessageBox.warning(self, self.tr("Error", self.__class__.__name__), self.tr("Select a file.", self.__class__.__name__), QMessageBox.Ok)
             self.cur_shp = None
             return
         else:
             self.cur_shp = self.txt_file.text()
 
         if not self.cur_crs:
-            QMessageBox.warning(self, "Erreur", "Veuillez sélectionner une projection.", QMessageBox.Ok)
+            QMessageBox.warning(self, self.tr("Error", self.__class__.__name__), self.tr("Select a projection.", self.__class__.__name__), QMessageBox.Ok)
             return
 
         self.accept()

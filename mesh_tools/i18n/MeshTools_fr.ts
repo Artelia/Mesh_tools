@@ -2,29 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr">
 <context>
-    <name>Create_culvert_shp_UI</name>
+    <name>Create_shp_UI</name>
     <message>
-        <location filename="../ui/create_culvert_shp.ui" line="14"/>
-        <source>New culvert layer</source>
-        <translation>Nouvelle couche des ouvrages</translation>
+        <location filename="../ui/create_shp.ui" line="14"/>
+        <source>New layer</source>
+        <translation>Nouvelle couche</translation>
     </message>
     <message>
-        <location filename="../ui/create_culvert_shp.ui" line="29"/>
+        <location filename="../ui/create_shp.ui" line="29"/>
         <source>CRS</source>
         <translation>SCR</translation>
     </message>
     <message>
-        <location filename="../ui/create_culvert_shp.ui" line="51"/>
+        <location filename="../ui/create_shp.ui" line="51"/>
         <source>Annuler</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../ui/create_culvert_shp.ui" line="54"/>
+        <location filename="../ui/create_shp.ui" line="54"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../ui/create_culvert_shp.ui" line="67"/>
+        <location filename="../ui/create_shp.ui" line="67"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -32,177 +32,177 @@
 <context>
     <name>CulvertManager</name>
     <message>
-        <location filename="../libs/culvert_manager.py" line="261"/>
+        <location filename="../libs/culvert_manager.py" line="266"/>
         <source>Current mesh changed : {}</source>
         <translation>Maillage actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="294"/>
+        <location filename="../libs/culvert_manager.py" line="311"/>
         <source>Current mesh dataset changed : {}</source>
         <translation>Groupe actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="305"/>
+        <location filename="../libs/culvert_manager.py" line="326"/>
         <source>Current mesh timestep changed : {}</source>
         <translation>Pas de temps actuel modifié : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="389"/>
+        <location filename="../libs/culvert_manager.py" line="412"/>
         <source>Automatic Z Update</source>
         <translation>Actualisation automatique de Z</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="308"/>
+        <location filename="../libs/culvert_manager.py" line="329"/>
         <source>Mesh parameters have been changed.
 Update culvert features with Automatic Z checked ?</source>
         <translation>Les paramètres du maillage ont changé.
 Voulez-vous mettre à jour les paramètres des ouvrages avec Z automatique coché ?</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="281"/>
+        <location filename="../libs/culvert_manager.py" line="286"/>
         <source>Vertices spatial index created in {} sec.</source>
         <translation>Index spatial des nœuds créé en {} sec.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="419"/>
+        <location filename="../libs/culvert_manager.py" line="441"/>
         <source>No culvert selected</source>
         <translation>Pas d&apos;ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="421"/>
+        <location filename="../libs/culvert_manager.py" line="443"/>
         <source>More than one culvert selected</source>
         <translation>Plus d&apos;un ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="425"/>
+        <location filename="../libs/culvert_manager.py" line="447"/>
         <source>Selected culvert informations</source>
         <translation>Information de l&apos;ouvrage sélectionné</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="429"/>
+        <location filename="../libs/culvert_manager.py" line="451"/>
         <source>No culvert layer selected</source>
         <translation>Pas de couche des ouvrages sélectionnée</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="590"/>
+        <location filename="../libs/culvert_manager.py" line="617"/>
         <source>Error on Z calculation : {}</source>
         <translation>Erreur dans le calcul de Z : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="570"/>
+        <location filename="../libs/culvert_manager.py" line="596"/>
         <source>Error on N calculation : {}</source>
         <translation>Erreur dans le calcul de N : {}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="576"/>
+        <location filename="../libs/culvert_manager.py" line="603"/>
         <source>N values updated</source>
         <translation>Valeurs des N mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="595"/>
+        <location filename="../libs/culvert_manager.py" line="622"/>
         <source>Z values updated</source>
         <translation>Valeurs des Z mises à jour</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="611"/>
+        <location filename="../libs/culvert_manager.py" line="638"/>
         <source>All culverts are valid</source>
         <translation>Tous les ouvrages sont valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="622"/>
+        <location filename="../libs/culvert_manager.py" line="649"/>
         <source>File creation is not possible, some culverts are not valid</source>
         <translation>Création du fichier impossible, certains ouvrages ne sont pas valides</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="625"/>
+        <location filename="../libs/culvert_manager.py" line="652"/>
         <source>Culvert file</source>
         <translation>Fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="625"/>
+        <location filename="../libs/culvert_manager.py" line="652"/>
         <source>Text File (*.txt)</source>
         <translation>Fichier texte (*.txt)</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="639"/>
+        <location filename="../libs/culvert_manager.py" line="666"/>
         <source>Culvert count</source>
         <translation>Nombre d&apos;ouvrage</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="687"/>
+        <location filename="../libs/culvert_manager.py" line="714"/>
         <source>Culvert File Created</source>
         <translation>Fichier des ouvrages créé</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="831"/>
+        <location filename="../libs/culvert_manager.py" line="860"/>
         <source>Error during culvert file creation</source>
         <translation>Erreur lors de la création du fichier des ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="713"/>
+        <location filename="../libs/culvert_manager.py" line="740"/>
         <source>{} value is not correct.</source>
         <translation>La valeur de {} est incorrecte.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="696"/>
+        <location filename="../libs/culvert_manager.py" line="723"/>
         <source>Nameless culvert (feature id {})</source>
         <translation>Ouvrage sans nom (entité n°{})</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="701"/>
+        <location filename="../libs/culvert_manager.py" line="728"/>
         <source>Culvert extremity is not within the mesh.</source>
         <translation>L&apos;une des extrémités de l&apos;ouvrage n&apos;est pas dans l&apos;emprise du maillage.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="774"/>
+        <location filename="../libs/culvert_manager.py" line="803"/>
         <source>Culverts</source>
         <translation>Ouvrages</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="805"/>
+        <location filename="../libs/culvert_manager.py" line="834"/>
         <source>Error when importing culvert {i} with error(s) : {err}</source>
         <translation>Erreur lors de l&apos;import de l&apos;ouvrage {i} avec l&apos;erreur : {err}</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="853"/>
+        <location filename="../libs/culvert_manager.py" line="882"/>
         <source>Created culvert layer is not valid.</source>
         <translation>La couche des ouvrages créée n&apos;est pas valdie.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="389"/>
+        <location filename="../libs/culvert_manager.py" line="412"/>
         <source>Culvert layer has been changed.
 Update culvert features with Automatic Z checked ?</source>
         <translation>La couche des ouvrage a changé.
 Mettre à jour les ouvrages ayant Z automatique cochés ?</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="273"/>
+        <location filename="../libs/culvert_manager.py" line="278"/>
         <source>Mesh CRS is not valid.</source>
         <translation>Le SCR du maillage n&apos;est pas valide.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="385"/>
+        <location filename="../libs/culvert_manager.py" line="408"/>
         <source>Culvert layer CRS is not valid.</source>
         <translation>Le SCR de la couche des ouvrages n&apos;est pas valide.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="745"/>
+        <location filename="../libs/culvert_manager.py" line="774"/>
         <source>Import a mesh first.</source>
         <translation>Importer un maillage dans un premier temps.</translation>
     </message>
     <message>
-        <location filename="../libs/culvert_manager.py" line="278"/>
+        <location filename="../libs/culvert_manager.py" line="283"/>
         <source>Creation of vertices spatial index...</source>
         <translation>Création de l&apos;index nœuds des noeuds...</translation>
+    </message>
+    <message>
+        <location filename="../libs/culvert_manager.py" line="353"/>
+        <source>culvert</source>
+        <translation>ouvrages</translation>
     </message>
 </context>
 <context>
     <name>CulvertManager_ui</name>
-    <message>
-        <location filename="../ui/culvert_manager.ui" line="14"/>
-        <source>gsDockWidget</source>
-        <translation>gsDockWidget</translation>
-    </message>
     <message>
         <location filename="../ui/culvert_manager.ui" line="21"/>
         <source>Mesh Parameters</source>
@@ -587,6 +587,14 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
     </message>
 </context>
 <context>
+    <name>DialogForCAS</name>
+    <message>
+        <location filename="../ui/dialog_for_cas.ui" line="37"/>
+        <source>Copy text to clipboard and close</source>
+        <translation>Copier le texte vers le presse-papiers et fermer</translation>
+    </message>
+</context>
+<context>
     <name>Import_culvert_UI</name>
     <message>
         <location filename="../ui/import_culvert_file.ui" line="14"/>
@@ -649,11 +657,6 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
 </context>
 <context>
     <name>MeshQuality_ui</name>
-    <message>
-        <location filename="../ui/mesh_quality.ui" line="14"/>
-        <source>gsDockWidget</source>
-        <translation>gsDockWidget</translation>
-    </message>
     <message>
         <location filename="../ui/mesh_quality.ui" line="21"/>
         <source>Mesh</source>
@@ -718,29 +721,34 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
 <context>
     <name>MeshTools</name>
     <message>
-        <location filename="../mesh_tools.py" line="67"/>
+        <location filename="../mesh_tools.py" line="68"/>
         <source>&amp;Mesh Tools</source>
         <translation>&amp;Mesh Tools</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="222"/>
+        <location filename="../mesh_tools.py" line="229"/>
         <source>Culvert Manager</source>
         <translation>Gestionnaire des ouvrages</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="175"/>
+        <location filename="../mesh_tools.py" line="182"/>
         <source>Mesh Quality Analysis</source>
         <translation>Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="225"/>
+        <location filename="../mesh_tools.py" line="232"/>
         <source>Telemac - Mesh Quality Analysis</source>
         <translation>Telemac - Analyses de qualité du maillage</translation>
     </message>
     <message>
-        <location filename="../mesh_tools.py" line="228"/>
+        <location filename="../mesh_tools.py" line="238"/>
         <source>MeshTool - Error</source>
         <translation>MeshTool - Erreur</translation>
+    </message>
+    <message>
+        <location filename="../mesh_tools.py" line="235"/>
+        <source>Source Manager</source>
+        <translation>Gestionnaire des sources</translation>
     </message>
 </context>
 <context>
@@ -751,9 +759,214 @@ Un coefficient de relaxation de 0,2 signifie que 20 % durésultat au pas de temp
         <translation>Le nœud  n&apos;est pas dans le maillage.</translation>
     </message>
     <message>
-        <location filename="../libs/MeshUtils.py" line="94"/>
+        <location filename="../libs/MeshUtils.py" line="106"/>
         <source>N should a strict positive integer.</source>
         <translation>N doit être un entier strictement positif.</translation>
+    </message>
+</context>
+<context>
+    <name>SourceManager</name>
+    <message>
+        <location filename="../libs/source_manager.py" line="83"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="84"/>
+        <source>Note</source>
+        <translation>Remarque</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="188"/>
+        <source>Current mesh changed : {}</source>
+        <translation>Maillage actuel modifié : {}</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="200"/>
+        <source>Mesh CRS is not valid.</source>
+        <translation>Le SCR du maillage n&apos;est pas valide.</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="205"/>
+        <source>Creation of vertices spatial index...</source>
+        <translation>Création de l&apos;index nœuds des noeuds...</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="208"/>
+        <source>Vertices spatial index created in {} sec.</source>
+        <translation>Index spatial des nœuds créé en {} sec.</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="306"/>
+        <source>Source layer CRS is not valid.</source>
+        <translation>Le SCR de la couche des sources n&apos;est pas valide.</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="326"/>
+        <source>No source selected</source>
+        <translation>Aucune source sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="328"/>
+        <source>More than one source selected</source>
+        <translation>Plus d&apos;une source sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="332"/>
+        <source>Selected source informations</source>
+        <translation>Informations de la source sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="336"/>
+        <source>No source layer selected</source>
+        <translation>Pas de couche des sources sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="446"/>
+        <source>Copy the text below in your CAS file.</source>
+        <translation>Copiez le texte ci-dessous dans votre fichier CAS.</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="473"/>
+        <source>MAXIMUM NUMBER OF SOURCES = {}
+</source>
+        <translation>NOMBRE MAXIMUM DE SOURCES = {}
+</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="427"/>
+        <source>ABSCISSAE OF SOURCES</source>
+        <translation>ABSCISSES DES SOURCES</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="429"/>
+        <source>ORDINATES OF SOURCES</source>
+        <translation>ORDONNEES DES SOURCES</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="438"/>
+        <source>Region source file</source>
+        <translation>Fichier des régions des sources</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="438"/>
+        <source>Text File (*.txt)</source>
+        <translation>Fichier texte (*.txt)</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="447"/>
+        <source>SOURCE REGIONS DATA FILE = &apos;{}&apos;
+</source>
+        <translation>FICHIER DES REGIONS DES SOURCES = &apos;{}&apos;
+</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="458"/>
+        <source>SOURCE REGION {}</source>
+        <translation>REGION DES SOURCES {}</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="459"/>
+        <source># COORDINATES AT</source>
+        <translation># COORDONNEES DE LA</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="475"/>
+        <source>MAXIMUM NUMBER OF POINTS FOR SOURCES REGIONS = {}
+</source>
+        <translation>NOMBRE MAXIMUM DE POINTS POUR DEFINIR DES SOURCES = {}
+</translation>
+    </message>
+    <message>
+        <location filename="../libs/source_manager.py" line="221"/>
+        <source>source</source>
+        <translation>sources</translation>
+    </message>
+</context>
+<context>
+    <name>SourceManager_ui</name>
+    <message>
+        <location filename="../ui/source_manager.ui" line="21"/>
+        <source>Mesh</source>
+        <translation>Maillage</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="106"/>
+        <source>Layer</source>
+        <translation>Couche</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="50"/>
+        <source>Sources</source>
+        <translation>Sources</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="62"/>
+        <source>Create</source>
+        <translation>Créer</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="69"/>
+        <source>Highlight mesh vertices in region(s)</source>
+        <translation>Affichier les nœuds du maillage dans les régions</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="77"/>
+        <source>Individual source (point)</source>
+        <translation>Source individuelle (Point)</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="82"/>
+        <source>Region (area)</source>
+        <translation>Région (surface)</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="90"/>
+        <source>Source type</source>
+        <translation>Type de source</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="113"/>
+        <source>Export</source>
+        <translation>Exporter</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="120"/>
+        <source>Selected source</source>
+        <translation>Source sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="132"/>
+        <source>Note</source>
+        <translation>Remarque</translation>
+    </message>
+    <message>
+        <location filename="../ui/source_manager.ui" line="145"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+</context>
+<context>
+    <name>dlg_create_shapefile</name>
+    <message>
+        <location filename="../libs/create_shp_dlg.py" line="41"/>
+        <source>New {} layer</source>
+        <translation>Nouvelle couche des {}</translation>
+    </message>
+    <message>
+        <location filename="../libs/create_shp_dlg.py" line="87"/>
+        <source>Error</source>
+        <translation>Erreur</translation>
+    </message>
+    <message>
+        <location filename="../libs/create_shp_dlg.py" line="80"/>
+        <source>Select a file.</source>
+        <translation>Veuillez sélectionner un fichier.</translation>
+    </message>
+    <message>
+        <location filename="../libs/create_shp_dlg.py" line="87"/>
+        <source>Select a projection.</source>
+        <translation>Veuillez sélectionner une projection.</translation>
     </message>
 </context>
 <context>

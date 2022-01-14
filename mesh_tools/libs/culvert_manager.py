@@ -58,7 +58,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from ..mesh_tools_dockwidget import MeshToolsDockWidget
-from .create_culvert_shp_dlg import dlg_create_culvert_shapefile
+from .create_shp_dlg import dlg_create_shapefile
 from .import_culvert_file_dlg import dlg_import_culvert_file
 from .MeshUtils import MeshUtils
 
@@ -241,7 +241,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
     ######################################################################################
 
     def mesh_lay_changed(self):
-        with suppress(AttributeError):
+        with suppress(AttributeError, RuntimeError, TypeError):
             self.lay_mesh.crsChanged.disconnect()
 
         self.lay_mesh = self.cb_lay_mesh.currentLayer()
@@ -347,9 +347,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
     def new_file(self):
         srs_mesh = None
+        path = ""
         if self.lay_mesh:
             srs_mesh = self.lay_mesh.crs()
-        dlg = dlg_create_culvert_shapefile(srs_mesh, self)
+        dlg = dlg_create_shapefile(self.tr("culvert"), srs_mesh, self)
         dlg.setWindowModality(2)
         if dlg.exec_():
             path, crs = dlg.cur_shp, dlg.cur_crs
@@ -379,13 +380,14 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         )
 
         shp_lay = QgsVectorLayer(path, os.path.basename(path).rsplit(".", 1)[0], "ogr")
+        shp_lay.setCrs(crs)
         shp_lay.loadNamedStyle(self.file_culv_style)
         shp_lay.saveDefaultStyle()
         self.project.addMapLayer(shp_lay)
         self.cb_lay_culv.setCurrentIndex(self.cb_lay_culv.findData(shp_lay.id(), 32))
 
     def culv_lay_changed(self):
-        with suppress(AttributeError):
+        with suppress(AttributeError, RuntimeError, TypeError):
             self.lay_culv.crsChanged.disconnect()
 
         lay_id = self.cb_lay_culv.currentData(32)
@@ -649,13 +651,13 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         culv_file_name, _ = QFileDialog.getSaveFileName(self, self.tr("Culvert file"), "", self.tr("Text File (*.txt)"))
 
-        if culv_file_name == "":
+        if not culv_file_name:
             return
 
         nb_culv = self.lay_culv.featureCount()
         relax = round(self.sb_relax.value(), 2)
 
-        with open(culv_file_name, "w") as culv_file:
+        with open(culv_file_name, "w", encoding="utf-8") as culv_file:
             if self.software_select == 0:  # Telemac
                 culv_file.write("Relaxation" + str("\t") + self.tr("Culvert count") + str("\n"))
                 culv_file.write(str(relax) + str("\t") + str(nb_culv) + str("\n"))

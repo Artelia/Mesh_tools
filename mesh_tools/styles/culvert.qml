@@ -1279,6 +1279,16 @@
         </config>
       </editWidget>
     </field>
+    <field name="NB_in_//">
+      <editWidget type="TextEdit">
+        <config>
+          <Option type="Map">
+            <Option type="bool" value="false" name="IsMultiline"/>
+            <Option type="bool" value="false" name="UseHtml"/>
+          </Option>
+        </config>
+      </editWidget>
+    </field>
   </fieldConfiguration>
   <aliases>
     <alias field="NAME" name="" index="0"/>
@@ -1311,6 +1321,7 @@
     <alias field="AZ" name="" index="27"/>
     <alias field="AA" name="" index="28"/>
     <alias field="Remarques" name="" index="29"/>
+    <alias field="NB_in_//" name="" index="30"/>
   </aliases>
   <excludeAttributesWMS/>
   <excludeAttributesWFS/>
@@ -1345,6 +1356,7 @@
     <default field="AZ" applyOnUpdate="0" expression="0"/>
     <default field="AA" applyOnUpdate="0" expression="0"/>
     <default field="Remarques" applyOnUpdate="0" expression=""/>
+    <default field="NB_in_//" applyOnUpdate="0" expression="1"/>
   </defaults>
   <constraints>
     <constraint field="NAME" notnull_strength="0" unique_strength="0" exp_strength="0" constraints="0"/>
@@ -1377,6 +1389,7 @@
     <constraint field="AZ" notnull_strength="1" unique_strength="0" exp_strength="0" constraints="1"/>
     <constraint field="AA" notnull_strength="1" unique_strength="0" exp_strength="0" constraints="1"/>
     <constraint field="Remarques" notnull_strength="0" unique_strength="0" exp_strength="0" constraints="0"/>
+    <constraint field="NB_in_//" notnull_strength="1" unique_strength="0" exp_strength="0" constraints="1"/>
   </constraints>
   <constraintExpressions>
     <constraint field="NAME" exp="" desc=""/>
@@ -1409,6 +1422,7 @@
     <constraint field="AZ" exp="" desc=""/>
     <constraint field="AA" exp="" desc=""/>
     <constraint field="Remarques" exp="" desc=""/>
+    <constraint field="NB_in_//" exp="" desc=""/>
   </constraintExpressions>
   <expressionfields/>
   <editform tolerant="1"></editform>
@@ -1464,6 +1478,7 @@ def my_form_open(dialog, layer, feature):
     <field name="d2" editable="1"/>
     <field name="z1" editable="1"/>
     <field name="z2" editable="1"/>
+    <field name="NB_in_//" editable="1"/>
   </editable>
   <labelOnTop>
     <field name="AA" labelOnTop="0"/>
@@ -1496,6 +1511,7 @@ def my_form_open(dialog, layer, feature):
     <field name="d2" labelOnTop="0"/>
     <field name="z1" labelOnTop="0"/>
     <field name="z2" labelOnTop="0"/>
+    <field name="NB_in_//" labelOnTop="0"/>
   </labelOnTop>
   <widgets/>
   <layerGeometryType>1</layerGeometryType>

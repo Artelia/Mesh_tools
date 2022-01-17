@@ -51,6 +51,7 @@ from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import (
     QCheckBox,
     QComboBox,
+    QSpinBox,
     QDoubleSpinBox,
     QFileDialog,
     QLineEdit,
@@ -95,35 +96,36 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         # Col4 - Index for Telemac
         # Col5 - Index for Uhaina
         self.culv_flds = [
-            ["NAME", QVariant.String, self.txt_name, 28, 22],
-            ["N1", QVariant.Int, None, 0, None],
-            ["N2", QVariant.Int, None, 1, None],
-            ["CE1", QVariant.Double, self.sb_ce1, 2, 6],
-            ["CE2", QVariant.Double, self.sb_ce2, 3, 7],
-            ["CS1", QVariant.Double, self.sb_cs1, 4, 8],
-            ["CS2", QVariant.Double, self.sb_cs2, 5, 9],
-            ["LARG", QVariant.Double, self.sb_larg, 6, 17],
-            ["HAUT", QVariant.Double, self.sb_haut1, 7, 18],
-            ["CLAP", QVariant.String, self.cb_clapet, 8, 20],
-            ["L12", QVariant.Double, self.sb_l12, 9, 10],
-            ["Z1", QVariant.Double, self.sb_z1, 10, 2],
-            ["Z2", QVariant.Double, self.sb_z2, 11, 5],
-            ["CV", QVariant.Double, self.sb_cv, 12, None],
-            ["C56", QVariant.Double, self.sb_c56, 13, None],
-            ["CV5", QVariant.Double, self.sb_cv5, 14, None],
-            ["C5", QVariant.Double, self.sb_c5, 15, None],
-            ["CT", QVariant.Double, self.sb_ct, 16, None],
-            ["HAUT2", QVariant.Double, self.sb_haut2, 17, 19],
-            ["FRIC", QVariant.Double, self.sb_fric, 18, None],
-            ["LENGTH", QVariant.Double, self.sb_length, 19, None],
-            ["CIRC", QVariant.Int, self.cb_circ, 20, 16],
-            ["d1", QVariant.Double, self.sb_d1, 21, 11],
-            ["d2", QVariant.Double, self.sb_d2, 22, 12],
-            ["a1", QVariant.Double, self.sb_a1, 23, 14],
-            ["a2", QVariant.Double, self.sb_a2, 24, 15],
-            ["AA", QVariant.Int, self.cb_auto_a, 25, 13],
-            ["AL", QVariant.Int, self.cb_auto_l, 26, None],
-            ["AZ", QVariant.Int, self.cb_auto_z, 27, 21],
+            ["NAME",        QVariant.String,    self.txt_name,  28, 23  ],
+            ["N1",          QVariant.Int,       None,           0,  None],
+            ["N2",          QVariant.Int,       None,           1,  None],
+            ["CE1",         QVariant.Double,    self.sb_ce1,    2, 6    ],
+            ["CE2",         QVariant.Double,    self.sb_ce2,    3, 7    ],
+            ["CS1",         QVariant.Double,    self.sb_cs1,    4, 8    ],
+            ["CS2",         QVariant.Double,    self.sb_cs2,    5, 9    ],
+            ["LARG",        QVariant.Double,    self.sb_larg,   6, 17   ],
+            ["HAUT",        QVariant.Double,    self.sb_haut1,  7, 18   ],
+            ["CLAP",        QVariant.String,    self.cb_clapet, 8, 20   ],
+            ["L12",         QVariant.Double,    self.sb_l12,    9, 10   ],
+            ["Z1",          QVariant.Double,    self.sb_z1,     10, 2   ],
+            ["Z2",          QVariant.Double,    self.sb_z2,     11, 5   ],
+            ["CV",          QVariant.Double,    self.sb_cv,     12, None],
+            ["C56",         QVariant.Double,    self.sb_c56,    13, None],
+            ["CV5",         QVariant.Double,    self.sb_cv5,    14, None],
+            ["C5",          QVariant.Double,    self.sb_c5,     15, None],
+            ["CT",          QVariant.Double,    self.sb_ct,     16, None],
+            ["HAUT2",       QVariant.Double,    self.sb_haut2,  17, 19  ],
+            ["FRIC",        QVariant.Double,    self.sb_fric,   18, None],
+            ["LENGTH",      QVariant.Double,    self.sb_length, 19, None],
+            ["CIRC",        QVariant.Int,       self.cb_circ,   20, 16  ],
+            ["d1",          QVariant.Double,    self.sb_d1,     21, 11  ],
+            ["d2",          QVariant.Double,    self.sb_d2,     22, 12  ],
+            ["a1",          QVariant.Double,    self.sb_a1,     23, 14  ],
+            ["a2",          QVariant.Double,    self.sb_a2,     24, 15  ],
+            ["AA",          QVariant.Int,       self.cb_auto_a, 25, 13  ],
+            ["NB_in_//",    QVariant.Int,       self.sb_nbre,   26, 21  ],
+            ["AL",          QVariant.Int,       self.cb_auto_l, 27, None],
+            ["AZ",          QVariant.Int,       self.cb_auto_z, 28, 22  ]
         ]
 
         self.is_opening = True
@@ -160,7 +162,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         for fld in self.culv_flds:
             ctrl = fld[2]
             if ctrl:
-                if isinstance(ctrl, QDoubleSpinBox):
+                if isinstance(ctrl, QDoubleSpinBox) or isinstance(ctrl, QSpinBox):
                     ctrl.valueChanged.connect(self.ctrl_edited)
                 elif isinstance(ctrl, QComboBox):
                     ctrl.currentIndexChanged.connect(self.ctrl_edited)
@@ -233,6 +235,11 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
     def soft_changed(self):
         self.software_select = self.cb_software_select.currentIndex()
+        for fld in self.culv_flds:
+            ctrl=fld[2]
+            if ctrl is not None:
+                ctrl.setEnabled(fld[self.software_select+3] is not None)
+
 
     ######################################################################################
     #                                                                                    #
@@ -459,6 +466,8 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             if ctrl:
                 if isinstance(ctrl, QDoubleSpinBox):
                     ctrl.setValue(0.0)
+                elif isinstance(ctrl, QSpinBox):
+                    ctrl.setValue(1)
                 elif isinstance(ctrl, QComboBox):
                     ctrl.setCurrentIndex(0)
                 elif isinstance(ctrl, QCheckBox):
@@ -479,6 +488,11 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         if isinstance(ctrl, QDoubleSpinBox):
             if val is None:
                 ctrl.setValue(0.0)
+            else:
+                ctrl.setValue(val)
+        elif isinstance(ctrl, QSpinBox):
+            if val is None:
+                ctrl.setValue(1)
             else:
                 ctrl.setValue(val)
         elif isinstance(ctrl, QComboBox):
@@ -502,7 +516,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 ft = self.lay_culv.getFeature(self.cur_culv_id)
 
                 ctrl = self.sender()
-                if isinstance(ctrl, QDoubleSpinBox):
+                if isinstance(ctrl, QDoubleSpinBox) or isinstance(ctrl, QSpinBox):
                     val = ctrl.value()
                 elif isinstance(ctrl, QComboBox):
                     val = ctrl.currentIndex()
@@ -577,6 +591,8 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                         ctrl.setValue(1.0)
                     else:
                         ctrl.setValue(0.0)
+                elif isinstance(ctrl, QSpinBox):
+                    ctrl.setValue(1)
                 elif isinstance(ctrl, QComboBox):
                     ctrl.setCurrentIndex(0)
                 elif isinstance(ctrl, QCheckBox):

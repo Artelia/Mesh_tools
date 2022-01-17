@@ -262,6 +262,20 @@ A relaxation coefficient of 0.2 means that 20% of time T result is mixed with 80
              <item>
               <widget class="QLineEdit" name="txt_name"/>
              </item>
+             <item>
+              <widget class="QLabel" name="label_nbre">
+               <property name="text">
+                <string>Number in //</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="sb_nbre">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>

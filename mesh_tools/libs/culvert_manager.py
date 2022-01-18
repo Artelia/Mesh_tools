@@ -236,9 +236,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
     def soft_changed(self):
         self.software_select = self.cb_software_select.currentIndex()
         for fld in self.culv_flds:
-            ctrl=fld[2]
+            ctrl = fld[2]
             if ctrl is not None:
-                ctrl.setEnabled(fld[self.software_select+3] is not None)
+                ctrl.setEnabled(fld[self.software_select + 3] is not None)
 
 
     ######################################################################################

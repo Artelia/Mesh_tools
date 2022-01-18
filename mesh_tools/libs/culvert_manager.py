@@ -123,9 +123,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             ["a1",          QVariant.Double,    self.sb_a1,     23, 14  ],
             ["a2",          QVariant.Double,    self.sb_a2,     24, 15  ],
             ["AA",          QVariant.Int,       self.cb_auto_a, 25, 13  ],
-            ["NB_in_//",    QVariant.Int,       self.sb_nbre,   26, 21  ],
-            ["AL",          QVariant.Int,       self.cb_auto_l, 27, None],
-            ["AZ",          QVariant.Int,       self.cb_auto_z, 28, 22  ]
+            ["NB_in_//",    QVariant.Int,       self.sb_nbre,   None, 21  ],
+            ["AL",          QVariant.Int,       self.cb_auto_l, 26, None],
+            ["AZ",          QVariant.Int,       self.cb_auto_z, 27, 22  ]
         ]
 
         self.is_opening = True

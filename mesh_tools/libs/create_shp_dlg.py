@@ -58,7 +58,7 @@ class dlg_create_shapefile(QDialog, FORM_CLASS):
 
     def select_bdd(self):
         """Sélection de l'emplacement de la BDD"""
-        txt, _ = QFileDialog.getSaveFileName(self, "Shapefile", "", "ESRI Shapefile (*.shp)")
+        txt, _ = QFileDialog.getSaveFileName(self, "File", "", "ESRI Shapefile (*.shp);; Geopackage (*.gpkg)")
         if txt != "":
             self.txt_file.setText(txt)
 

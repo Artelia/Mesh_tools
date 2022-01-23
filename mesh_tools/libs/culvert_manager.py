@@ -25,9 +25,11 @@
 
 import os
 import time
+
 from contextlib import suppress
 
 import numpy as np
+
 from processing.algs.gdal.GdalUtils import GdalUtils
 from qgis.core import (
     NULL,
@@ -51,11 +53,11 @@ from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import (
     QCheckBox,
     QComboBox,
-    QSpinBox,
     QDoubleSpinBox,
     QFileDialog,
     QLineEdit,
     QMessageBox,
+    QSpinBox,
 )
 
 from ..mesh_tools_dockwidget import MeshToolsDockWidget
@@ -93,6 +95,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         self.software_select = 0
 
+        # fmt: off
         # Col4 - Index for Telemac
         # Col5 - Index for Uhaina
         self.culv_flds = [
@@ -127,6 +130,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             ["AL",          QVariant.Int,       self.cb_auto_l, 26, None],
             ["AZ",          QVariant.Int,       self.cb_auto_z, 27, 22  ]
         ]
+        # fmt: on
 
         self.is_opening = True
 
@@ -239,7 +243,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             ctrl = fld[2]
             if ctrl is not None:
                 ctrl.setEnabled(fld[self.software_select + 3] is not None)
-
 
     ######################################################################################
     #                                                                                    #
@@ -649,19 +652,19 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             return
 
         self.update_all_n(log=False)
-        ids = self.verif_culvert_validity()
-        if not ids:
+        invalidIds = self.verif_culvert_validity()
+        if not invalidIds:
             self.writeSuccess(self.tr("All culverts are valid"))
         else:
-            for id in ids:
-                self.writeError("{} : {}".format(*id))
+            for invalidId in invalidIds:
+                self.writeError("{} : {}".format(*invalidId))
 
     def create_file(self):
         if not self.lay_culv:
             return
 
-        ids = self.verif_culvert_validity()
-        if ids:
+        invalidIds = self.verif_culvert_validity()
+        if invalidIds:
             self.writeError(self.tr("File creation is not possible, some culverts are not valid"))
             return
 
@@ -772,7 +775,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         def asDict(headers, values):
             dico = {}
-            print(headers, values)
             for i, h in enumerate(headers):
                 try:
                     if values[i] == NULL:

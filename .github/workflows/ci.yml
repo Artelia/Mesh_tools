@@ -134,4 +134,3 @@ jobs:
           --transifex-token ${{ secrets.TRANSIFEX_TOKEN }}
           --osgeo-username ${{ secrets.OSGEO_USERNAME }}
           --osgeo-password ${{ secrets.OSGEO_PASSWORD }}
-          --create-plugin-repo

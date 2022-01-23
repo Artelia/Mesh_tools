@@ -1,0 +1,2 @@
+# Reclassifies `.qml` files as Python:
+*.qml linguist-language=Python

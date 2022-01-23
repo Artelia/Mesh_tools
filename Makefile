@@ -31,6 +31,9 @@ LOCALES = fr
 SOURCES = \
 	mesh_tools \
 
+TESTS = \
+       tests \
+
 PLUGINNAME = mesh_tools
 
 PY_FILES = \
@@ -226,8 +229,8 @@ black:
 	@echo "-------------------------"
 	@echo "Isort and Black formating"
 	@echo "-------------------------"
-	@isort --profile black $(SOURCES)
-	@black -l 120 -t py39 $(SOURCES)
+	@isort --profile black $(SOURCES) $(TESTS)
+	@black -l 120 -t py39 $(SOURCES) $(TESTS)
 
 # Run pep8 style checking
 #http://pypi.python.org/pypi/pep8

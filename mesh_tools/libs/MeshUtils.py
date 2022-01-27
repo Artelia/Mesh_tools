@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+import decorator
 from typing import Optional
 
 from qgis.core import (
@@ -36,7 +37,8 @@ from qgis.core import (
     QgsSpatialIndex,
     QgsTriangle,
 )
-from qgis.PyQt.QtCore import QCoreApplication
+from qgis.PyQt.QtCore import QCoreApplication, Qt
+from qgis.PyQt.QtWidgets import QApplication
 
 
 class MeshUtils:
@@ -147,8 +149,30 @@ class MeshUtils:
         triangle.setExteriorRing(QgsLineString(points))
         return triangle
 
+    @staticmethod
+    def countNeighbors(nativeMesh: QgsMesh) -> dict:
+        dico = {}
+        for faceId in range(nativeMesh.faceCount()):
+            for vertex in nativeMesh.face(faceId):
+                try:
+                    dico[vertex] += 1
+                except KeyError:
+                    dico[vertex] = 1
+        for key, value in dico.items():
+            if value < 2:
+                dico[key] = 2
+        return dico
+
     @classmethod
     def tr(cls, message, context=""):
         if context == "":
             context = cls.__name__
         return QCoreApplication.translate(context, message)
+
+@decorator.decorator
+def showWaitCursor(func, *args, **kwargs):
+    QApplication.setOverrideCursor(Qt.WaitCursor)
+    try:
+        return func(*args, **kwargs)
+    finally:
+        QApplication.restoreOverrideCursor()

@@ -130,9 +130,9 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
                     self.addVertexMarker(centroid, "bad_area")
 
         if self.chk_neighbors.isChecked():
-            verticesNeighbors = MeshUtils.countNeighbors(self.native_mesh)
+            verticesNeighbors = MeshUtils.computeNeighbors(self.native_mesh)
             for vertexId, neighbors in verticesNeighbors.items():
-                if neighbors > self.qsb_max_neighbors.value():
+                if len(neighbors) > self.qsb_max_neighbors.value():
                     point = self.xform.transform(QgsPointXY(self.native_mesh.vertex(vertexId)))
                     self.addVertexMarker(point, "too_much_neighbors")
 

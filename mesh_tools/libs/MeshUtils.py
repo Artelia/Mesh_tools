@@ -150,17 +150,19 @@ class MeshUtils:
         return triangle
 
     @staticmethod
-    def countNeighbors(nativeMesh: QgsMesh) -> dict:
+    def computeNeighbors(nativeMesh: QgsMesh) -> dict:
         dico = {}
         for faceId in range(nativeMesh.faceCount()):
-            for vertex in nativeMesh.face(faceId):
-                try:
-                    dico[vertex] += 1
-                except KeyError:
-                    dico[vertex] = 1
-        for key, value in dico.items():
-            if value < 2:
-                dico[key] = 2
+            verticies = nativeMesh.face(faceId)
+            for vertex in verticies:
+                neighbors = list(verticies)
+                neighbors.remove(vertex)
+                if vertex in dico.keys():
+                    for neighbor in neighbors:
+                        if neighbor not in dico[vertex]:
+                            dico[vertex].append(neighbor)
+                else:
+                    dico[vertex] = neighbors
         return dico
 
     @classmethod

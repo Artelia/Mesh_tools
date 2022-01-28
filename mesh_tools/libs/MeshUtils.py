@@ -23,6 +23,7 @@
  ***************************************************************************/
 """
 import functools
+
 from typing import Optional
 
 from qgis.core import (

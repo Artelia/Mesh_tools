@@ -146,37 +146,27 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
     def addVertexMarker(self, point, check):
         marker = QgsVertexMarker(self.canvas)
         marker.setCenter(QgsPointXY(point))
+        # Set default vertex config
+        marker.setPenWidth(2)
+        marker.setIconSize(10)
+        marker.setColor(QColor(255, 0, 0))
 
         if check == "bad_angle_1":
-            marker.setColor(QColor(255, 0, 0))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
-            marker.setIconSize(10)
         elif check == "bad_angle_2":
             marker.setColor(QColor(255, 255, 0))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
-            marker.setIconSize(10)
         elif check == "bad_angle_3":
             marker.setColor(QColor(0, 0, 255))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
-            marker.setIconSize(10)
         elif check == "bad_inscribed_circle":
-            marker.setColor(QColor(255, 0, 0))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_BOX)
-            marker.setIconSize(10)
         elif check == "bad_area":
-            marker.setColor(QColor(255, 0, 0))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_TRIANGLE)
             marker.setIconSize(10)
         elif type == "too_much_neighbors":
             marker.setColor(QColor(255, 0, 255))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_RHOMBUS)
-            marker.setIconSize(10)
 
         marker.hide()
 

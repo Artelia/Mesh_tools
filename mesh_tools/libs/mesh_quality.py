@@ -146,7 +146,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
     def addVertexMarker(self, point, check):
         marker = QgsVertexMarker(self.canvas)
         marker.setCenter(QgsPointXY(point))
-        # Set default vertex config
+        # Set default marker config
         marker.setPenWidth(2)
         marker.setIconSize(10)
         marker.setColor(QColor(255, 0, 0))
@@ -163,7 +163,6 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
             marker.setIconType(QgsVertexMarker.ICON_BOX)
         elif check == "bad_area":
             marker.setIconType(QgsVertexMarker.ICON_TRIANGLE)
-            marker.setIconSize(10)
         elif type == "too_much_neighbors":
             marker.setColor(QColor(255, 0, 255))
             marker.setIconType(QgsVertexMarker.ICON_RHOMBUS)

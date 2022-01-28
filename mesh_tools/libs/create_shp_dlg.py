@@ -77,14 +77,24 @@ class dlg_create_shapefile(QDialog, FORM_CLASS):
     def exec_maj(self):
         """Création de la BDD"""
         if self.txt_file.text() == "":
-            QMessageBox.warning(self, self.tr("Error", self.__class__.__name__), self.tr("Select a file.", self.__class__.__name__), QMessageBox.Ok)
+            QMessageBox.warning(
+                self,
+                self.tr("Error", self.__class__.__name__),
+                self.tr("Select a file.", self.__class__.__name__),
+                QMessageBox.Ok,
+            )
             self.cur_shp = None
             return
         else:
             self.cur_shp = self.txt_file.text()
 
         if not self.cur_crs:
-            QMessageBox.warning(self, self.tr("Error", self.__class__.__name__), self.tr("Select a projection.", self.__class__.__name__), QMessageBox.Ok)
+            QMessageBox.warning(
+                self,
+                self.tr("Error", self.__class__.__name__),
+                self.tr("Select a projection.", self.__class__.__name__),
+                QMessageBox.Ok,
+            )
             return
 
         self.accept()

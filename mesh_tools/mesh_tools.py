@@ -29,6 +29,7 @@ from qgis.core import Qgis
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMenu, QToolBar
+from qgis.utils import iface
 
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
@@ -39,7 +40,7 @@ from .mesh_tools_dockwidget import MeshToolsDockWidget
 class MeshTools:
     """QGIS Plugin Implementation."""
 
-    def __init__(self, iface):
+    def __init__(self):
         """Constructor.
 
         :param iface: An interface instance that will be passed to this class
@@ -68,8 +69,6 @@ class MeshTools:
         self.menu = self.tr("&Mesh Tools")
         # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = QToolBar()
-        # self.toolbar = self.iface.addToolBar(u'MeshTools')
-        # self.toolbar.setObjectName(u'MeshTools')
 
         self.pluginIsActive = False
         self.dockwidget = None
@@ -222,7 +221,7 @@ class MeshTools:
             self.pluginIsActive = True
 
         if self.dockwidget:
-            print(self.dockwidget.close())
+            self.dockwidget.close()
 
         if tool == 1:
             self.dockwidget = CulvertManager()

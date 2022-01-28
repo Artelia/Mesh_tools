@@ -66,9 +66,9 @@ class MeshUtils:
         nativeMesh: QgsMesh, vertexSpatialIndex: QgsSpatialIndex, xform: QgsCoordinateTransform, geometry: QgsGeometry
     ):
         vertices = []
-        ids = vertexSpatialIndex.intersects(geometry.boundingBox())
-        for id in ids:
-            point = xform.transform(QgsPointXY(nativeMesh.vertex(id)))
+        vertexIds = vertexSpatialIndex.intersects(geometry.boundingBox())
+        for vertexId in vertexIds:
+            point = xform.transform(QgsPointXY(nativeMesh.vertex(vertexId)))
             if geometry.contains(point):
                 vertices.append(point)
         return vertices

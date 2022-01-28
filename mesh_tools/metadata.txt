@@ -1,12 +1,12 @@
 # This file contains metadata for your plugin.
 
-# This file should be included when you package your plugin.# Mandatory items:
-
+# Mandatory items:
 [general]
 name=Mesh Tools
 qgisMinimumVersion=3.16
+qgisMaximumVersion=3.99
 description=Tools for management of Data on mesh (Telemac, Uhaina).
-version=0.8
+version=0.8.0
 author=Artelia
 email=a@a
 
@@ -14,7 +14,7 @@ about=Tools for for management of Data using Mesh format :
       - Culvert Manager 
       - Sources Manager
       - Mesh Quality Analysis 
-     Developed by Aurélien Perrin(Artelia), Nicolas Godet (ISL), 
+     Developed by Aurélien Perrin (Artelia), Nicolas Godet (ISL), 
         and Christophe Coulet (BRGM)
 
 tracker=https://github.com/Artelia/mesh_tools/issues
@@ -51,21 +51,17 @@ changelog=
 
 
 # Tags are comma separated with spaces allowed
-tags=python
+tags=python, mesh, tool
 
 homepage=https://github.com/Artelia/mesh_tools/wiki
-category=Plugins
+category=Plugin
 icon=icon.png
+
 # experimental flag
 experimental=True
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
-
-# Since QGIS 3.8, a comma separated list of plugins to be installed
-# (or upgraded) can be specified.
-# Check the documentation for more information.
-# plugin_dependencies=
 
 Category of the plugin: Raster, Vector, Database or Web
 # category=

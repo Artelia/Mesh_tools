@@ -1,0 +1,136 @@
+name: Tests 🎳
+
+on:
+  push:
+    tags:
+      - "*"
+    branches:
+      - main
+    paths:
+      - 'mesh_tools/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'mesh_tools/**'
+
+jobs:
+
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          architecture: x64
+
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python requirements
+        run: pip install -r requirements/dev.txt
+
+      - name: Run flake8
+        run: flake8
+
+  tests-unit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get source code
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          architecture: x64
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python requirements
+        run: pip install -r requirements/testing.txt
+
+      - name: Run Unit tests
+        run: pytest tests/unit/
+
+  tests-qgis:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .docker
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Permissions
+        run: chmod +x *.sh
+      - name: Launching docker-compose
+        run: ./start.sh
+      - name: Running tests
+        run: ./exec.sh
+
+  release:
+    needs: [flake8, tests-unit]
+
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Artelia' && contains(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: Install Qt lrelease
+        run: |
+          sudo apt-get update
+          sudo apt-get install qt5-default qttools5-dev-tools
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/packaging.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python requirements
+        run: pip install -r requirements/packaging.txt
+
+      - name : Fetch current changelog
+        run: qgis-plugin-ci changelog ${{ env.RELEASE_VERSION }} >> release.md
+
+      - name: Create release on GitHub
+        uses: ncipollo/release-action@v1.9.0
+        with:
+          bodyFile: release.md
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package and deploy the zip
+        run: >-
+          qgis-plugin-ci
+          release ${{ env.RELEASE_VERSION }}
+          --github-token ${{ secrets.GITHUB_TOKEN }}
+          --transifex-token ${{ secrets.TRANSIFEX_TOKEN }}
+          --osgeo-username ${{ secrets.OSGEO_USERNAME }}
+          --osgeo-password ${{ secrets.OSGEO_PASSWORD }}

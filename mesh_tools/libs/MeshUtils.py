@@ -22,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-import decorator
+import functools
 from typing import Optional
 
 from qgis.core import (
@@ -171,10 +171,14 @@ class MeshUtils:
             context = cls.__name__
         return QCoreApplication.translate(context, message)
 
-@decorator.decorator
-def showWaitCursor(func, *args, **kwargs):
-    QApplication.setOverrideCursor(Qt.WaitCursor)
-    try:
-        return func(*args, **kwargs)
-    finally:
-        QApplication.restoreOverrideCursor()
+
+def showWaitCursor(func):
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        try:
+            return func(*args, **kwargs)
+        finally:
+            QApplication.restoreOverrideCursor()
+
+    return wrapped

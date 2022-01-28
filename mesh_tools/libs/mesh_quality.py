@@ -58,7 +58,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
 
         self.btn_analyse_mesh.clicked.connect(self.analyse_mesh)
         self.btn_reset_marker.clicked.connect(self.resetVertexMarker)
-        
+
         self.qdsb_bad_angle_1.setClearValue(self.qdsb_bad_angle_1.value())
         self.qdsb_bad_angle_2.setClearValue(self.qdsb_bad_angle_2.value())
         self.qdsb_bad_angle_3.setClearValue(self.qdsb_bad_angle_3.value())
@@ -97,7 +97,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
             self.lay_mesh.dataProvider().populateMesh(self.native_mesh)
 
     @showWaitCursor
-    def analyse_mesh(self):
+    def analyse_mesh(self, clicked):  # Add dummy arg to respect Qt signature
         if not self.lay_mesh:
             self.writeError(self.tr("No mesh selected"))
 

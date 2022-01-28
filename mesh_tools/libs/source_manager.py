@@ -25,6 +25,7 @@
 
 import os
 import time
+
 from contextlib import suppress
 
 from processing.algs.gdal.GdalUtils import GdalUtils
@@ -162,7 +163,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
 
         self.cb_lay_mesh.layerChanged.disconnect(self.mesh_lay_changed)
         self.cb_lay_src.currentIndexChanged.disconnect(self.src_lay_changed)
-        
+
         self.clear_hl_vertices()
 
     ######################################################################################

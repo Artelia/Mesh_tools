@@ -143,31 +143,31 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
         if wasInEditMode:
             self.lay_mesh.startFrameEditing(self.xform)
 
-    def addVertexMarker(self, point, type):
+    def addVertexMarker(self, point, check):
         marker = QgsVertexMarker(self.canvas)
         marker.setCenter(QgsPointXY(point))
 
-        if type == "bad_angle_1":
+        if check == "bad_angle_1":
             marker.setColor(QColor(255, 0, 0))
             marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
             marker.setIconSize(10)
-        elif type == "bad_angle_2":
+        elif check == "bad_angle_2":
             marker.setColor(QColor(255, 255, 0))
             marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
             marker.setIconSize(10)
-        elif type == "bad_angle_3":
+        elif check == "bad_angle_3":
             marker.setColor(QColor(0, 0, 255))
             marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
             marker.setIconSize(10)
-        elif type == "bad_inscribed_circle":
+        elif check == "bad_inscribed_circle":
             marker.setColor(QColor(255, 0, 0))
             marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_BOX)
             marker.setIconSize(10)
-        elif type == "bad_area":
+        elif check == "bad_area":
             marker.setColor(QColor(255, 0, 0))
             marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_TRIANGLE)
@@ -182,16 +182,16 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
 
         self.markers.append(marker)
 
-    def showVertexMarker(self, id=None):
-        if id:
-            self.markers[id].show()
+    def showVertexMarker(self, markerId=None):
+        if markerId:
+            self.markers[markerId].show()
         else:
             for marker in self.markers:
                 marker.show()
 
-    def hideVertexMarker(self, id=None):
-        if id:
-            self.markers[id].hide()
+    def hideVertexMarker(self, markerId=None):
+        if markerId:
+            self.markers[markerId].hide()
         else:
             for marker in self.markers:
                 marker.hide()

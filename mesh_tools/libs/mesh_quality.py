@@ -124,8 +124,11 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
                     self.addVertexMarker(centroid, "bad_angle_3")
 
             if self.mChkSize.isChecked():
-                if triangle.inscribedRadius() * 2 < self.mDsbSize.value():
-                    self.addVertexMarker(centroid, "bad_inscribed_circle")
+                if (
+                    self.mCbSize.currentIndex() == 0
+                    and any(length < self.mDsbSize.value() for length in triangle.lengths())
+                ) or (self.mCbSize.currentIndex() == 1 and triangle.inscribedRadius() * 2 < self.mDsbSize.value()):
+                    self.addVertexMarker(centroid, "bad_size")
                 if triangle.area() < self.mDsbArea.value():
                     self.addVertexMarker(centroid, "bad_area")
 
@@ -159,7 +162,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
         elif check == "bad_angle_3":
             marker.setColor(QColor(0, 0, 255))
             marker.setIconType(QgsVertexMarker.ICON_X)
-        elif check == "bad_inscribed_circle":
+        elif check == "bad_size":
             marker.setIconType(QgsVertexMarker.ICON_BOX)
         elif check == "bad_area":
             marker.setIconType(QgsVertexMarker.ICON_TRIANGLE)

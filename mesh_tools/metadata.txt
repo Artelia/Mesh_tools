@@ -27,6 +27,7 @@ hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
    0.8   : Add field "number_in_//" to culvert
+           Improve mesh quality analysis 
    0.7   : Addition of Sources Manager tool
    0.6   : Link selected dataset in combobox to displayed dataset in canvas
            Try to autoselect bottom when changing mesh

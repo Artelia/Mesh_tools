@@ -32,7 +32,7 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QColor
 
 from ..mesh_tools_dockwidget import MeshToolsDockWidget
-from .MeshUtils import MeshUtils
+from .MeshUtils import MeshUtils, showWaitCursor
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_quality.ui"))
 
@@ -49,15 +49,22 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
         self.native_mesh_faces_count = None
         self.xform = None
 
-        self.bad_faces_center = []
+        self.markers = []
 
         self.mMapLayerComboBox.setFilters(QgsMapLayerProxyModel.MeshLayer)
         self.mMapLayerComboBox.layerChanged.connect(self.mesh_lay_changed)
 
         self.mesh_lay_changed()
 
-        self.btn_analyse_mesh.clicked.connect(self.analyse_mesh)
-        self.btn_reset_marker.clicked.connect(self.resetVertexMarker)
+        self.mBtnAnalyse.clicked.connect(self.analyse_mesh)
+        self.mBtnReset.clicked.connect(self.resetVertexMarker)
+
+        self.mDsbAngle1.setClearValue(self.mDsbAngle1.value())
+        self.mDsbAngle2.setClearValue(self.mDsbAngle2.value())
+        self.mDsbAngle3.setClearValue(self.mDsbAngle3.value())
+        self.mDsbSize.setClearValue(self.mDsbSize.value())
+        self.mDsbArea.setClearValue(self.mDsbArea.value())
+        self.mDsbNeighbors.setClearValue(self.mDsbNeighbors.value())
 
     def clean(self):
         self.resetVertexMarker()
@@ -89,7 +96,8 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
             self.native_mesh = QgsMesh()
             self.lay_mesh.dataProvider().populateMesh(self.native_mesh)
 
-    def analyse_mesh(self):
+    @showWaitCursor
+    def analyse_mesh(self, clicked):  # Add dummy arg to respect Qt signature
         if not self.lay_mesh:
             self.writeError(self.tr("No mesh selected"))
 
@@ -107,22 +115,32 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
             triangle = MeshUtils.faceToTriangle(self.native_mesh, index)
             centroid = self.xform.transform(QgsPointXY(triangle.centroid()))
 
-            if self.chk_equilateralness.isChecked():
-                if checkAngles(triangle.angles(), self.qdsb_bad_angle_1.value()):
+            if self.mChkEquilateralness.isChecked():
+                if checkAngles(triangle.angles(), self.mDsbAngle1.value()):
                     self.addVertexMarker(centroid, "bad_angle_1")
-                elif checkAngles(triangle.angles(), self.qdsb_bad_angle_2.value()):
+                elif checkAngles(triangle.angles(), self.mDsbAngle2.value()):
                     self.addVertexMarker(centroid, "bad_angle_2")
-                elif checkAngles(triangle.angles(), self.qdsb_bad_angle_3.value()):
+                elif checkAngles(triangle.angles(), self.mDsbAngle3.value()):
                     self.addVertexMarker(centroid, "bad_angle_3")
 
-            if self.chk_min_size.isChecked():
-                if any(length < self.qdsb_min_element_length.value() for length in triangle.lengths()):
-                    self.addVertexMarker(centroid, "bad_length")
-                if triangle.area() < self.qdsb_min_face_area.value():
+            if self.mChkSize.isChecked():
+                if (
+                    self.mCbSize.currentIndex() == 0
+                    and any(length < self.mDsbSize.value() for length in triangle.lengths())
+                ) or (self.mCbSize.currentIndex() == 1 and triangle.inscribedRadius() * 2 < self.mDsbSize.value()):
+                    self.addVertexMarker(centroid, "bad_size")
+                if triangle.area() < self.mDsbArea.value():
                     self.addVertexMarker(centroid, "bad_area")
 
-        if self.bad_faces_center:
-            self.btn_reset_marker.setEnabled(True)
+        if self.mChkNeighbors.isChecked():
+            verticesNeighbors = MeshUtils.computeNeighbors(self.native_mesh)
+            for vertexId, neighbors in verticesNeighbors.items():
+                if len(neighbors) > self.mDsbNeighbors.value():
+                    point = self.xform.transform(QgsPointXY(self.native_mesh.vertex(vertexId)))
+                    self.addVertexMarker(point, "too_much_neighbors")
+
+        if self.markers:
+            self.mBtnReset.setEnabled(True)
             self.showVertexMarker()
 
         if wasInEditMode:
@@ -131,58 +149,52 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
     def addVertexMarker(self, point, check):
         marker = QgsVertexMarker(self.canvas)
         marker.setCenter(QgsPointXY(point))
+        # Set default marker config
+        marker.setPenWidth(2)
+        marker.setIconSize(10)
+        marker.setColor(QColor(255, 0, 0))
 
         if check == "bad_angle_1":
-            marker.setColor(QColor(255, 0, 0))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
-            marker.setIconSize(10)
         elif check == "bad_angle_2":
             marker.setColor(QColor(255, 255, 0))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
-            marker.setIconSize(10)
         elif check == "bad_angle_3":
             marker.setColor(QColor(0, 0, 255))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_X)
-            marker.setIconSize(10)
-        elif check == "bad_length":
-            marker.setColor(QColor(255, 0, 0))
-            marker.setPenWidth(2)
+        elif check == "bad_size":
             marker.setIconType(QgsVertexMarker.ICON_BOX)
-            marker.setIconSize(10)
         elif check == "bad_area":
-            marker.setColor(QColor(255, 0, 0))
-            marker.setPenWidth(2)
             marker.setIconType(QgsVertexMarker.ICON_TRIANGLE)
-            marker.setIconSize(10)
+        elif type == "too_much_neighbors":
+            marker.setColor(QColor(255, 0, 255))
+            marker.setIconType(QgsVertexMarker.ICON_RHOMBUS)
 
         marker.hide()
 
-        self.bad_faces_center.append(marker)
+        self.markers.append(marker)
 
     def showVertexMarker(self, markerId=None):
         if markerId:
-            self.bad_faces_center[markerId].show()
+            self.markers[markerId].show()
         else:
-            for marker in self.bad_faces_center:
+            for marker in self.markers:
                 marker.show()
 
     def hideVertexMarker(self, markerId=None):
         if markerId:
-            self.bad_faces_center[markerId].hide()
+            self.markers[markerId].hide()
         else:
-            for marker in self.bad_faces_center:
+            for marker in self.markers:
                 marker.hide()
 
     def resetVertexMarker(self):
-        if self.bad_faces_center:
-            for marker in self.bad_faces_center:
+        if self.markers:
+            for marker in self.markers:
                 marker.hide()
                 self.canvas.scene().removeItem(marker)
-        self.bad_faces_center = []
-        self.btn_reset_marker.setEnabled(False)
+        self.markers = []
+        self.mBtnReset.setEnabled(False)
 
 
 def checkAngles(angles, checkValue):

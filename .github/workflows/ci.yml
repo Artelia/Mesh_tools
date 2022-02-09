@@ -86,7 +86,7 @@ jobs:
         run: ./exec.sh
 
   release:
-    needs: [flake8, tests-unit]
+    needs: [flake8, tests-unit, tests-qgis]
 
     runs-on: ubuntu-latest
     if: github.repository_owner == 'Artelia' && contains(github.ref, 'refs/tags/')

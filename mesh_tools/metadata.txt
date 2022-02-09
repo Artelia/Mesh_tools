@@ -6,7 +6,7 @@ name=Mesh Tools
 qgisMinimumVersion=3.16
 qgisMaximumVersion=3.99
 description=Tools for management of Data on mesh (Telemac, Uhaina).
-version=0.8
+version=0.8.0
 author=Artelia
 email=a@a
 
@@ -26,7 +26,7 @@ repository=https://github.com/Artelia/mesh_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
-   0.8   : Add field "number_in_//" to culvert
+   0.8.0   : Add field "number_in_//" to culvert
            Improve mesh quality analysis 
    0.7   : Addition of Sources Manager tool
    0.6   : Link selected dataset in combobox to displayed dataset in canvas

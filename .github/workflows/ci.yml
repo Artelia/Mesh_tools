@@ -120,12 +120,6 @@ jobs:
       - name : Fetch current changelog
         run: qgis-plugin-ci changelog ${{ env.RELEASE_VERSION }} >> release.md
 
-      - name: Create release on GitHub
-        uses: ncipollo/release-action@v1.9.0
-        with:
-          bodyFile: release.md
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Package and deploy the zip
         run: >-
           qgis-plugin-ci

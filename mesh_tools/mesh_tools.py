@@ -228,7 +228,7 @@ class MeshTools:
             self.dockwidget.setWindowTitle(self.tr("Culvert Manager"))
         elif tool == 2:
             self.dockwidget = MeshQuality()
-            self.dockwidget.setWindowTitle(self.tr("Telemac - Mesh Quality Analysis"))
+            self.dockwidget.setWindowTitle(self.tr("Mesh Quality Analysis"))
         elif tool == 3:
             self.dockwidget = SourceManager()
             self.dockwidget.setWindowTitle(self.tr("Source Manager"))

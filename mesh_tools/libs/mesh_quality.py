@@ -166,7 +166,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
             marker.setIconType(QgsVertexMarker.ICON_BOX)
         elif check == "bad_area":
             marker.setIconType(QgsVertexMarker.ICON_TRIANGLE)
-        elif type == "too_much_neighbors":
+        elif check == "too_much_neighbors":
             marker.setColor(QColor(255, 0, 255))
             marker.setIconType(QgsVertexMarker.ICON_RHOMBUS)
 

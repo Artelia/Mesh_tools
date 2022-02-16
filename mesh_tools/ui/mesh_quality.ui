@@ -45,7 +45,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="gb_culv">
+     <widget class="QGroupBox" name="mGbAnalysisParam">
       <property name="title">
        <string>Mesh Quality Analysis Parameters</string>
       </property>

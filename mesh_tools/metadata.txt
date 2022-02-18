@@ -26,17 +26,18 @@ repository=https://github.com/Artelia/mesh_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+   0.8.2 : Prevent analysis on non triangular mesh
    0.8.1 : Update translations
    0.8.0 : Add field "number_in_//" to culvert
            Improve mesh quality analysis 
-   0.7   : Addition of Sources Manager tool
-   0.6   : Link selected dataset in combobox to displayed dataset in canvas
+   0.7.0 : Addition of Sources Manager tool
+   0.6.0 : Link selected dataset in combobox to displayed dataset in canvas
            Try to autoselect bottom when changing mesh
            Fix culvert import
            Fix issue if a valid culvert becomes invalid
            Correctly update GUI
            Swapped return
-   0.5   : the plugin was moved to the mesh menu
+   0.5.0 : the plugin was moved to the mesh menu
            New icon
            Change code structure  ( creation file grouping together useful functions, etc.)
            Import function of a file of existing works (TELEMAC only)
@@ -44,11 +45,11 @@ changelog=
            Addition of tooltips for the parameters of the works directly drawn from the Telemac doc
            Addition of the relaxation parameter
            Using QgsMapLayerComboBox to choose the mesh
-   0.4   : Change plugin Name
+   0.4.0 : Change plugin Name
            Change ui to add a software parameter for output
            Change culvert_manager to allow export capabilities for Uhaina
-   0.3   : Restructuration of github folders 
-   0.2   : add Mesh quality analysis (Qgis >= 3.22.0)
+   0.3.0 : Restructuration of github folders 
+   0.2.0 : add Mesh quality analysis (Qgis >= 3.22.0)
 
 
 

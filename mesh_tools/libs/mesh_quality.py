@@ -96,6 +96,17 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
             self.native_mesh = QgsMesh()
             self.lay_mesh.dataProvider().populateMesh(self.native_mesh)
 
+            if len(self.native_mesh.face(0)) > 3:
+                self.writeWarning(
+                    self.tr("Selected mesh is not a triangular mesh which is not supported for the moment.")
+                )
+                self.writeError(self.tr("All analysis are disabled."))
+                self.mGbAnalysisParam.setEnabled(False)
+                self.mBtnAnalyse.setEnabled(False)
+            else:
+                self.mGbAnalysisParam.setEnabled(True)
+                self.mBtnAnalyse.setEnabled(True)
+
     @showWaitCursor
     def analyse_mesh(self, clicked):  # Add dummy arg to respect Qt signature
         if not self.lay_mesh:

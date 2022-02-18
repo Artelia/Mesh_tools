@@ -6,7 +6,7 @@ name=Mesh Tools
 qgisMinimumVersion=3.16
 qgisMaximumVersion=3.99
 description=Tools for management of Data on mesh (Telemac, Uhaina).
-version=0.8.1
+version=0.8.2
 author=Artelia
 email=a@a
 

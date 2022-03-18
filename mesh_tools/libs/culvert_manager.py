@@ -505,7 +505,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             else:
                 ctrl.setCurrentIndex(idx)
         elif isinstance(ctrl, QCheckBox):
-            if val == 2:
+            if val == 1:
                 ctrl.setCheckState(2)
             else:
                 ctrl.setCheckState(0)
@@ -524,7 +524,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 elif isinstance(ctrl, QComboBox):
                     val = ctrl.currentIndex()
                 elif isinstance(ctrl, QCheckBox):
-                    val = ctrl.checkState()
+                    if ctrl.checkState() == 2:
+                        val = 1
+                    else:
+                        val = 0
                 elif isinstance(ctrl, QLineEdit):
                     val = ctrl.text()
 

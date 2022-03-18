@@ -6,7 +6,7 @@ name=Mesh Tools
 qgisMinimumVersion=3.16
 qgisMaximumVersion=3.99
 description=Tools for management of Data on mesh (Telemac, Uhaina).
-version=0.8.2
+version=0.8.3
 author=Artelia
 email=a@a
 
@@ -26,6 +26,9 @@ repository=https://github.com/Artelia/mesh_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+   0.8.3 : Fix export source region (duplicated vertex)
+           Fix Z culvert (wrong vertex index)
+           Fix CIRC value (was '2' instead of '1')
    0.8.2 : Prevent analysis on non triangular mesh
    0.8.1 : Update translations
    0.8.0 : Add field "number_in_//" to culvert

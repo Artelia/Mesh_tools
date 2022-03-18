@@ -96,9 +96,9 @@ class MeshUtils:
 
     @staticmethod
     def zFromN(mesh: QgsMeshLayer, meshDatasetIndex: QgsMeshDatasetIndex, n: int):
-        dset_val = mesh.dataProvider().datasetValues(meshDatasetIndex, n, 1)
+        dset_val = mesh.dataProvider().datasetValue(meshDatasetIndex, n - 1)
 
-        return round(dset_val.value(0).scalar(), 2)
+        return round(dset_val.scalar(), 2)
 
     @staticmethod
     def xyFromN(nativeMesh: QgsMesh, n: int, mesh_xorm: QgsCoordinateTransform, layer_xform: QgsCoordinateTransform):

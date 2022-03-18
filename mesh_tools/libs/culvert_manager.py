@@ -771,9 +771,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
     def import_culvert(self):
         def get_values(string):
-            values = string.strip().split("\t")
-            if isinstance(values, str):
-                values.split(" ")
+            values = string.strip().split()
             return values
 
         def asDict(headers, values):

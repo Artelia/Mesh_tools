@@ -469,7 +469,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
                 geom = feat.geometry().asMultiPolygon()[0][0]
                 maxLenGeom = max(len(geom), maxLenGeom)
 
-                for point in geom:
+                for point in geom[:-1]:
                     point = self.lay_src_xform.transform(point)
                     point = self.lay_mesh_xform.transform(point, QgsCoordinateTransform.ReverseTransform)
                     src_file.write(f"{round(point.x(), 4)}\t{round(point.y(), 4)}\n")

@@ -3,4 +3,4 @@
 
 pytest
 pytest-cov>=2.11,<5
-semver>=2.13,<2.14
+semver>=2.13,<3.1

@@ -30,7 +30,9 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QComboBox, QDialog, QTableWidgetItem
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "import_culvert_file.ui"))
+FORM_CLASS, _ = uic.loadUiType(
+    os.path.join(os.path.dirname(__file__), "..", "ui", "import_culvert_file.ui")
+)
 
 
 class dlg_import_culvert_file(QDialog, FORM_CLASS):
@@ -123,8 +125,7 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
         with open(path, "r") as txt_file:
             # First line is always a comment
             txt_file.readline()
-            # Parse relaxation parameter and number of culverts
-            relax, nb_OH = get_values(txt_file.readline())
+            txt_file.readline()
             headers = get_values(txt_file.readline())
 
         for header in headers:

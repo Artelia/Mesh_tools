@@ -60,7 +60,7 @@ class TestPluginMetadata(unittest.TestCase):
 
     def test_version_semver(self):
         """Test if version comply with semantic versioning."""
-        self.assertTrue(VersionInfo.isvalid(__about__.__version__))
+        self.assertTrue(VersionInfo.is_valid(__about__.__version__))
 
 
 # ############################################################################

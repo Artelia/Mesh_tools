@@ -65,7 +65,9 @@ from .create_shp_dlg import dlg_create_shapefile
 from .import_culvert_file_dlg import dlg_import_culvert_file
 from .MeshUtils import MeshUtils
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui"))
+FORM_CLASS, _ = uic.loadUiType(
+    os.path.join(os.path.dirname(__file__), "..", "ui", "culvert_manager.ui")
+)
 
 
 class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
@@ -293,7 +295,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         self.writeInfo(self.tr("Creation of vertices spatial index..."))
         t0 = time.time()
         self.vertices = MeshUtils.createVerticesSpatialIndex(self.native_mesh, self.lay_mesh_xform)
-        self.writeInfo(self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1)))
+        self.writeInfo(
+            self.tr("Vertices spatial index created in {} sec.").format(round(time.time() - t0, 1))
+        )
 
         self.cb_dataset_mesh.blockSignals(True)
         mesh_prov = self.lay_mesh.dataProvider()
@@ -318,11 +322,18 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         self.mdl_mesh_time.clear()
         self.cur_mesh_dataset = self.cb_dataset_mesh.currentData(32)
         if self.cur_mesh_dataset is not None:
-            self.writeInfo(self.tr("Current mesh dataset changed : {}").format(self.cb_dataset_mesh.currentText()))
+            self.writeInfo(
+                self.tr("Current mesh dataset changed : {}").format(
+                    self.cb_dataset_mesh.currentText()
+                )
+            )
             mesh_prov = self.lay_mesh.dataProvider()
             for i in range(mesh_prov.datasetCount(self.cur_mesh_dataset)):
                 itm = QStandardItem()
-                itm.setData(mesh_prov.datasetMetadata(QgsMeshDatasetIndex(self.cur_mesh_dataset, i)).time(), 0)
+                itm.setData(
+                    mesh_prov.datasetMetadata(QgsMeshDatasetIndex(self.cur_mesh_dataset, i)).time(),
+                    0,
+                )
                 itm.setData(i, 32)
                 self.mdl_mesh_time.appendRow(itm)
 
@@ -333,7 +344,11 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
     def mesh_time_changed(self):
         self.cur_mesh_time = self.cb_time_mesh.currentData(32)
         if self.cur_mesh_time is not None:
-            self.writeInfo(self.tr("Current mesh timestep changed : {}").format(self.cb_time_mesh.currentText()))
+            self.writeInfo(
+                self.tr("Current mesh timestep changed : {}").format(
+                    self.cb_time_mesh.currentText()
+                )
+            )
             if self.lay_culv is not None and not self.is_opening:
                 self.update_all_n()
                 if (
@@ -341,7 +356,8 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                         self,
                         self.tr("Automatic Z Update"),
                         self.tr(
-                            "Mesh parameters have been changed.\nUpdate culvert features with Automatic Z checked ?"
+                            "Mesh parameters have been changed.\n"
+                            "Update culvert features with Automatic Z checked ?"
                         ),
                         QMessageBox.Cancel | QMessageBox.Ok,
                     )
@@ -423,7 +439,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                     QMessageBox.question(
                         self,
                         self.tr("Automatic Z Update"),
-                        self.tr("Culvert layer has been changed.\nUpdate culvert features with Automatic Z checked ?"),
+                        self.tr(
+                            "Culvert layer has been changed.\n"
+                            "Update culvert features with Automatic Z checked ?"
+                        ),
                         QMessageBox.Cancel | QMessageBox.Ok,
                     )
                     == QMessageBox.Ok
@@ -547,20 +566,28 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.sb_z1.setEnabled(not self.cb_auto_z.isChecked())
             self.sb_z2.setEnabled(not self.cb_auto_z.isChecked())
             if ft:
-                (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+                (n1, n2), err = MeshUtils.n1n2FromFeature(
+                    self.lay_mesh, self.vertices, ft, self.lay_culv_xform
+                )
 
                 if err is not None:
                     self.writeError(self.tr("Error on Z calculation : {}").format(err))
                     return
 
-                attrs = {self.cur_culv_id: {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}}
+                attrs = {
+                    self.cur_culv_id: {ft.fieldNameIndex("N1"): n1, ft.fieldNameIndex("N2"): n2}
+                }
 
                 if self.cb_auto_z.isChecked():
                     z1 = MeshUtils.zFromN(
-                        self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1
+                        self.lay_mesh,
+                        QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time),
+                        n1,
                     )
                     z2 = MeshUtils.zFromN(
-                        self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2
+                        self.lay_mesh,
+                        QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time),
+                        n2,
                     )
 
                     self.sb_z1.setValue(z1)
@@ -583,7 +610,6 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 self.sb_length.setValue(ft.geometry().length())
 
         if self.sender() == self.cb_circ:
-            self.sb_haut2.setEnabled(not self.cb_circ.isChecked())
             self.sb_larg.setEnabled(not self.cb_circ.isChecked())
 
     def reset_val(self):
@@ -608,7 +634,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         attrs = dict()
         success = True
         for ft in self.lay_culv.getFeatures():
-            (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+            (n1, n2), err = MeshUtils.n1n2FromFeature(
+                self.lay_mesh, self.vertices, ft, self.lay_culv_xform
+            )
 
             if err is not None:
                 success = False
@@ -630,10 +658,20 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             if ft["AZ"] != 1:
                 continue
 
-            (n1, n2), err = MeshUtils.n1n2FromFeature(self.lay_mesh, self.vertices, ft, self.lay_culv_xform)
+            (n1, n2), err = MeshUtils.n1n2FromFeature(
+                self.lay_mesh, self.vertices, ft, self.lay_culv_xform
+            )
             if err is None:
-                z1 = MeshUtils.zFromN(self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n1)
-                z2 = MeshUtils.zFromN(self.lay_mesh, QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time), n2)
+                z1 = MeshUtils.zFromN(
+                    self.lay_mesh,
+                    QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time),
+                    n1,
+                )
+                z2 = MeshUtils.zFromN(
+                    self.lay_mesh,
+                    QgsMeshDatasetIndex(self.cur_mesh_dataset, self.cur_mesh_time),
+                    n2,
+                )
                 attrs[ft.id()] = {ft.fieldNameIndex("Z1"): z1, ft.fieldNameIndex("Z2"): z2}
             else:
                 self.writeError(self.tr("Error on Z calculation : {}").format(err))
@@ -671,7 +709,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             self.writeError(self.tr("File creation is not possible, some culverts are not valid"))
             return
 
-        culv_file_name, _ = QFileDialog.getSaveFileName(self, self.tr("Culvert file"), "", self.tr("Text File (*.txt)"))
+        culv_file_name, _ = QFileDialog.getSaveFileName(
+            self, self.tr("Culvert file"), "", self.tr("Text File (*.txt)")
+        )
 
         if not culv_file_name:
             return
@@ -728,6 +768,10 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                             txt += f"{pt1.x()}\t{pt1.y()}\t"
                         elif fld[0] == "Z2":
                             txt += f"{pt2.x()}\t{pt2.y()}\t"
+                    elif (fld[0] == "HAUT2") and (ft[fld[0]] == 0):
+                        # In case HAUT2 is empty, suppose it is equal to HAUT
+                        #
+                        txt += f"{ft['HAUT']}\t"
 
                     txt += f"{ft[fld[0]]}\t"
                 txt += f"{ft[culv_flds_srtd[-1][0]]}\n"
@@ -753,13 +797,19 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 if fld[0] not in ["NAME", "Remarques"] and fld[2]:
                     if fld[1] == QVariant.String:
                         if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], str):
-                            selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
+                            selectedids.append(
+                                [ft_name, self.tr("{} value is not correct.").format(fld[0])]
+                            )
                     elif fld[1] == QVariant.Double:
                         if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], float):
-                            selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
+                            selectedids.append(
+                                [ft_name, self.tr("{} value is not correct.").format(fld[0])]
+                            )
                     elif fld[1] == QVariant.Int:
                         if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], int):
-                            selectedids.append([ft_name, self.tr("{} value is not correct.").format(fld[0])])
+                            selectedids.append(
+                                [ft_name, self.tr("{} value is not correct.").format(fld[0])]
+                            )
 
         return selectedids
 
@@ -807,7 +857,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             txt_path = dlg.text_file.filePath()
             layer_path = dlg.layer_file.filePath()
             layer_crs = dlg.layer_crs.crs()
-            culv_xform = QgsCoordinateTransform(layer_crs, self.canvas.mapSettings().destinationCrs(), self.project)
+            culv_xform = QgsCoordinateTransform(
+                layer_crs, self.canvas.mapSettings().destinationCrs(), self.project
+            )
             layerDriver = GdalUtils.getVectorDriverFromFileName(layer_path)
         else:
             return
@@ -819,7 +871,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         for fld in self.culv_flds:
             layerFields.append(QgsField(fld[0], fld[1]))
 
-        layer = QgsVectorLayer(f"MultiLineString?crs={mesh_crs.authid()}", self.tr("Culverts"), "memory")
+        layer = QgsVectorLayer(
+            f"MultiLineString?crs={mesh_crs.authid()}", self.tr("Culverts"), "memory"
+        )
         pr = layer.dataProvider()
         pr.addAttributes(layerFields)
         layer.updateFields()
@@ -829,13 +883,20 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
             # 1st line is comment
             txt_file.readline()
             # Relaxation and number of culverts
-            relax, nb_culvert = get_values(txt_file.readline())
+            lineValues = get_values(txt_file.readline())
+            if len(lineValues) == 2:
+                relax, _ = lineValues
+            elif len(lineValues) == 1:
+                # For old culvert files, number of culverts was not specified
+                relax = lineValues[0]
+            else:
+                return
             self.sb_relax.setValue(float(relax))
             # Retrieve headers
             headers = get_values(txt_file.readline())
 
-            for i in range(int(nb_culvert)):
-                lineValues = get_values(txt_file.readline())
+            for i, line in enumerate(txt_file.readlines()):
+                lineValues = get_values(line)
                 if lineValues == [""]:
                     continue
 
@@ -845,13 +906,19 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
                 n1 = int(values[items["n1"][1]])
                 n2 = int(values[items["n2"][1]])
-                point_n1, err1 = MeshUtils.xyFromN(self.native_mesh, n1, self.lay_mesh_xform, culv_xform)
-                point_n2, err2 = MeshUtils.xyFromN(self.native_mesh, n2, self.lay_mesh_xform, culv_xform)
+                point_n1, err1 = MeshUtils.xyFromN(
+                    self.native_mesh, n1, self.lay_mesh_xform, culv_xform
+                )
+                point_n2, err2 = MeshUtils.xyFromN(
+                    self.native_mesh, n2, self.lay_mesh_xform, culv_xform
+                )
 
                 if err1 is not None or err2 is not None:
                     err = " ".join(filter(None, (err1, err2)))
                     self.writeError(
-                        self.tr("Error when importing culvert {i} with error(s) : {err}").format(i=i, err=err)
+                        self.tr("Error when importing culvert {i} with error(s) : {err}").format(
+                            i=i + 1, err=err
+                        )
                     )
                     continue
 
@@ -889,7 +956,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 transformContext=QgsCoordinateTransformContext(),
                 options=options,
             )
-            layer = QgsVectorLayer(layer_path, os.path.basename(layer_path).rsplit(".", 1)[0], "ogr")
+            layer = QgsVectorLayer(
+                layer_path, os.path.basename(layer_path).rsplit(".", 1)[0], "ogr"
+            )
 
         if layer.isValid():
             layer.setCrs(layer_crs)

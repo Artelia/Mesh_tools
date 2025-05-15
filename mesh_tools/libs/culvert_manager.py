@@ -611,6 +611,12 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         if self.sender() == self.cb_circ:
             self.sb_larg.setEnabled(not self.cb_circ.isChecked())
+            if ft and (self.cb_circ.isChecked()):
+                self.sb_larg.setValue(self.sb_haut1.value())
+                self.sb_haut2.setValue(self.sb_haut1.value())
+        if self.sender() == self.sb_haut1 and self.cb_circ.isChecked():
+            self.sb_larg.setValue(self.sb_haut1.value())
+            self.sb_haut2.setValue(self.sb_haut1.value())
 
     def reset_val(self):
         for fld in self.culv_flds:

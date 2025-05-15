@@ -2,7 +2,7 @@ version: '3'
 
 services:
   qgis:
-    image: qgis/qgis:release-3_16
+    image: qgis/qgis:ltr-noble
     container_name: qgis
     volumes:
       - ../:/tests_directory/

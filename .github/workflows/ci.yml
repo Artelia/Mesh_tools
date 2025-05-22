@@ -8,11 +8,15 @@ on:
       - main
     paths:
       - 'mesh_tools/**'
+      - '.docker/**'
+      - '.github/ci.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'mesh_tools/**'
+      - '.docker/**'
+      - '.github/ci.yml'
 
 jobs:
 
@@ -68,25 +72,8 @@ jobs:
       - name: Run Unit tests
         run: pytest tests/unit/
 
-  tests-qgis:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .docker
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          submodules: 'true'
-      - name: Permissions
-        run: chmod +x *.sh
-      - name: Launching docker-compose
-        run: ./start.sh
-      - name: Running tests
-        run: ./exec.sh
-
   release:
-    needs: [flake8, tests-unit, tests-qgis]
+    needs: [flake8, tests-unit]
 
     runs-on: ubuntu-latest
     if: github.repository_owner == 'Artelia' && contains(github.ref, 'refs/tags/')

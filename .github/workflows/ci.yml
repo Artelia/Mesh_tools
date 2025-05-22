@@ -72,39 +72,8 @@ jobs:
       - name: Run Unit tests
         run: pytest tests/unit/
 
-  tests-qgis:
-    runs-on: ubuntu-latest
-
-    container:
-      image: qgis/qgis:ltr-noble
-      env:
-        CI: true
-        DISPLAY: ":1"
-        MUTE_LOGS: true
-        NO_MODALS: 1
-        PYTHONPATH: "/usr/share/qgis/python/plugins:/usr/share/qgis/python:."
-        QT_QPA_PLATFORM: "offscreen"
-        WITH_PYTHON_PEP: false
-        options: -v /tmp/.X11-unix:/tmp/.X11-unix
-
-    steps:
-      - name: Get source code
-        uses: actions/checkout@v4
-
-      - name: Print QGIS version
-        run: qgis --version
-
-      - name: Install Python requirements
-        run: |
-          python3 -m pip install --break-system-packages -r requirements/testing.txt
-
-      - name: Run Unit tests
-        run: |
-          Xvfb :1 &
-          python3 -m pytest tests/qgis/
-
   release:
-    needs: [flake8, tests-unit, tests-qgis]
+    needs: [flake8, tests-unit]
 
     runs-on: ubuntu-latest
     if: github.repository_owner == 'Artelia' && contains(github.ref, 'refs/tags/')

@@ -96,7 +96,7 @@ jobs:
 
       - name: Install Python requirements
         run: |
-          python3 -m pip install --break-system-packages -U -r requirements/testing.txt
+          python3 -m pip install --break-system-packages -r requirements/testing.txt
 
       - name: Run Unit tests
         run: |

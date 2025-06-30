@@ -112,7 +112,6 @@ jobs:
           qgis-plugin-ci
           release ${{ env.RELEASE_VERSION }}
           --github-token ${{ secrets.GITHUB_TOKEN }}
-          --transifex-token ${{ secrets.TRANSIFEX_TOKEN }}
           --allow-uncommitted-changes
           --osgeo-username ${{ secrets.OSGEO_USERNAME }}
           --osgeo-password ${{ secrets.OSGEO_PASSWORD }}

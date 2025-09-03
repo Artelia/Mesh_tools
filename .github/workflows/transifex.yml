@@ -16,14 +16,14 @@ jobs:
     if: github.repository == 'Artelia/Mesh_tools'
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
         python-version: 3.9
 
-    - uses: actions/cache@v4.2.3
+    - uses: actions/cache@v4.2.4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements/packaging.txt') }}

@@ -38,7 +38,6 @@ from .libs.mesh_translation_dlg import MeshTranslation
 from .mesh_tools_dockwidget import MeshToolsDockWidget
 
 
-
 class MeshTools:
     """QGIS Plugin Implementation."""
 
@@ -52,6 +51,8 @@ class MeshTools:
         """
         # Save reference to the QGIS interface
         self.iface = iface
+        self.canvas = iface.mapCanvas()
+
 
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
@@ -167,6 +168,7 @@ class MeshTools:
         icon_path = os.path.join(self.plugin_dir, "icon.png")
         self.mesh_menu = self.iface.mainWindow().findChild(QMenu, "mMeshMenu")
         self.pluginMenu = self.mesh_menu.addMenu(QIcon(icon_path), self.menu)
+
         self.add_action(
             os.path.join(self.path_icon, "culvert.png"),
             text=self.tr("Culvert Manager"),
@@ -186,6 +188,7 @@ class MeshTools:
                 callback=lambda: self.run(2),
                 parent=self.iface.mainWindow(),
             )
+
         self.add_action(
             os.path.join(self.path_icon, "icon_MeshTrans.png"),
             text=self.tr("Translated Mesh View"),
@@ -193,6 +196,7 @@ class MeshTools:
             parent=self.iface.mainWindow(),
         )
     # --------------------------------------------------------------------------
+
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""

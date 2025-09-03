@@ -24,82 +24,176 @@
 
 import os
 
-from qgis.PyQt import uic
-from qgis.PyQt import QtWidgets
-from qgis.utils import iface
-from qgis.core import QgsCoordinateReferenceSystem, QgsMeshLayer, QgsProject
-
 from pyproj import CRS
+from pyproj.exceptions import CRSError
+from qgis.core import QgsCoordinateReferenceSystem, QgsMeshLayer, QgsProject
+from qgis.PyQt import QtGui, uic, QtWidgets
+from qgis.utils import iface
 
 from ..mesh_tools_dockwidget import MeshToolsDockWidget
 
-
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), "..", "ui", 'mesh_translation.ui'))
+FORM_CLASS, _ = uic.loadUiType(
+    os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_translation.ui")
+)
 
 
 class MeshTranslation(MeshToolsDockWidget, FORM_CLASS):
+    """
+    Dialog for translating mesh coordinates by modifying the CRS false easting and northing.
+
+    This dialog allows the user to:
+        - Select a mesh layer or import a mesh file
+        - Specify translation values for X and Y axes
+        - Update the mesh's CRS accordingly
+    Integrates with QGIS mesh layers and uses PyProj for CRS manipulation.
+    """
+
     def __init__(self, parent=None):
-        """Constructor."""
-        super(MeshTranslation, self).__init__(parent)
+        """
+        Initialize the MeshTranslation dialog.
+
+        Sets up the UI, connects signals, and initializes the mesh layer selection.
+        """
+        super().__init__(parent)
         self.setupUi(self)
 
         map_crs = iface.mapCanvas().mapSettings().destinationCrs()
+        self.cur_id_layer = None
 
         self.file_mesh.setFilter("Selafin File (*.slf *.res *.ser *.geo)")
+        self.file_mesh.hide()
         self.wgt_crs.setCrs(map_crs)
+        self.path_icon = os.path.join(os.path.dirname(__file__), "..", "icons/")
+
+        icone_valider = QtGui.QIcon(os.path.join(self.path_icon, "icon_refresh_black.png"))
+        self.bt_up_layer.setIcon(icone_valider)
+        self.bt_up_layer.clicked.connect(self.update_lst_mesh)
+
         self.bt_valid.accepted.connect(self.valide_trans)
         self.bt_valid.rejected.connect(self.reject)
+        self.init_cb_layer()
+        self.cb_layer.currentIndexChanged.connect(self.change_cb_layer)
+
+    def update_lst_mesh(self):
+        """
+        Update the mesh layer list in the combo box, keeping the current selection if possible.
+        """
+        self.init_cb_layer(ini_lay=self.cur_id_layer)
+
+    def init_cb_layer(self, ini_lay=None):
+        """
+        Initialize the mesh layer combo box with all mesh layers and an import option.
+
+        Args:
+            ini_lay (str, optional): The ID of the layer to select initially.
+        """
+        self.cb_layer.blockSignals(True)
+        self.cb_layer.clear()
+        lst_layer = self.get_all_mesh_layers()
+        for layer in lst_layer:
+            self.cb_layer.addItem(f"{layer.name()} [{layer.crs().authid()}]", layer.id())
+        self.cb_layer.addItem("Import file", "import_file")
+        if ini_lay:
+            self.cb_layer.setCurrentIndex(self.cb_layer.findData(ini_lay))
+        else:
+            self.cb_layer.setCurrentIndex(0)
+        self.cur_id_layer = self.cb_layer.currentData()
+        if self.cur_id_layer not in (-1, "import_file", None):
+            lay = QgsProject.instance().mapLayer(self.cur_id_layer)
+            self.wgt_crs.setCrs(lay.crs())
+        self.cb_layer.blockSignals(False)
+
+    def change_cb_layer(self):
+        """
+        Handle changes in the mesh layer combo box selection.
+        Shows or hides the file selector depending on the selection.
+        """
+        self.cur_id_layer = self.cb_layer.currentData()
+        self.file_mesh.hide()
+        if self.cur_id_layer == "import_file":
+            self.file_mesh.show()
+        elif self.cur_id_layer != -1:
+            lay = QgsProject.instance().mapLayer(self.cur_id_layer)
+            self.wgt_crs.setCrs(lay.crs())
+
+    def get_all_mesh_layers(self):
+        """
+        Retrieve all mesh layers (QgsMeshLayer) in the current QGIS project.
+
+        Returns:
+            list: List of QgsMeshLayer objects present in the project.
+        """
+        mesh_layers = []
+        for layer in QgsProject.instance().mapLayers().values():
+            if isinstance(layer, QgsMeshLayer):
+                mesh_layers.append(layer)
+        return mesh_layers
 
     def reject(self):
+        """
+        Close the dialog (called when the user cancels the operation).
+        """
         self.close()
 
     def valide_trans(self):
+        """
+        Apply the translation to the mesh layer or imported mesh file by updating the CRS.
 
-        file = self.file_mesh.filePath()
-        authid = self.wgt_crs.crs().authid()
+        Modifies the false easting and northing parameters of the CRS according to the user input.
+        If both parameters are found and updated, the mesh layer's CRS is updated
+        and the map is refreshed.
+        """
+        # authid = self.wgt_crs.crs().authid()
         wkt_text = self.wgt_crs.crs().toWkt()
-
-        ori_crs = CRS.from_wkt(wkt_text)
+        try:
+            ori_crs = CRS.from_wkt(wkt_text)
+        except CRSError:
+            txt = "Projection not considered"
+            QtWidgets.QMessageBox.information(self.iface.mainWindow(), "Information", txt)
+            return
         d_crs = ori_crs.to_json_dict()
 
         false_east_found = False
-        l_x0_name = ['Easting at false origin', 'False easting']
+        l_x0_name = ["Easting at false origin", "False easting"]
         false_north_found = False
-        l_y0_name = ['Northing at false origin', 'False northing']
+        l_y0_name = ["Northing at false origin", "False northing"]
 
-        # if 'name' in d_crs.keys():
-        #     d_crs['name'] = 'Translated {}'.format(d_crs['name'])
-        #
-        # if 'id' in d_crs.keys():
-        #     d_crs['id']['authority'] = 'USER'
-        #     d_crs['id']['code'] = 9999
-
-        if 'conversion' in d_crs.keys():
-            if 'parameters' in d_crs['conversion'].keys():
-                l_param = d_crs['conversion']['parameters']
+        if "conversion" in d_crs.keys():
+            if "parameters" in d_crs["conversion"].keys():
+                l_param = d_crs["conversion"]["parameters"]
                 for d_param in l_param:
-                    if d_param['name'] in l_x0_name:
-                        d_param['value'] -= self.sb_tra_x.value()
+                    if d_param["name"] in l_x0_name:
+                        d_param["value"] -= self.sb_tra_x.value()
                         false_east_found = True
-                    if d_param['name'] in l_y0_name:
-                        d_param['value'] -= self.sb_tra_y.value()
+                    if d_param["name"] in l_y0_name:
+                        d_param["value"] -= self.sb_tra_y.value()
                         false_north_found = True
+        if not (false_east_found and false_north_found):
+            txt = "Projection not considered"
+            QtWidgets.QMessageBox.information(self.iface.mainWindow(), "Information", txt)
+            return
 
-        if false_east_found and false_north_found:
-            print(d_crs)
-            new_crs = CRS.from_dict(d_crs)
-            print(new_crs.to_proj4())
-            mesh_crs = QgsCoordinateReferenceSystem()
-            is_ok = mesh_crs.createFromProj4(new_crs.to_proj4())
-            print(is_ok)
-            print(mesh_crs.toProj4())
+        new_crs = CRS.from_dict(d_crs)
+        mesh_crs = QgsCoordinateReferenceSystem()
 
-            # QgsProject.instance().setCrs(mesh_crs)
+        mesh_crs.createFromProj4(new_crs.to_proj4())
+
+        if self.cur_id_layer == "import_file":
+            file = self.file_mesh.filePath()
             mesh_lay = QgsMeshLayer(file, "Tmp Mesh", "mdal")
+            if not mesh_lay.isValid():
+                txt = "Imported mesh layer is not valid."
+                QtWidgets.QMessageBox.warning(self.iface.mainWindow(), "Warning", txt)
+                return
             mesh_lay.setCrs(mesh_crs)
             QgsProject.instance().addMapLayer(mesh_lay, True)
         else:
-            print("Projection non prise en compte")
-            return
+            mesh_lay = QgsProject.instance().mapLayer(self.cur_id_layer)
+            if not (isinstance(mesh_lay, QgsMeshLayer) and mesh_lay.isValid()):
+                txt = "Selected layer is not a valid mesh layer."
+                QtWidgets.QMessageBox.warning(self.iface.mainWindow(), "Warning", txt)
+                return
+            mesh_lay.setCrs(mesh_crs)
+            mesh_lay.triggerRepaint()
+            iface.mapCanvas().refresh()

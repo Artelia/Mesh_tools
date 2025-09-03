@@ -193,8 +193,8 @@ class MeshTools:
             callback=lambda: self.run(4),
             parent=self.iface.mainWindow(),
         )
-    # --------------------------------------------------------------------------
 
+    # --------------------------------------------------------------------------
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""

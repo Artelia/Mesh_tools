@@ -52,8 +52,6 @@ class MeshTools:
         # Save reference to the QGIS interface
         self.iface = iface
         self.canvas = iface.mapCanvas()
-
-
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         self.path_icon = os.path.join(os.path.dirname(__file__), "icons/")
@@ -200,7 +198,6 @@ class MeshTools:
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
-
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
 

@@ -1,8 +1,8 @@
 #! python3  # noqa: E265
 
 """
-    Metadata about the package to easily retrieve informations about it.
-    See: https://packaging.python.org/guides/single-sourcing-package-version/
+Metadata about the package to easily retrieve informations about it.
+See: https://packaging.python.org/guides/single-sourcing-package-version/
 """
 
 # ############################################################################
@@ -50,7 +50,7 @@ def plugin_metadata_as_dict() -> dict:
     if PLG_METADATA_FILE.is_file():
         config.read(PLG_METADATA_FILE.resolve(), encoding="UTF-8")
         return {s: dict(config.items(s)) for s in config.sections()}
-    raise IOError(f"Plugin metadata.txt not found at: {PLG_METADATA_FILE}")
+    raise OSError(f"Plugin metadata.txt not found at: {PLG_METADATA_FILE}")
 
 
 # ############################################################################
@@ -65,7 +65,7 @@ __copyright__ = f"2021 - {date.today().year}, {__author__}"
 __email__ = __plugin_md__.get("general").get("email")
 __keywords__ = [t.strip() for t in __plugin_md__.get("general").get("repository").split("tags")]
 __license__ = "GPLv3"
-__summary__ = f'{__plugin_md__.get("general").get("description")}\n{__plugin_md__.get("general").get("about")}'
+__summary__ = f"{__plugin_md__.get('general').get('description')}\n{__plugin_md__.get('general').get('about')}"
 
 __title__ = __plugin_md__.get("general").get("name")
 __title_clean__ = "".join(e for e in __title__ if e.isalnum())
@@ -91,6 +91,6 @@ if __name__ == "__main__":
     print("Version : " + __version__)
     print("Description : " + __summary__)
     print(
-        f'Pour : {plugin_md.get("general").get("qgisminimumversion")} < QGIS < {plugin_md.get("general").get("qgismaximumversion", "3.99")}'
+        f"Pour : {plugin_md.get('general').get('qgisminimumversion')} < QGIS < {plugin_md.get('general').get('qgismaximumversion', '3.99')}"
     )
     print(__title_clean__)

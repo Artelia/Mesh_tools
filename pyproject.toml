@@ -1,0 +1,77 @@
+[tool.qgis-plugin-ci]
+plugin_path = "mesh_tools"
+github_organization_slug = "Artelia"
+project_slug = "mesh_tools"
+
+# Configuration pytest (migrée depuis setup.cfg)
+[tool.pytest.ini_options]
+addopts = [
+    "--junitxml=junit/test-results.xml",
+    "--cov-config=pyproject.toml",
+    "--cov=processing_swan_provider",
+    "--cov-report=html",
+    "--cov-report=term",
+    "--cov-report=xml",
+    "--ignore=tests/_wip/"
+    ]
+norecursedirs = ".* build dev development dist docs CVS fixtures _darcs {arch} *.egg venv _wip"
+python_files = "test_*.py"
+testpaths = ["tests"]
+
+# Configuration coverage (migrée depuis setup.cfg)
+[tool.coverage.run]
+branch = true
+omit = [
+    ".venv/*",
+    "*tests*"
+    ]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if self.debug:",
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:"
+    ]
+ignore_errors = true
+show_missing = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "PIE", # flake8-pie
+    "SIM", # flake8-simplify
+    ]
+ignore = [
+    "E203", # whitespace before ':' (conflicts with black)
+    "E501", # line too long (handled by formatter)
+    ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["mesh_tools"]
+section-order = ["future", "standard-library", "third-party", "qgis", "first-party", "local-folder"]
+split-on-trailing-comma = true
+force-single-line = false
+force-sort-within-sections = false
+
+[tool.ruff.lint.isort.sections]
+qgis = ["qgis", "processing"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # Allow assert in tests

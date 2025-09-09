@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-
 # standard library
 import unittest
-
 from pathlib import Path
 
 # 3rd party
@@ -17,7 +14,6 @@ from mesh_tools import __about__
 
 
 class TestPluginMetadata(unittest.TestCase):
-
     """Test about module"""
 
     def test_metadata_types(self):

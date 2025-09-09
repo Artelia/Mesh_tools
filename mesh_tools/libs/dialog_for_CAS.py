@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  DialogForCAS
@@ -22,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import os
 
 from qgis.PyQt import uic
@@ -33,7 +32,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui
 
 class DialogForCAS(QDialog, FORM_CLASS):
     def __init__(self, parent=None):
-        super(DialogForCAS, self).__init__()
+        super().__init__()
         self.setupUi(self)
 
         font = QFont()

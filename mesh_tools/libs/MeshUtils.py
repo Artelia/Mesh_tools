@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  MeshUtils
@@ -22,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 """
-import functools
 
-from typing import Optional
+import functools
 
 from qgis.core import (
     QgsCoordinateTransform,
@@ -120,14 +117,14 @@ class MeshUtils:
         return point, error
 
     @staticmethod
-    def createVerticesSpatialIndex(nativeMesh: QgsMesh, xform: Optional[QgsCoordinateTransform] = None):
+    def createVerticesSpatialIndex(nativeMesh: QgsMesh, xform: QgsCoordinateTransform | None = None):
         spindex = QgsSpatialIndex()
 
         count = nativeMesh.vertexCount()
         offset = 0
         batch_size = 10
         while offset < count:
-            lst_ft = list()
+            lst_ft = []
             iterations = min(batch_size, count - offset)
             for i in range(iterations):
                 ft = QgsFeature()
@@ -158,7 +155,7 @@ class MeshUtils:
             for vertex in verticies:
                 neighbors = list(verticies)
                 neighbors.remove(vertex)
-                if vertex in dico.keys():
+                if vertex in dico:
                     for neighbor in neighbors:
                         if neighbor not in dico[vertex]:
                             dico[vertex].append(neighbor)

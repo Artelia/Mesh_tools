@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  MeshQuality
@@ -39,7 +37,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui
 
 class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
     def __init__(self, parent=None):
-        super(MeshQuality, self).__init__(parent)
+        super().__init__(parent)
         self.setupUi(self)
         self.prt = parent
         self.path_icon = os.path.join(os.path.dirname(__file__), "..", "icons/")

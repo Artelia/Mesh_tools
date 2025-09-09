@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  SourceManager
@@ -25,7 +23,6 @@
 
 import os
 import time
-
 from contextlib import suppress
 
 from processing.algs.gdal.GdalUtils import GdalUtils
@@ -61,7 +58,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
     closingTool = pyqtSignal()
 
     def __init__(self, parent=None):
-        super(SourceManager, self).__init__(parent)
+        super().__init__(parent)
         self.setupUi(self)
         self.prt = parent
         self.path_icon = os.path.join(os.path.dirname(__file__), "..", "icons/")
@@ -129,7 +126,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
             self.analyse_layer(lay)
 
     def analyse_layer(self, lay):
-        if not lay.type() == QgsMapLayerType.VectorLayer:
+        if lay.type() != QgsMapLayerType.VectorLayer:
             return
 
         if lay.geometryType() != self.src_type:
@@ -357,22 +354,21 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
         self.ctrl_signal_blocked = False
 
     def ctrl_edited(self):
-        if not self.ctrl_signal_blocked:
-            if self.cur_src_id is not None:
-                ctrl = self.sender()
-                val = ctrl.text()
+        if not self.ctrl_signal_blocked and self.cur_src_id is not None:
+            ctrl = self.sender()
+            val = ctrl.text()
 
-                field_idx = None
-                for idx in range(len(self.src_flds)):
-                    if ctrl == self.src_flds[idx][2]:
-                        field_name = self.src_flds[idx][0]
-                        field_idx = self.lay_src.fields().indexFromName(field_name)
-                        break
+            field_idx = None
+            for idx in range(len(self.src_flds)):
+                if ctrl == self.src_flds[idx][2]:
+                    field_name = self.src_flds[idx][0]
+                    field_idx = self.lay_src.fields().indexFromName(field_name)
+                    break
 
-                if field_idx is not None:
-                    attrs = {field_idx: val}
-                    self.lay_src.dataProvider().changeAttributeValues({self.cur_src_id: attrs})
-                    self.lay_src.commitChanges()
+            if field_idx is not None:
+                attrs = {field_idx: val}
+                self.lay_src.dataProvider().changeAttributeValues({self.cur_src_id: attrs})
+                self.lay_src.commitChanges()
 
     def clear_hl_vertices(self):
         for marker in self.hl_vertices:
@@ -458,10 +454,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
             for feat in self.lay_src.getFeatures():
                 featId = feat.id() + 1
                 src_file.write("#\n")
-                if feat[nameField] != NULL:
-                    scr_name = feat[nameField]
-                else:
-                    scr_name = self.tr("SOURCE REGION {}").format(featId)
+                scr_name = feat[nameField] if feat[nameField] != NULL else self.tr("SOURCE REGION {}").format(featId)
                 src_file.write("{} {}\n".format(self.tr("# COORDINATES AT"), scr_name))
                 src_file.write("#\n")
                 src_file.write(f"X({featId})\tY({featId})\n")

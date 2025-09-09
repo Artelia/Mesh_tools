@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  dlg_import_culvert_file
@@ -30,14 +28,12 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QComboBox, QDialog, QTableWidgetItem
 
-FORM_CLASS, _ = uic.loadUiType(
-    os.path.join(os.path.dirname(__file__), "..", "ui", "import_culvert_file.ui")
-)
+FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "import_culvert_file.ui"))
 
 
 class dlg_import_culvert_file(QDialog, FORM_CLASS):
     def __init__(self, culv_flds=None, mesh_crs=None, parent=None):
-        super(dlg_import_culvert_file, self).__init__()
+        super().__init__()
         self.setupUi(self)
 
         self.items = {}
@@ -122,7 +118,7 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
             self.updateTable()
             return
 
-        with open(path, "r") as txt_file:
+        with open(path) as txt_file:
             # First line is always a comment
             txt_file.readline()
             txt_file.readline()
@@ -130,7 +126,7 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
 
         for header in headers:
             key = None
-            if header.lower() in self.items.keys():
+            if header.lower() in self.items:
                 key = header.lower()
             elif header.lower() in ["i1", "i2"]:
                 key = f"n{header.lower()[1]}"

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  MeshTools
@@ -57,7 +55,7 @@ class MeshTools:
 
         # initialize locale
         locale = QSettings().value("locale/userLocale")[0:2]
-        locale_path = os.path.join(self.plugin_dir, "i18n", "MeshTools_{}.qm".format(locale))
+        locale_path = os.path.join(self.plugin_dir, "i18n", f"MeshTools_{locale}.qm")
 
         if os.path.exists(locale_path):
             self.translator = QTranslator()

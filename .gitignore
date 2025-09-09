@@ -1,8 +1,8 @@
 *.pyc
 .idea/workspace.xml
 .idea/*
-.vscode/*
 __pycache__
 *.qm
 *.zip
 .env
+.venv

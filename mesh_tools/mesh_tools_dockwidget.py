@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  MeshToolsDockWidget
@@ -37,7 +35,7 @@ class MeshToolsDockWidget(QDockWidget):
     closingPlugin = pyqtSignal()
 
     def __init__(self, parent=None):
-        super(MeshToolsDockWidget, self).__init__(parent)
+        super().__init__(parent)
 
         self.iface = iface
         self.canvas = self.iface.mapCanvas()

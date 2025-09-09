@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  dlg_create_culvert_shapefile
@@ -35,7 +33,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui
 
 class dlg_create_shapefile(QDialog, FORM_CLASS):
     def __init__(self, name, crs_mesh=None, parent=None):
-        super(dlg_create_shapefile, self).__init__()
+        super().__init__()
         self.setupUi(self)
         self.tr = parent.tr
         self.setWindowTitle(self.tr("New {} layer", self.__class__.__name__).format(name))

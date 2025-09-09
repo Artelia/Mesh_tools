@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from qgis.testing import start_app, unittest
 
 from mesh_tools.libs.culvert_manager import CulvertManager

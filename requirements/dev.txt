@@ -1,5 +1,5 @@
-flake8
-flake8-builtins
-flake8-print
-flake8-qgis
-isort
+pyqt5-stubs
+
+ruff
+
+pre-commit>=4,<5

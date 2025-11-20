@@ -34,6 +34,7 @@ from qgis.utils import iface
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
 from .libs.source_manager import SourceManager
+from .libs.mesh_translation_dlg import MeshTranslation
 from .mesh_tools_dockwidget import MeshToolsDockWidget
 
 
@@ -50,7 +51,7 @@ class MeshTools:
         """
         # Save reference to the QGIS interface
         self.iface = iface
-
+        self.canvas = iface.mapCanvas()
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         self.path_icon = os.path.join(os.path.dirname(__file__), "icons/")
@@ -165,6 +166,7 @@ class MeshTools:
         icon_path = os.path.join(self.plugin_dir, "icon.png")
         self.mesh_menu = self.iface.mainWindow().findChild(QMenu, "mMeshMenu")
         self.pluginMenu = self.mesh_menu.addMenu(QIcon(icon_path), self.menu)
+
         self.add_action(
             os.path.join(self.path_icon, "culvert.png"),
             text=self.tr("Culvert Manager"),
@@ -185,11 +187,17 @@ class MeshTools:
                 parent=self.iface.mainWindow(),
             )
 
+        self.add_action(
+            os.path.join(self.path_icon, "icon_MeshTrans.png"),
+            text=self.tr("Translated Mesh View"),
+            callback=lambda: self.run(4),
+            parent=self.iface.mainWindow(),
+        )
+
     # --------------------------------------------------------------------------
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
-
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
 
@@ -232,6 +240,9 @@ class MeshTools:
         elif tool == 3:
             self.dockwidget = SourceManager()
             self.dockwidget.setWindowTitle(self.tr("Source Manager"))
+        elif tool == 4:
+            self.dockwidget = MeshTranslation()
+            self.dockwidget.setWindowTitle(self.tr("Translated Mesh View"))
         else:
             self.dockwidget = MeshToolsDockWidget()
             self.dockwidget.setWindowTitle(self.tr("MeshTool - Error"))

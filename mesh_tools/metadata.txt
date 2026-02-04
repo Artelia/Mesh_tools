@@ -59,7 +59,7 @@ changelog=
 
 
 # Tags are comma separated with spaces allowed
-tags=python, mesh, tool
+tags=python, mesh, tool, openTELEMAC
 
 homepage=https://github.com/Artelia/mesh_tools/wiki
 category=Plugin

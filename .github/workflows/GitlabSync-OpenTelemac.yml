@@ -1,22 +1,39 @@
-name: GitlabSync-OpenTelemac
+#name: GitlabSync-OpenTelemac
 
-on:
-  - push
-  - delete
+#on:
+#  - push
+#  - delete
+
+#jobs:
+#  sync:
+#    runs-on: ubuntu-latest
+#    name: Git Repo Sync OpenTelemac
+#    steps:
+#    - uses: actions/checkout@v2
+#      with:
+#        fetch-depth: 0
+#    - uses: wangchucheng/git-repo-sync@v0.1.0
+#      with:
+        # Such as https://github.com/wangchucheng/git-repo-sync.git
+#        target-url: ${{ secrets.OPEN_TELEMAC_URL }}
+        # Such as wangchucheng
+#        target-username: ${{ secrets.OPEN_TELEMAC_USERNAME }}
+          # You can store token in your project's 'Setting > Secrets' and reference the name here. Such as ${{ secrets.ACCESS\_TOKEN }}
+#        target-token: ${{ secrets.OPEN_TELEMAC_TOKEN }}
+name: Mirroring-OpenTelemac
+
+on: [push, delete]
 
 jobs:
-  sync:
+  to_gitlab:
     runs-on: ubuntu-latest
-    name: Git Repo Sync OpenTelemac
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: wangchucheng/git-repo-sync@v0.1.0
-      with:
-        # Such as https://github.com/wangchucheng/git-repo-sync.git
-        target-url: ${{ secrets.OPEN_TELEMAC_URL }}
-        # Such as wangchucheng
-        target-username: ${{ secrets.OPEN_TELEMAC_USERNAME }}
-          # You can store token in your project's 'Setting > Secrets' and reference the name here. Such as ${{ secrets.ACCESS\_TOKEN }}
-        target-token: ${{ secrets.OPEN_TELEMAC_TOKEN }}
+    steps:                                              # <-- must use actions/checkout before mirroring!
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            git@gitlab.com:mehdi-pierre.daou/qgis_plugin_opentelemac/mesh_tools-mirror.git
+          ssh_private_key:                              # <-- use 'secrets' to pass credential information.
+            ${{ secrets.GITLAB_SSH_PRIVATE_KEY }}

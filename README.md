@@ -1,7 +1,7 @@
 # Mesh Tools 
 Tools for management of data using Mesh format for Telemac or Uhaina
 More informations on Telemac could be found on [Open Telemac-Mascaret website]("http://www.opentelemac.org/")
-More informations on Uhaina could be found (soon)
+More informations on Uhaina could be found (soon) 
 
 ## Installation
 Use the QGIS Plugins menu to install the Mesh Tools Plugin

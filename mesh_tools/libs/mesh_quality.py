@@ -26,7 +26,7 @@
 import math
 import os
 
-from qgis.core import QgsCoordinateTransform, QgsMapLayerProxyModel, QgsMesh, QgsPointXY
+from qgis.core import Qgis, QgsCoordinateTransform, QgsMesh, QgsPointXY
 from qgis.gui import QgsVertexMarker
 from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QColor
@@ -51,7 +51,7 @@ class MeshQuality(MeshToolsDockWidget, FORM_CLASS):
 
         self.markers = []
 
-        self.mMapLayerComboBox.setFilters(QgsMapLayerProxyModel.MeshLayer)
+        self.mMapLayerComboBox.setFilters(Qgis.LayerFilter.MeshLayer)
         self.mMapLayerComboBox.layerChanged.connect(self.mesh_lay_changed)
 
         self.mesh_lay_changed()

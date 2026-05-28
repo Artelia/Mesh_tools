@@ -39,7 +39,7 @@ class DialogForCAS(QDialog, FORM_CLASS):
         font = QFont()
         font.setFamily("monospace [Consolas]")
         font.setFixedPitch(True)
-        font.setStyleHint(QFont.TypeWriter)
+        font.setStyleHint(QFont.StyleHint.TypeWriter)
 
         self.textBrowser.setFont(font)
 

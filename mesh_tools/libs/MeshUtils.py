@@ -27,6 +27,7 @@ import functools
 from typing import Optional
 
 from qgis.core import (
+    Qgis,
     QgsCoordinateTransform,
     QgsFeature,
     QgsGeometry,
@@ -45,7 +46,7 @@ from qgis.PyQt.QtWidgets import QApplication
 class MeshUtils:
     @staticmethod
     def pointInMesh(mesh: QgsMeshLayer, point: QgsPointXY) -> bool:
-        return not mesh.snapOnElement(QgsMesh.Face, point, 0).isEmpty()
+        return not mesh.snapOnElement(QgsMesh.ElementType.Face, point, 0).isEmpty()
 
     @staticmethod
     def findNearestVertex(
@@ -115,7 +116,7 @@ class MeshUtils:
         # to layer CRS.
         if mesh_xorm is not None and layer_xform is not None:
             point = mesh_xorm.transform(point)
-            point = layer_xform.transform(point, QgsCoordinateTransform.ReverseTransform)
+            point = layer_xform.transform(point, Qgis.TransformDirection.Reverse)
 
         return point, error
 
@@ -176,7 +177,7 @@ class MeshUtils:
 def showWaitCursor(func):
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
             return func(*args, **kwargs)
         finally:

@@ -232,7 +232,7 @@
           <item row="0" column="1">
            <widget class="QComboBox" name="mCbSize">
             <property name="sizeAdjustPolicy">
-             <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+             <enum>QComboBox::AdjustToContents</enum>
             </property>
             <item>
              <property name="text">

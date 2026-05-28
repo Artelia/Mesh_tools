@@ -248,5 +248,5 @@ class MeshTools:
             self.dockwidget.setWindowTitle(self.tr("MeshTool - Error"))
 
         self.dockwidget.closingPlugin.connect(self.onClosePlugin)
-        self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
+        self.iface.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dockwidget)
         self.dockwidget.show()

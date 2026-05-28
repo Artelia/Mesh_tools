@@ -46,11 +46,11 @@ class dlg_import_culvert_file(QDialog, FORM_CLASS):
 
         self.updateTable()
 
-        self.text_file.setStorageMode(QgsFileWidget.GetFile)
+        self.text_file.setStorageMode(QgsFileWidget.StorageMode.GetFile)
         self.text_file.setDialogTitle(self.tr("Select file"))
         self.text_file.setFilter(self.tr("Text Files (*.txt);;All Files (*.*)"))
 
-        self.layer_file.setStorageMode(QgsFileWidget.SaveFile)
+        self.layer_file.setStorageMode(QgsFileWidget.StorageMode.SaveFile)
         self.layer_file.setConfirmOverwrite(True)
         self.layer_file.setDialogTitle(self.tr("Select file"))
         self.layer_file.setFilter("ESRI Shapefile (*.shp)")

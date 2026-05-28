@@ -81,7 +81,7 @@ class dlg_create_shapefile(QDialog, FORM_CLASS):
                 self,
                 self.tr("Error", self.__class__.__name__),
                 self.tr("Select a file.", self.__class__.__name__),
-                QMessageBox.Ok,
+                QMessageBox.StandardButton.Ok,
             )
             self.cur_shp = None
             return
@@ -93,7 +93,7 @@ class dlg_create_shapefile(QDialog, FORM_CLASS):
                 self,
                 self.tr("Error", self.__class__.__name__),
                 self.tr("Select a projection.", self.__class__.__name__),
-                QMessageBox.Ok,
+                QMessageBox.StandardButton.Ok,
             )
             return
 

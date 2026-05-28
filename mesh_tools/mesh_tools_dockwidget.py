@@ -60,7 +60,7 @@ class MeshToolsDockWidget(QDockWidget):
 
     def write_log(self, txt, mode="Info"):
         self.log.setTextColor(QColor("black"))
-        self.log.setFontWeight(QFont.Bold)
+        self.log.setFontWeight(QFont.Weight.Bold)
         self.log.append(f"{datetime.now().strftime('%H:%M:%S')} - ")
         if mode == "Success":
             self.log.setTextColor(QColor("green"))
@@ -70,7 +70,7 @@ class MeshToolsDockWidget(QDockWidget):
             self.log.setTextColor(QColor("red"))
         elif mode == "Warning":
             self.log.setTextColor(QColor("orange"))
-        self.log.setFontWeight(QFont.Normal)
+        self.log.setFontWeight(QFont.Weight.Normal)
         self.log.insertPlainText(txt)
         self.log.verticalScrollBar().setValue(self.log.verticalScrollBar().maximum())
 

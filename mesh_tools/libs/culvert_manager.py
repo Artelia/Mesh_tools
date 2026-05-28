@@ -33,14 +33,13 @@ import numpy as np
 from processing.algs.gdal.GdalUtils import GdalUtils
 from qgis.core import (
     NULL,
+    Qgis,
     QgsCoordinateTransform,
     QgsCoordinateTransformContext,
     QgsFeature,
     QgsField,
     QgsFields,
     QgsGeometry,
-    QgsMapLayerProxyModel,
-    QgsMapLayerType,
     QgsMesh,
     QgsMeshDatasetIndex,
     QgsPointXY,
@@ -48,7 +47,7 @@ from qgis.core import (
     QgsVectorLayer,
 )
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QVariant, pyqtSignal
+from qgis.PyQt.QtCore import QMetaType, Qt, pyqtSignal
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import (
     QCheckBox,
@@ -101,36 +100,36 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         # Col4 - Index for Telemac
         # Col5 - Index for Uhaina
         self.culv_flds = [
-            ["NAME",        QVariant.String,    self.txt_name,  28, 23  ],
-            ["N1",          QVariant.Int,       None,           0,  None],
-            ["N2",          QVariant.Int,       None,           1,  None],
-            ["CE1",         QVariant.Double,    self.sb_ce1,    2, 6    ],
-            ["CE2",         QVariant.Double,    self.sb_ce2,    3, 7    ],
-            ["CS1",         QVariant.Double,    self.sb_cs1,    4, 8    ],
-            ["CS2",         QVariant.Double,    self.sb_cs2,    5, 9    ],
-            ["LARG",        QVariant.Double,    self.sb_larg,   6, 17   ],
-            ["HAUT",        QVariant.Double,    self.sb_haut1,  7, 18   ],
-            ["CLAP",        QVariant.String,    self.cb_clapet, 8, 20   ],
-            ["L12",         QVariant.Double,    self.sb_l12,    9, 10   ],
-            ["Z1",          QVariant.Double,    self.sb_z1,     10, 2   ],
-            ["Z2",          QVariant.Double,    self.sb_z2,     11, 5   ],
-            ["CV",          QVariant.Double,    self.sb_cv,     12, None],
-            ["C56",         QVariant.Double,    self.sb_c56,    13, None],
-            ["CV5",         QVariant.Double,    self.sb_cv5,    14, None],
-            ["C5",          QVariant.Double,    self.sb_c5,     15, None],
-            ["CT",          QVariant.Double,    self.sb_ct,     16, None],
-            ["HAUT2",       QVariant.Double,    self.sb_haut2,  17, 19  ],
-            ["FRIC",        QVariant.Double,    self.sb_fric,   18, None],
-            ["LENGTH",      QVariant.Double,    self.sb_length, 19, None],
-            ["CIRC",        QVariant.Int,       self.cb_circ,   20, 16  ],
-            ["d1",          QVariant.Double,    self.sb_d1,     21, 11  ],
-            ["d2",          QVariant.Double,    self.sb_d2,     22, 12  ],
-            ["a1",          QVariant.Double,    self.sb_a1,     23, 14  ],
-            ["a2",          QVariant.Double,    self.sb_a2,     24, 15  ],
-            ["AA",          QVariant.Int,       self.cb_auto_a, 25, 13  ],
-            ["NB_in_//",    QVariant.Int,       self.sb_nbre,   None, 21  ],
-            ["AL",          QVariant.Int,       self.cb_auto_l, 26, None],
-            ["AZ",          QVariant.Int,       self.cb_auto_z, 27, 22  ]
+            ["NAME",        QMetaType.Type.QString,  self.txt_name,  28, 23  ],
+            ["N1",          QMetaType.Type.Int,      None,           0,  None],
+            ["N2",          QMetaType.Type.Int,      None,           1,  None],
+            ["CE1",         QMetaType.Type.Double,   self.sb_ce1,    2, 6    ],
+            ["CE2",         QMetaType.Type.Double,   self.sb_ce2,    3, 7    ],
+            ["CS1",         QMetaType.Type.Double,   self.sb_cs1,    4, 8    ],
+            ["CS2",         QMetaType.Type.Double,   self.sb_cs2,    5, 9    ],
+            ["LARG",        QMetaType.Type.Double,   self.sb_larg,   6, 17   ],
+            ["HAUT",        QMetaType.Type.Double,   self.sb_haut1,  7, 18   ],
+            ["CLAP",        QMetaType.Type.QString,  self.cb_clapet, 8, 20   ],
+            ["L12",         QMetaType.Type.Double,   self.sb_l12,    9, 10   ],
+            ["Z1",          QMetaType.Type.Double,   self.sb_z1,     10, 2   ],
+            ["Z2",          QMetaType.Type.Double,   self.sb_z2,     11, 5   ],
+            ["CV",          QMetaType.Type.Double,   self.sb_cv,     12, None],
+            ["C56",         QMetaType.Type.Double,   self.sb_c56,    13, None],
+            ["CV5",         QMetaType.Type.Double,   self.sb_cv5,    14, None],
+            ["C5",          QMetaType.Type.Double,   self.sb_c5,     15, None],
+            ["CT",          QMetaType.Type.Double,   self.sb_ct,     16, None],
+            ["HAUT2",       QMetaType.Type.Double,   self.sb_haut2,  17, 19  ],
+            ["FRIC",        QMetaType.Type.Double,   self.sb_fric,   18, None],
+            ["LENGTH",      QMetaType.Type.Double,   self.sb_length, 19, None],
+            ["CIRC",        QMetaType.Type.Int,      self.cb_circ,   20, 16  ],
+            ["d1",          QMetaType.Type.Double,   self.sb_d1,     21, 11  ],
+            ["d2",          QMetaType.Type.Double,   self.sb_d2,     22, 12  ],
+            ["a1",          QMetaType.Type.Double,   self.sb_a1,     23, 14  ],
+            ["a2",          QMetaType.Type.Double,   self.sb_a2,     24, 15  ],
+            ["AA",          QMetaType.Type.Int,      self.cb_auto_a, 25, 13  ],
+            ["NB_in_//",    QMetaType.Type.Int,      self.sb_nbre,   None, 21  ],
+            ["AL",          QMetaType.Type.Int,      self.cb_auto_l, 26, None],
+            ["AZ",          QMetaType.Type.Int,      self.cb_auto_z, 27, 22  ]
         ]
         # fmt: on
 
@@ -151,7 +150,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         self.project.layersAdded.connect(self.addLayers)
         self.project.layersRemoved.connect(self.removeLayers)
 
-        self.cb_lay_mesh.setFilters(QgsMapLayerProxyModel.MeshLayer)
+        self.cb_lay_mesh.setFilters(Qgis.LayerFilter.MeshLayer)
         self.cb_lay_mesh.layerChanged.connect(self.mesh_lay_changed)
         self.cb_lay_culv.currentIndexChanged.connect(self.culv_lay_changed)
         self.cb_dataset_mesh.currentIndexChanged.connect(self.mesh_dataset_changed)
@@ -197,7 +196,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 self.mdl_lay_culv.takeRow(r)
 
     def analyse_layer(self, lay):
-        if lay.type() == QgsMapLayerType.VectorLayer:
+        if lay.type() == Qgis.LayerType.Vector:
             flds = [f.name() for f in lay.fields()]
             if all(elem in flds for elem in [fc[0] for fc in self.culv_flds]):
                 itm = QStandardItem()
@@ -359,9 +358,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                             "Mesh parameters have been changed.\n"
                             "Update culvert features with Automatic Z checked ?"
                         ),
-                        QMessageBox.Cancel | QMessageBox.Ok,
+                        QMessageBox.StandardButton.Cancel | QMessageBox.StandardButton.Ok,
                     )
-                    == QMessageBox.Ok
+                    == QMessageBox.StandardButton.Ok
                 ):
                     self.update_all_auto_z()
 
@@ -377,8 +376,8 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
         if self.lay_mesh:
             srs_mesh = self.lay_mesh.crs()
         dlg = dlg_create_shapefile(self.tr("culvert"), srs_mesh, self)
-        dlg.setWindowModality(2)
-        if dlg.exec_():
+        dlg.setWindowModality(Qt.WindowModality.WindowModal)
+        if dlg.exec():
             path, crs = dlg.cur_shp, dlg.cur_crs
         if path:
             self.create_new_shp(path, crs)
@@ -443,9 +442,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                             "Culvert layer has been changed.\n"
                             "Update culvert features with Automatic Z checked ?"
                         ),
-                        QMessageBox.Cancel | QMessageBox.Ok,
+                        QMessageBox.StandardButton.Cancel | QMessageBox.StandardButton.Ok,
                     )
-                    == QMessageBox.Ok
+                    == QMessageBox.StandardButton.Ok
                 ):
                     self.update_all_auto_z()
         else:
@@ -493,7 +492,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 elif isinstance(ctrl, QComboBox):
                     ctrl.setCurrentIndex(0)
                 elif isinstance(ctrl, QCheckBox):
-                    ctrl.setCheckState(0)
+                    ctrl.setCheckState(Qt.CheckState.Unchecked)
                 elif isinstance(ctrl, QLineEdit):
                     ctrl.setText("")
         self.ctrl_signal_blocked = False
@@ -525,9 +524,9 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 ctrl.setCurrentIndex(idx)
         elif isinstance(ctrl, QCheckBox):
             if val == 1:
-                ctrl.setCheckState(2)
+                ctrl.setCheckState(Qt.CheckState.Checked)
             else:
-                ctrl.setCheckState(0)
+                ctrl.setCheckState(Qt.CheckState.Unchecked)
         elif isinstance(ctrl, QLineEdit):
             ctrl.setText(str(val))
 
@@ -543,7 +542,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 elif isinstance(ctrl, QComboBox):
                     val = ctrl.currentIndex()
                 elif isinstance(ctrl, QCheckBox):
-                    if ctrl.checkState() == 2:
+                    if ctrl.checkState() == Qt.CheckState.Checked:
                         val = 1
                     else:
                         val = 0
@@ -634,7 +633,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                 elif isinstance(ctrl, QComboBox):
                     ctrl.setCurrentIndex(0)
                 elif isinstance(ctrl, QCheckBox):
-                    ctrl.setCheckState(0)
+                    ctrl.setCheckState(Qt.CheckState.Unchecked)
 
     def update_all_n(self, log=True):
         attrs = dict()
@@ -760,12 +759,12 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
                     # pt1 and pt2 need to be transformed into mesh CRS
                     pt1 = self.lay_mesh_xform.transform(
-                        self.lay_culv_xform.transform(pt1, QgsCoordinateTransform.ReverseTransform),
-                        QgsCoordinateTransform.ReverseTransform,
+                        self.lay_culv_xform.transform(pt1, Qgis.TransformDirection.Reverse),
+                        Qgis.TransformDirection.Reverse,
                     )
                     pt2 = self.lay_mesh_xform.transform(
-                        self.lay_culv_xform.transform(pt2, QgsCoordinateTransform.ReverseTransform),
-                        QgsCoordinateTransform.ReverseTransform,
+                        self.lay_culv_xform.transform(pt2, Qgis.TransformDirection.Reverse),
+                        Qgis.TransformDirection.Reverse,
                     )
 
                 for fld in culv_flds_srtd[:-1]:
@@ -801,17 +800,17 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
             for fld in self.culv_flds:
                 if fld[0] not in ["NAME", "Remarques"] and fld[2]:
-                    if fld[1] == QVariant.String:
+                    if fld[1] == QMetaType.Type.QString:
                         if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], str):
                             selectedids.append(
                                 [ft_name, self.tr("{} value is not correct.").format(fld[0])]
                             )
-                    elif fld[1] == QVariant.Double:
+                    elif fld[1] == QMetaType.Type.Double:
                         if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], float):
                             selectedids.append(
                                 [ft_name, self.tr("{} value is not correct.").format(fld[0])]
                             )
-                    elif fld[1] == QVariant.Int:
+                    elif fld[1] == QMetaType.Type.Int:
                         if (ft[fld[0]] == NULL) or not isinstance(ft[fld[0]], int):
                             selectedids.append(
                                 [ft_name, self.tr("{} value is not correct.").format(fld[0])]
@@ -856,8 +855,8 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
 
         culv_flds = [x[0] for x in self.culv_flds]
         dlg = dlg_import_culvert_file(culv_flds, mesh_crs, self)
-        dlg.setWindowModality(2)
-        if dlg.exec_():
+        dlg.setWindowModality(Qt.WindowModality.WindowModal)
+        if dlg.exec():
             items = dlg.items
             self.cb_software_select.setCurrentIndex(dlg.cb_soft.currentIndex())
             txt_path = dlg.text_file.filePath()
@@ -937,7 +936,7 @@ class CulvertManager(MeshToolsDockWidget, FORM_CLASS):
                     if key:
                         attr = values[key]
                     else:
-                        if fld[1] in [QVariant.Int, QVariant.Double]:
+                        if fld[1] in [QMetaType.Type.Int, QMetaType.Type.Double]:
                             attr = 0
                         else:
                             attr = ""

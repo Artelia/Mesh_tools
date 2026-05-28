@@ -27,8 +27,8 @@ import os
 from pyproj import CRS
 from pyproj.exceptions import CRSError
 from qgis.core import (
+    Qgis,
     QgsCoordinateReferenceSystem,
-    QgsMapLayerProxyModel,
     QgsMeshLayer,
     QgsProject,
 )
@@ -74,7 +74,7 @@ class MeshTranslation(MeshToolsDockWidget, FORM_CLASS):
         self.bt_valid.accepted.connect(self.valide_trans)
         self.bt_valid.rejected.connect(self.reject)
 
-        self.qcb_layer.setFilters(QgsMapLayerProxyModel.MeshLayer)
+        self.qcb_layer.setFilters(Qgis.LayerFilter.MeshLayer)
         self.qcb_layer.setAdditionalItems(["Import file"])
         self.qcb_layer.layerChanged.connect(self.change_qcb_layer)
         self.change_qcb_layer()

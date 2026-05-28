@@ -31,13 +31,12 @@ from contextlib import suppress
 from processing.algs.gdal.GdalUtils import GdalUtils
 from qgis.core import (
     NULL,
+    Qgis,
     QgsCoordinateTransform,
     QgsCoordinateTransformContext,
     QgsField,
     QgsFields,
     QgsGeometry,
-    QgsMapLayerProxyModel,
-    QgsMapLayerType,
     QgsMesh,
     QgsPointXY,
     QgsVectorFileWriter,
@@ -45,7 +44,7 @@ from qgis.core import (
 )
 from qgis.gui import QgsVertexMarker
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QVariant, pyqtSignal
+from qgis.PyQt.QtCore import QMetaType, Qt, pyqtSignal
 from qgis.PyQt.QtGui import QColor, QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import QFileDialog
 
@@ -80,9 +79,9 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
         self.src_type = None
 
         self.src_flds = [
-            ("srcId", QVariant.Int, None),
-            (self.tr("Name"), QVariant.String, self.txt_name),
-            (self.tr("Note"), QVariant.String, self.txt_note),
+            ("srcId", QMetaType.Type.Int, None),
+            (self.tr("Name"), QMetaType.Type.QString, self.txt_name),
+            (self.tr("Note"), QMetaType.Type.QString, self.txt_note),
         ]
 
         self.is_opening = True
@@ -94,7 +93,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
         self.project.layersAdded.connect(self.addLayers)
         self.project.layersRemoved.connect(self.removeLayers)
 
-        self.cb_lay_mesh.setFilters(QgsMapLayerProxyModel.MeshLayer)
+        self.cb_lay_mesh.setFilters(Qgis.LayerFilter.MeshLayer)
         self.cb_lay_mesh.layerChanged.connect(self.mesh_lay_changed)
         self.cb_type_src.currentIndexChanged.connect(self.src_type_changed)
         self.cb_lay_src.currentIndexChanged.connect(self.src_lay_changed)
@@ -129,7 +128,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
             self.analyse_layer(lay)
 
     def analyse_layer(self, lay):
-        if not lay.type() == QgsMapLayerType.VectorLayer:
+        if not lay.type() == Qgis.LayerType.Vector:
             return
 
         if lay.geometryType() != self.src_type:
@@ -222,8 +221,8 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
         if self.lay_mesh:
             srs_mesh = self.lay_mesh.crs()
         dlg = dlg_create_shapefile(self.tr("source"), srs_mesh, self)
-        dlg.setWindowModality(2)
-        if dlg.exec_():
+        dlg.setWindowModality(Qt.WindowModality.WindowModal)
+        if dlg.exec():
             path, crs = dlg.cur_shp, dlg.cur_crs
         if path:
             self.create_new_shp(path, crs)
@@ -426,7 +425,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
         for feat in self.lay_src.getFeatures():
             point = feat.geometry().asPoint()
             point = self.lay_src_xform.transform(point)
-            point = self.lay_mesh_xform.transform(point, QgsCoordinateTransform.ReverseTransform)
+            point = self.lay_mesh_xform.transform(point, Qgis.TransformDirection.Reverse)
             xs.append(str(round(point.x(), 4)))
             ys.append(str(round(point.y(), 4)))
 
@@ -471,7 +470,7 @@ class SourceManager(MeshToolsDockWidget, FORM_CLASS):
 
                 for point in geom[:-1]:
                     point = self.lay_src_xform.transform(point)
-                    point = self.lay_mesh_xform.transform(point, QgsCoordinateTransform.ReverseTransform)
+                    point = self.lay_mesh_xform.transform(point, Qgis.TransformDirection.Reverse)
                     src_file.write(f"{round(point.x(), 4)}\t{round(point.y(), 4)}\n")
             src_file.write("#")
 

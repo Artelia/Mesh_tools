@@ -3,10 +3,10 @@
 # Mandatory items:
 [general]
 name=Mesh Tools
-qgisMinimumVersion=3.16
-qgisMaximumVersion=3.99
+qgisMinimumVersion=3.40
+qgisMaximumVersion=4.99
 description=Tools for management of Data on mesh (Telemac, Uhaina).
-version=0.8.5
+version=0.9.0
 author=Artelia
 email=a@a
 
@@ -26,6 +26,7 @@ repository=https://github.com/Artelia/mesh_tools
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+   0.9.0 : QGIS 4 compatibility
    0.8.5 : Addition of the view translation for a Serafin file
    0.8.4 : Fix larg and haut2 value to haut1 value for circular culvert (#58)
    0.8.3 : Fix export source region (duplicated vertex)

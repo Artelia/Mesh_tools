@@ -2,6 +2,9 @@ name: Mirroring-OpenTelemac
 
 on: [push, delete]
 
+permissions:
+  contents: read
+
 jobs:
   to_gitlab:
     runs-on: ubuntu-latest

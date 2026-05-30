@@ -33,8 +33,8 @@ from qgis.utils import iface
 
 from .libs.culvert_manager import CulvertManager
 from .libs.mesh_quality import MeshQuality
-from .libs.source_manager import SourceManager
 from .libs.mesh_translation_dlg import MeshTranslation
+from .libs.source_manager import SourceManager
 from .mesh_tools_dockwidget import MeshToolsDockWidget
 
 

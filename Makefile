@@ -224,13 +224,13 @@ pylint:
 	@echo "e.g. source run-env-linux.sh <path to qgis install>; make pylint"
 	@echo "----------------------"
 
-black:
+lint:
 	@echo
 	@echo "-------------------------"
-	@echo "Isort and Black formating"
+	@echo "Ruff lint and format"
 	@echo "-------------------------"
-	@isort --profile black $(SOURCES) $(TESTS)
-	@black -l 120 -t py39 $(SOURCES) $(TESTS)
+	@ruff check --fix $(SOURCES) $(TESTS)
+	@ruff format $(SOURCES) $(TESTS)
 
 # Run pep8 style checking
 #http://pypi.python.org/pypi/pep8

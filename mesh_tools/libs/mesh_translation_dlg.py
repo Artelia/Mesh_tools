@@ -39,9 +39,7 @@ from qgis.utils import iface
 from ..mesh_tools_dockwidget import MeshToolsDockWidget
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
-FORM_CLASS, _ = uic.loadUiType(
-    os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_translation.ui")
-)
+FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), "..", "ui", "mesh_translation.ui"))
 
 
 class MeshTranslation(MeshToolsDockWidget, FORM_CLASS):
@@ -108,9 +106,7 @@ class MeshTranslation(MeshToolsDockWidget, FORM_CLASS):
         try:
             crs_dict = CRS.from_wkt(self.wgt_crs.crs().toWkt()).to_json_dict()
         except CRSError:
-            QMessageBox.information(
-                self.iface.mainWindow(), "Information", "Projection not considered"
-            )
+            QMessageBox.information(self.iface.mainWindow(), "Information", "Projection not considered")
             return
 
         x_val, y_val = self.sb_tra_x.value(), self.sb_tra_y.value()
@@ -124,9 +120,7 @@ class MeshTranslation(MeshToolsDockWidget, FORM_CLASS):
                 p["value"] -= y_val
                 found_y = True
         if not (found_x and found_y):
-            QMessageBox.information(
-                self.iface.mainWindow(), "Information", "Projection not considered"
-            )
+            QMessageBox.information(self.iface.mainWindow(), "Information", "Projection not considered")
             return
 
         mesh_crs = QgsCoordinateReferenceSystem()
@@ -136,18 +130,14 @@ class MeshTranslation(MeshToolsDockWidget, FORM_CLASS):
             file = self.file_mesh.filePath()
             mesh_lay = QgsMeshLayer(file, "Tmp Mesh", "mdal")
             if not mesh_lay.isValid():
-                QMessageBox.warning(
-                    self.iface.mainWindow(), "Warning", "Imported mesh layer is not valid."
-                )
+                QMessageBox.warning(self.iface.mainWindow(), "Warning", "Imported mesh layer is not valid.")
                 return
             mesh_lay.setCrs(mesh_crs)
             QgsProject.instance().addMapLayer(mesh_lay, True)
         else:
             mesh_lay = self.cur_layer
             if not (isinstance(mesh_lay, QgsMeshLayer) and mesh_lay.isValid()):
-                QMessageBox.warning(
-                    self.iface.mainWindow(), "Warning", "Selected layer is not a valid mesh layer."
-                )
+                QMessageBox.warning(self.iface.mainWindow(), "Warning", "Selected layer is not a valid mesh layer.")
                 return
             mesh_lay.setCrs(mesh_crs)
             mesh_lay.triggerRepaint()

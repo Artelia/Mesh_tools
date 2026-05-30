@@ -7,105 +7,110 @@ on:
     branches:
       - main
     paths:
-      - 'mesh_tools/**'
-      - '.docker/**'
-      - '.github/ci.yml'
+      - "mesh_tools/**"
+      - "tests/**"
+      - "requirements/**"
+      - "pyproject.toml"
+      - ".docker/**"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches:
       - main
     paths:
-      - 'mesh_tools/**'
-      - '.docker/**'
-      - '.github/ci.yml'
+      - "mesh_tools/**"
+      - "tests/**"
+      - "requirements/**"
+      - "pyproject.toml"
+      - ".docker/**"
+      - ".github/workflows/ci.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.12"
 
 jobs:
-
-  flake8:
+  lint:
+    name: Lint 🐍
     runs-on: ubuntu-latest
-    steps:
 
-      - name: Setup Python 3.9
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v6
         with:
-          python-version: 3.9
-          architecture: x64
-
-      - name: Checkout
-        uses: actions/checkout@main
-
-      - uses: actions/cache@v5.0.5
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/dev.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements/dev.txt
 
       - name: Install Python requirements
         run: pip install -r requirements/dev.txt
 
-      - name: Run flake8
-        run: flake8
+      - name: Run Ruff linter
+        run: ruff check --output-format=github .
+
+      - name: Run Ruff formatter
+        run: ruff format --check --diff .
 
   tests-unit:
+    name: Unit tests 🧪
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get source code
+      - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Python 3.9
+      - name: Setup Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v6
         with:
-          python-version: 3.9
-          architecture: x64
-
-      - uses: actions/cache@v5.0.5
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/*.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements/testing.txt
 
       - name: Install Python requirements
         run: pip install -r requirements/testing.txt
 
-      - name: Run Unit tests
-        run: pytest tests/unit/
+      - name: Run unit tests
+        run: pytest tests/unit/ --cov=mesh_tools --cov-report=term-missing
 
   release:
-    needs: [flake8, tests-unit]
+    name: Release 📦
+    needs: [lint, tests-unit]
 
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'Artelia' && contains(github.ref, 'refs/tags/')
+    if: github.repository_owner == 'Artelia' && startsWith(github.ref, 'refs/tags/')
+
+    permissions:
+      contents: write
 
     steps:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v6
 
-      - name: Set up Python 3.9
+      - name: Setup Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v6
         with:
-          python-version: 3.9
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements/packaging.txt
 
       - name: Install Qt lrelease
         run: |
           sudo apt-get update
-          sudo apt-get install qtbase5-dev qt5-qmake qttools5-dev-tools
-
-      - uses: actions/cache@v5.0.5
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/packaging.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          sudo apt-get install -y qtbase5-dev qt5-qmake qttools5-dev-tools
 
       - name: Install Python requirements
         run: pip install -r requirements/packaging.txt
-
-      - name : Fetch current changelog
-        run: qgis-plugin-ci changelog ${{ env.RELEASE_VERSION }} >> release.md
 
       - name: Package and deploy the zip
         run: >-

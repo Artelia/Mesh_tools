@@ -17,7 +17,6 @@ from mesh_tools import __about__
 
 
 class TestPluginMetadata(unittest.TestCase):
-
     """Test about module"""
 
     def test_metadata_types(self):

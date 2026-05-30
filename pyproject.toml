@@ -1,0 +1,22 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = [
+    "mesh_tools/__about__.py",
+    "tests/qgis/runner.py",
+    "help",
+]
+
+[tool.ruff.lint]
+# E/W: pycodestyle, F: pyflakes, I: isort, A: flake8-builtins, T20: flake8-print
+# (replaces the previous flake8 + flake8-builtins + flake8-print + isort stack)
+select = ["E", "F", "W", "I", "A", "T20"]
+ignore = [
+    "W605",  # invalid escape sequence (regex patterns)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"mesh_tools/libs/culvert_manager.py" = ["E202", "E241"]
+
+[tool.ruff.lint.isort]
+lines-between-types = 1

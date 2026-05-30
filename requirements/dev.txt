@@ -1,5 +1,5 @@
-flake8
-flake8-builtins
-flake8-print
-flake8-qgis
-isort
+# Development dependencies
+# ------------------------
+# Linting & formatting (replaces flake8 + plugins + isort + black)
+
+ruff
